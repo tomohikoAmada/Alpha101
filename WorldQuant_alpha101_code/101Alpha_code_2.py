@@ -1,11 +1,10 @@
 import pandas as pd
 import numpy as np
-from scipy import stats 
+from scipy import stats
 
 
- def make_factors():
-        
-            #  (rank(Ts_ArgMax(SignedPower(((returns < 0) ? stddev(returns, 20) : close), 2.), 5)) - 0.5)
+def make_factors():
+    #  (rank(Ts_ArgMax(SignedPower(((returns < 0) ? stddev(returns, 20) : close), 2.), 5)) - 0.5)
     class Alpha1(CustomFactor):
         inputs = [USEquityPricing.close, Returns(window_length=2)]
         window_length = 20
@@ -185,14 +184,14 @@ from scipy import stats
             v100 = v1000 * v1001
             v101000 = np.empty((5, out.shape[0]))
             for i0 in range(11, 16):
-                v101000[10-i0] = open[-i0]
+                v101000[10 - i0] = open[-i0]
             v10100 = v101000.sum(axis=0)
             v101010 = np.empty((5, out.shape[0]))
             for i0 in range(11, 16):
-                v101010[10-i0] = returns[-i0]
+                v101010[10 - i0] = returns[-i0]
             v10101 = v101010.sum(axis=0)
             v1010 = v10100 * v10101
-            v101 = v1010 # delay
+            v101 = v1010  # delay
             v10 = v100 - v101
             v1 = stats.rankdata(v10)
             out[:] = v0 * v1
@@ -494,7 +493,7 @@ from scipy import stats
             v00 = np.full(out.shape[0], -1.0)
             v01000 = close[-1]
             v010010 = close[-1]
-            v01001 = v010010 # delay
+            v01001 = v010010  # delay
             v0100 = v01000 - v01001
             v01010 = np.empty((8, out.shape[0]))
             for i0 in range(1, 9):
@@ -523,19 +522,19 @@ from scipy import stats
             v000 = np.full(out.shape[0], -1.0)
             v00100 = open[-1]
             v001010 = high[-1]
-            v00101 = v001010 # delay
+            v00101 = v001010  # delay
             v0010 = v00100 - v00101
             v001 = stats.rankdata(v0010)
             v00 = v000 * v001
             v0100 = open[-1]
             v01010 = close[-1]
-            v0101 = v01010 # delay
+            v0101 = v01010  # delay
             v010 = v0100 - v0101
             v01 = stats.rankdata(v010)
             v0 = v00 * v01
             v100 = open[-1]
             v1010 = low[-1]
-            v101 = v1010 # delay
+            v101 = v1010  # delay
             v10 = v100 - v101
             v1 = stats.rankdata(v10)
             out[:] = v0 * v1
@@ -683,7 +682,7 @@ from scipy import stats
                 v00000[-i0] = v000000 / v000001
             v0000 = v00000[-1] - v00000[-101]
             v00010 = close[-1]
-            v0001 = v00010 # delay
+            v0001 = v00010  # delay
             v000 = v0000 / v0001
             v001 = np.full(out.shape[0], 0.05)
             v00 = v000 < v001
@@ -697,7 +696,7 @@ from scipy import stats
                 v01000[-i0] = v010000 / v010001
             v0100 = v01000[-1] - v01000[-101]
             v01010 = close[-1]
-            v0101 = v01010 # delay
+            v0101 = v01010  # delay
             v010 = v0100 / v0101
             v011 = np.full(out.shape[0], 0.05)
             v01 = v010 == v011
@@ -826,7 +825,7 @@ from scipy import stats
             v00 = v000 + v001
             v01 = close[-1]
             v0 = v00 - v01
-            out[:] = v0/np.abs(v0).sum()
+            out[:] = v0 / np.abs(v0).sum()
 
     #  (min(product(rank(rank(scale(log(sum(ts_min(rank(rank((-1 * rank(delta((close - 1), 5))))), 2), 1))))), 1), 5) + ts_rank(delay((-1 * returns), 6), 5))
     class Alpha29(CustomFactor):
@@ -856,7 +855,7 @@ from scipy import stats
                         v00000000[-i2] = np.min(v000000000, axis=0)
                     v0000000 = v00000000.sum(axis=0)
                     v000000 = np.log(v0000000)
-                    v00000 = v000000/np.abs(v000000).sum()
+                    v00000 = v000000 / np.abs(v000000).sum()
                     v0000 = stats.rankdata(v00000)
                     v000[-i1] = stats.rankdata(v0000)
                 v00[-i0] = np.prod(v000, axis=0)
@@ -866,7 +865,7 @@ from scipy import stats
                 v1000 = np.full(out.shape[0], -1.0)
                 v1001 = returns[-1]
                 v100 = v1000 * v1001
-                v10[-i0] = v100 # delay
+                v10[-i0] = v100  # delay
             v1 = pd.DataFrame(v10).rank().tail(1).as_matrix()[-1]
             out[:] = v0 + v1
 
@@ -879,20 +878,20 @@ from scipy import stats
             v000 = np.full(out.shape[0], 1.0)
             v00100000 = close[-1]
             v001000010 = close[-1]
-            v00100001 = v001000010 # delay
+            v00100001 = v001000010  # delay
             v0010000 = v00100000 - v00100001
             v001000 = np.sign(v0010000)
             v001001000 = close[-1]
-            v00100100 = v001001000 # delay
+            v00100100 = v001001000  # delay
             v001001010 = close[-1]
-            v00100101 = v001001010 # delay
+            v00100101 = v001001010  # delay
             v0010010 = v00100100 - v00100101
             v001001 = np.sign(v0010010)
             v00100 = v001000 + v001001
             v00101000 = close[-1]
-            v0010100 = v00101000 # delay
+            v0010100 = v00101000  # delay
             v00101010 = close[-1]
-            v0010101 = v00101010 # delay
+            v0010101 = v00101010  # delay
             v001010 = v0010100 - v0010101
             v00101 = np.sign(v001010)
             v0010 = v00100 + v00101
@@ -927,7 +926,7 @@ from scipy import stats
                 v00000010 = stats.rankdata(v000000100)
                 v0000001 = stats.rankdata(v00000010)
                 v000000[-i0] = v0000000 * v0000001
-            v00000 = (v000000 * (np.arange(1.0, 11, 1.0)/55)[:, np.newaxis]).sum(axis=0) # decay_linear
+            v00000 = (v000000 * (np.arange(1.0, 11, 1.0) / 55)[:, np.newaxis]).sum(axis=0)  # decay_linear
             v0000 = stats.rankdata(v00000)
             v000 = stats.rankdata(v0000)
             v00 = stats.rankdata(v000)
@@ -946,7 +945,7 @@ from scipy import stats
             for i0 in range(1, 13):
                 v1001[-i0] = low[-i0]
             v100 = pd.DataFrame(v1000).rolling(window=12).cov(pd.DataFrame(v1001)).tail(1).as_matrix()[-1]
-            v10 = v100/np.abs(v100).sum()
+            v10 = v100 / np.abs(v100).sum()
             v1 = np.sign(v10)
             out[:] = v0 + v1
 
@@ -966,7 +965,7 @@ from scipy import stats
             v000 = v0000 / v0001
             v001 = close[-1]
             v00 = v000 - v001
-            v0 = v00/np.abs(v00).sum()
+            v0 = v00 / np.abs(v00).sum()
             v10 = np.full(out.shape[0], 20.0)
             v1100 = np.empty((230, out.shape[0]))
             for i0 in range(1, 231):
@@ -974,9 +973,9 @@ from scipy import stats
             v1101 = np.empty((230, out.shape[0]))
             for i0 in range(1, 231):
                 v11010 = close[-1]
-                v1101[-i0] = v11010 # delay
+                v1101[-i0] = v11010  # delay
             v110 = pd.DataFrame(v1100).rolling(window=230).cov(pd.DataFrame(v1101)).tail(1).as_matrix()[-1]
-            v11 = v110/np.abs(v110).sum()
+            v11 = v110 / np.abs(v110).sum()
             v1 = v10 * v11
             out[:] = v0 + v1
 
@@ -1027,7 +1026,8 @@ from scipy import stats
 
     #  ((Ts_Rank(volume, 32) * (1 - Ts_Rank(((close + high) - low), 16))) * (1 - Ts_Rank(returns, 32)))
     class Alpha35(CustomFactor):
-        inputs = [USEquityPricing.volume, USEquityPricing.close, USEquityPricing.high, Returns(window_length=2), USEquityPricing.low]
+        inputs = [USEquityPricing.volume, USEquityPricing.close, USEquityPricing.high, Returns(window_length=2),
+                  USEquityPricing.low]
         window_length = 32
 
         def compute(self, today, assets, out, volume, close, high, returns, low):
@@ -1060,7 +1060,8 @@ from scipy import stats
         vwap_in.window_safe = True
         adv20_in = AverageDollarVolume(window_length=20)
         adv20_in.window_safe = True
-        inputs = [adv20_in, vwap_in, USEquityPricing.volume, Returns(window_length=2), USEquityPricing.close, USEquityPricing.open]
+        inputs = [adv20_in, vwap_in, USEquityPricing.volume, Returns(window_length=2), USEquityPricing.close,
+                  USEquityPricing.open]
         window_length = 200
 
         def compute(self, today, assets, out, adv20, vwap, volume, returns, close, open):
@@ -1073,7 +1074,7 @@ from scipy import stats
             v0000101 = np.empty((15, out.shape[0]))
             for i0 in range(1, 16):
                 v00001010 = volume[-1]
-                v0000101[-i0] = v00001010 # delay
+                v0000101[-i0] = v00001010  # delay
             v000010 = pd.DataFrame(v0000100).rolling(window=15).cov(pd.DataFrame(v0000101)).tail(1).as_matrix()[-1]
             v00001 = stats.rankdata(v000010)
             v0000 = v00000 * v00001
@@ -1090,7 +1091,7 @@ from scipy import stats
                 v00110000 = np.full(out.shape[0], -1.0)
                 v00110001 = returns[-1]
                 v0011000 = v00110000 * v00110001
-                v001100[-i0] = v0011000 # delay
+                v001100[-i0] = v0011000  # delay
             v00110 = pd.DataFrame(v001100).rank().tail(1).as_matrix()[-1]
             v0011 = stats.rankdata(v00110)
             v001 = v0010 * v0011
@@ -1133,7 +1134,7 @@ from scipy import stats
                 v00000 = open[-1]
                 v00001 = close[-1]
                 v0000 = v00000 - v00001
-                v000[-i0] = v0000 # delay
+                v000[-i0] = v0000  # delay
             v001 = np.empty((200, out.shape[0]))
             for i0 in range(1, 201):
                 v001[-i0] = close[-i0]
@@ -1183,7 +1184,7 @@ from scipy import stats
                 v01011000 = volume[-i0]
                 v01011001 = adv20[-i0]
                 v0101100[-i0] = v01011000 / v01011001
-            v010110 = (v0101100 * (np.arange(1.0, 10, 1.0)/45)[:, np.newaxis]).sum(axis=0) # decay_linear
+            v010110 = (v0101100 * (np.arange(1.0, 10, 1.0) / 45)[:, np.newaxis]).sum(axis=0)  # decay_linear
             v01011 = stats.rankdata(v010110)
             v0101 = v01010 - v01011
             v010 = v0100 * v0101
@@ -1306,7 +1307,7 @@ from scipy import stats
             v100000 = np.empty((20, out.shape[0]))
             for i0 in range(1, 21):
                 v1000000 = close[-1]
-                v100000[-i0] = v1000000 # delay
+                v100000[-i0] = v1000000  # delay
             v10000 = v100000.sum(axis=0)
             v10001 = np.full(out.shape[0], 20.0)
             v1000 = v10000 / v10001
@@ -1344,14 +1345,14 @@ from scipy import stats
         def compute(self, today, assets, out, close):
             v00 = np.full(out.shape[0], 0.25)
             v010000 = close[-1]
-            v01000 = v010000 # delay
+            v01000 = v010000  # delay
             v010010 = close[-1]
-            v01001 = v010010 # delay
+            v01001 = v010010  # delay
             v0100 = v01000 - v01001
             v0101 = np.full(out.shape[0], 10.0)
             v010 = v0100 / v0101
             v011000 = close[-1]
-            v01100 = v011000 # delay
+            v01100 = v011000  # delay
             v01101 = close[-1]
             v0110 = v01100 - v01101
             v0111 = np.full(out.shape[0], 10.0)
@@ -1362,14 +1363,14 @@ from scipy import stats
             v11 = np.full(out.shape[0], 1.0)
             v1 = v10 * v11
             v2000000 = close[-1]
-            v200000 = v2000000 # delay
+            v200000 = v2000000  # delay
             v2000010 = close[-1]
-            v200001 = v2000010 # delay
+            v200001 = v2000010  # delay
             v20000 = v200000 - v200001
             v20001 = np.full(out.shape[0], 10.0)
             v2000 = v20000 / v20001
             v2001000 = close[-1]
-            v200100 = v2001000 # delay
+            v200100 = v2001000  # delay
             v200101 = close[-1]
             v20010 = v200100 - v200101
             v20011 = np.full(out.shape[0], 10.0)
@@ -1383,7 +1384,7 @@ from scipy import stats
             v220 = v2200 * v2201
             v2210 = close[-1]
             v22110 = close[-1]
-            v2211 = v22110 # delay
+            v2211 = v22110  # delay
             v221 = v2210 - v2211
             v22 = v220 * v221
             v2lgcl = np.empty(out.shape[0])
@@ -1429,7 +1430,7 @@ from scipy import stats
             v0 = v00 * v01
             v100 = vwap[-1]
             v1010 = vwap[-1]
-            v101 = v1010 # delay
+            v101 = v1010  # delay
             v10 = v100 - v101
             v1 = stats.rankdata(v10)
             out[:] = v0 - v1
@@ -1441,14 +1442,14 @@ from scipy import stats
 
         def compute(self, today, assets, out, close):
             v000000 = close[-1]
-            v00000 = v000000 # delay
+            v00000 = v000000  # delay
             v000010 = close[-1]
-            v00001 = v000010 # delay
+            v00001 = v000010  # delay
             v0000 = v00000 - v00001
             v0001 = np.full(out.shape[0], 10.0)
             v000 = v0000 / v0001
             v001000 = close[-1]
-            v00100 = v001000 # delay
+            v00100 = v001000  # delay
             v00101 = close[-1]
             v0010 = v00100 - v00101
             v0011 = np.full(out.shape[0], 10.0)
@@ -1464,7 +1465,7 @@ from scipy import stats
             v20 = v200 * v201
             v210 = close[-1]
             v2110 = close[-1]
-            v211 = v2110 # delay
+            v211 = v2110  # delay
             v21 = v210 - v211
             v2 = v20 * v21
             vlgcl = np.empty(out.shape[0])
@@ -1503,14 +1504,14 @@ from scipy import stats
 
         def compute(self, today, assets, out, close):
             v000000 = close[-1]
-            v00000 = v000000 # delay
+            v00000 = v000000  # delay
             v000010 = close[-1]
-            v00001 = v000010 # delay
+            v00001 = v000010  # delay
             v0000 = v00000 - v00001
             v0001 = np.full(out.shape[0], 10.0)
             v000 = v0000 / v0001
             v001000 = close[-1]
-            v00100 = v001000 # delay
+            v00100 = v001000  # delay
             v00101 = close[-1]
             v0010 = v00100 - v00101
             v0011 = np.full(out.shape[0], 10.0)
@@ -1526,7 +1527,7 @@ from scipy import stats
             v20 = v200 * v201
             v210 = close[-1]
             v2110 = close[-1]
-            v211 = v2110 # delay
+            v211 = v2110  # delay
             v21 = v210 - v211
             v2 = v20 * v21
             vlgcl = np.empty(out.shape[0])
@@ -1548,9 +1549,9 @@ from scipy import stats
             v000 = v0000 * v0001
             v00100 = np.empty((5, out.shape[0]))
             for i0 in range(6, 11):
-                v00100[5-i0] = low[-i0]
+                v00100[5 - i0] = low[-i0]
             v0010 = np.min(v00100, axis=0)
-            v001 = v0010 # delay
+            v001 = v0010  # delay
             v00 = v000 + v001
             v010000 = np.empty((240, out.shape[0]))
             for i0 in range(1, 241):
@@ -1700,7 +1701,7 @@ from scipy import stats
                     v111000[-i1] = close[-i1]
                 v11100 = np.argmax(v111000, axis=0)
                 v1110[-i0] = stats.rankdata(v11100)
-            v111 = (v1110 * (np.arange(1.0, 3, 1.0)/3)[:, np.newaxis]).sum(axis=0) # decay_linear
+            v111 = (v1110 * (np.arange(1.0, 3, 1.0) / 3)[:, np.newaxis]).sum(axis=0)  # decay_linear
             v11 = v110 / v111
             v1 = v10 * v11
             out[:] = v0 - v1
@@ -1728,14 +1729,14 @@ from scipy import stats
             v1101001 = volume[-1]
             v110100 = v1101000 * v1101001
             v11010 = stats.rankdata(v110100)
-            v1101 = v11010/np.abs(v11010).sum()
+            v1101 = v11010 / np.abs(v11010).sum()
             v110 = v1100 * v1101
             v111000 = np.empty((10, out.shape[0]))
             for i0 in range(1, 11):
                 v111000[-i0] = close[-i0]
             v11100 = np.argmax(v111000, axis=0)
             v1110 = stats.rankdata(v11100)
-            v111 = v1110/np.abs(v1110).sum()
+            v111 = v1110 / np.abs(v1110).sum()
             v11 = v110 - v111
             v1 = v10 * v11
             out[:] = v0 - v1
@@ -1915,7 +1916,7 @@ from scipy import stats
                 for i1 in range(1, 6):
                     v00000[-i1] = vwap[-i1]
                 v0000[-i0] = v00000[-1] - v00000[-5]
-            v000 = (v0000 * (np.arange(1.0, 8, 1.0)/28)[:, np.newaxis]).sum(axis=0) # decay_linear
+            v000 = (v0000 * (np.arange(1.0, 8, 1.0) / 28)[:, np.newaxis]).sum(axis=0)  # decay_linear
             v00 = stats.rankdata(v000)
             v010 = np.empty((7, out.shape[0]))
             for i0 in range(1, 8):
@@ -1940,7 +1941,7 @@ from scipy import stats
                     v010011 = v0100110 / v0100111
                     v01001 = v010010 - v010011
                     v0100[-i1] = v01000 / v01001
-                v010[-i0] = (v0100 * (np.arange(1.0, 12, 1.0)/66)[:, np.newaxis]).sum(axis=0) # decay_linear
+                v010[-i0] = (v0100 * (np.arange(1.0, 12, 1.0) / 66)[:, np.newaxis]).sum(axis=0)  # decay_linear
             v01 = pd.DataFrame(v010).rank().tail(1).as_matrix()[-1]
             v0 = v00 + v01
             v1 = np.full(out.shape[0], -1.0)
@@ -2006,7 +2007,7 @@ from scipy import stats
                 for i1 in range(1, 10):
                     v0001[-i1] = adv40[-i1]
                 v000[-i0] = pd.DataFrame(v0000).rolling(window=9).cov(pd.DataFrame(v0001)).tail(1).as_matrix()[-1]
-            v00 = (v000 * (np.arange(1.0, 11, 1.0)/55)[:, np.newaxis]).sum(axis=0) # decay_linear
+            v00 = (v000 * (np.arange(1.0, 11, 1.0) / 55)[:, np.newaxis]).sum(axis=0)  # decay_linear
             v0 = stats.rankdata(v00)
             v100 = np.empty((3, out.shape[0]))
             for i0 in range(1, 4):
@@ -2023,7 +2024,7 @@ from scipy import stats
                         v10010[-i2] = volume[-i2]
                     v1001[-i1] = pd.DataFrame(v10010).rank().tail(1).as_matrix()[-1]
                 v100[-i0] = pd.DataFrame(v1000).rolling(window=7).cov(pd.DataFrame(v1001)).tail(1).as_matrix()[-1]
-            v10 = (v100 * (np.arange(1.0, 4, 1.0)/6)[:, np.newaxis]).sum(axis=0) # decay_linear
+            v10 = (v100 * (np.arange(1.0, 4, 1.0) / 6)[:, np.newaxis]).sum(axis=0)  # decay_linear
             v1 = stats.rankdata(v10)
             out[:] = v0 / v1
 
@@ -2165,7 +2166,8 @@ from scipy import stats
                     for i2 in range(1, 51):
                         v0000000010[-i2] = adv10[-i2]
                     v000000001[-i1] = v0000000010.sum(axis=0)
-                v00000000 = pd.DataFrame(v000000000).rolling(window=8).cov(pd.DataFrame(v000000001)).tail(1).as_matrix()[-1]
+                v00000000 = \
+                pd.DataFrame(v000000000).rolling(window=8).cov(pd.DataFrame(v000000001)).tail(1).as_matrix()[-1]
                 v0000000 = stats.rankdata(v00000000)
                 v0000001 = np.full(out.shape[0], 4.0)
                 v000000 = np.power(v0000000, v0000001)
@@ -2200,12 +2202,12 @@ from scipy import stats
             v00000 = v000000 - v000001
             v0000100 = np.empty((5, out.shape[0]))
             for i0 in range(3, 8):
-                v0000100[2-i0] = close[-i0]
+                v0000100[2 - i0] = close[-i0]
             v000010 = v0000100.sum(axis=0)
             v000011 = np.full(out.shape[0], 5.0)
             v00001 = v000010 / v000011
             v0000 = v00000 / v00001
-            v000 = v0000 # delay
+            v000 = v0000  # delay
             v00 = stats.rankdata(v000)
             v0100 = volume[-1]
             v010 = stats.rankdata(v0100)
@@ -2430,7 +2432,7 @@ from scipy import stats
                         v00010[-i2] = adv5[-i2]
                     v0001[-i1] = v00010.sum(axis=0)
                 v000[-i0] = pd.DataFrame(v0000).rolling(window=5).cov(pd.DataFrame(v0001)).tail(1).as_matrix()[-1]
-            v00 = (v000 * (np.arange(1.0, 8, 1.0)/28)[:, np.newaxis]).sum(axis=0) # decay_linear
+            v00 = (v000 * (np.arange(1.0, 8, 1.0) / 28)[:, np.newaxis]).sum(axis=0)  # decay_linear
             v0 = stats.rankdata(v00)
             v100 = np.empty((8, out.shape[0]))
             for i0 in range(1, 9):
@@ -2446,10 +2448,11 @@ from scipy import stats
                         for i3 in range(1, 22):
                             v1000010 = adv15[-i3]
                             v100001[-i3] = stats.rankdata(v1000010)
-                        v10000[-i2] = pd.DataFrame(v100000).rolling(window=21).cov(pd.DataFrame(v100001)).tail(1).as_matrix()[-1]
+                        v10000[-i2] = \
+                        pd.DataFrame(v100000).rolling(window=21).cov(pd.DataFrame(v100001)).tail(1).as_matrix()[-1]
                     v1000[-i1] = np.argmin(v10000, axis=0)
                 v100[-i0] = pd.DataFrame(v1000).rank().tail(1).as_matrix()[-1]
-            v10 = (v100 * (np.arange(1.0, 9, 1.0)/36)[:, np.newaxis]).sum(axis=0) # decay_linear
+            v10 = (v100 * (np.arange(1.0, 9, 1.0) / 36)[:, np.newaxis]).sum(axis=0)  # decay_linear
             v1 = stats.rankdata(v10)
             out[:] = v0 - v1
 
@@ -2506,86 +2509,85 @@ from scipy import stats
             v11 = np.full(out.shape[0], 0.001)
             v1 = v10 + v11
             out[:] = v0 / v1
-        
-        
+
         all_factors = {
-        'Alpha1' : Alpha1,
-        'Alpha2' : Alpha2,
-        'Alpha3' : Alpha3,
-        'Alpha4' : Alpha4,
-        'Alpha5' : Alpha5,
-        'Alpha6' : Alpha6,
-        'Alpha7' : Alpha7,
-        'Alpha8' : Alpha8,
-        'Alpha9' : Alpha9,
-        'Alpha10' : Alpha10,
-        'Alpha11' : Alpha11,
-        'Alpha12' : Alpha12,
-        'Alpha13' : Alpha13,
-        'Alpha14' : Alpha14,
-        'Alpha15' : Alpha15,
-        'Alpha16' : Alpha16,
-        'Alpha17' : Alpha17,
-        'Alpha18' : Alpha18,
-        'Alpha19' : Alpha19,
-        'Alpha20' : Alpha20,
-        'Alpha21' : Alpha21,
-        'Alpha22' : Alpha22,
-        'Alpha23' : Alpha23,
-        'Alpha24' : Alpha24,
-        'Alpha25' : Alpha25,
-        'Alpha26' : Alpha26,
-        'Alpha27' : Alpha27,
-        'Alpha28' : Alpha28,
-        'Alpha29' : Alpha29,
-        'Alpha30' : Alpha30,
-        'Alpha31' : Alpha31,
-        'Alpha32' : Alpha32,
-        'Alpha33' : Alpha33,
-        'Alpha34' : Alpha34,
-        'Alpha35' : Alpha35,
-        'Alpha36' : Alpha36,
-        'Alpha37' : Alpha37,
-        'Alpha38' : Alpha38,
-        'Alpha39' : Alpha39,
-        'Alpha40' : Alpha40,
-        'Alpha41' : Alpha41,
-        'Alpha42' : Alpha42,
-        'Alpha43' : Alpha43,
-        'Alpha44' : Alpha44,
-        'Alpha45' : Alpha45,
-        'Alpha46' : Alpha46,
-        'Alpha47' : Alpha47,
-        'Alpha49' : Alpha49,
-        'Alpha50' : Alpha50,
-        'Alpha51' : Alpha51,
-        'Alpha52' : Alpha52,
-        'Alpha53' : Alpha53,
-        'Alpha54' : Alpha54,
-        'Alpha55' : Alpha55,
-        'Alpha56' : Alpha56,
-        'Alpha57' : Alpha57,
-        'Alpha60' : Alpha60,
-        'Alpha61' : Alpha61,
-        'Alpha62' : Alpha62,
-        'Alpha64' : Alpha64,
-        'Alpha65' : Alpha65,
-        'Alpha66' : Alpha66,
-        'Alpha68' : Alpha68,
-        'Alpha72' : Alpha72,
-        'Alpha74' : Alpha74,
-        'Alpha75' : Alpha75,
-        'Alpha78' : Alpha78,
-        'Alpha81' : Alpha81,
-        'Alpha83' : Alpha83,
-        'Alpha84' : Alpha84,
-        'Alpha85' : Alpha85,
-        'Alpha86' : Alpha86,
-        'Alpha94' : Alpha94,
-        'Alpha95' : Alpha95,
-        'Alpha98' : Alpha98,
-        'Alpha99' : Alpha99,
-        'Alpha101' : Alpha101
-    }     
-    
+            'Alpha1': Alpha1,
+            'Alpha2': Alpha2,
+            'Alpha3': Alpha3,
+            'Alpha4': Alpha4,
+            'Alpha5': Alpha5,
+            'Alpha6': Alpha6,
+            'Alpha7': Alpha7,
+            'Alpha8': Alpha8,
+            'Alpha9': Alpha9,
+            'Alpha10': Alpha10,
+            'Alpha11': Alpha11,
+            'Alpha12': Alpha12,
+            'Alpha13': Alpha13,
+            'Alpha14': Alpha14,
+            'Alpha15': Alpha15,
+            'Alpha16': Alpha16,
+            'Alpha17': Alpha17,
+            'Alpha18': Alpha18,
+            'Alpha19': Alpha19,
+            'Alpha20': Alpha20,
+            'Alpha21': Alpha21,
+            'Alpha22': Alpha22,
+            'Alpha23': Alpha23,
+            'Alpha24': Alpha24,
+            'Alpha25': Alpha25,
+            'Alpha26': Alpha26,
+            'Alpha27': Alpha27,
+            'Alpha28': Alpha28,
+            'Alpha29': Alpha29,
+            'Alpha30': Alpha30,
+            'Alpha31': Alpha31,
+            'Alpha32': Alpha32,
+            'Alpha33': Alpha33,
+            'Alpha34': Alpha34,
+            'Alpha35': Alpha35,
+            'Alpha36': Alpha36,
+            'Alpha37': Alpha37,
+            'Alpha38': Alpha38,
+            'Alpha39': Alpha39,
+            'Alpha40': Alpha40,
+            'Alpha41': Alpha41,
+            'Alpha42': Alpha42,
+            'Alpha43': Alpha43,
+            'Alpha44': Alpha44,
+            'Alpha45': Alpha45,
+            'Alpha46': Alpha46,
+            'Alpha47': Alpha47,
+            'Alpha49': Alpha49,
+            'Alpha50': Alpha50,
+            'Alpha51': Alpha51,
+            'Alpha52': Alpha52,
+            'Alpha53': Alpha53,
+            'Alpha54': Alpha54,
+            'Alpha55': Alpha55,
+            'Alpha56': Alpha56,
+            'Alpha57': Alpha57,
+            'Alpha60': Alpha60,
+            'Alpha61': Alpha61,
+            'Alpha62': Alpha62,
+            'Alpha64': Alpha64,
+            'Alpha65': Alpha65,
+            'Alpha66': Alpha66,
+            'Alpha68': Alpha68,
+            'Alpha72': Alpha72,
+            'Alpha74': Alpha74,
+            'Alpha75': Alpha75,
+            'Alpha78': Alpha78,
+            'Alpha81': Alpha81,
+            'Alpha83': Alpha83,
+            'Alpha84': Alpha84,
+            'Alpha85': Alpha85,
+            'Alpha86': Alpha86,
+            'Alpha94': Alpha94,
+            'Alpha95': Alpha95,
+            'Alpha98': Alpha98,
+            'Alpha99': Alpha99,
+            'Alpha101': Alpha101
+        }
+
     return all_factors

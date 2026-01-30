@@ -16,6 +16,7 @@ from numpy import sign
 # 排名函数：对数组中的数据进行排名，常用于计算横截面排名（cross-sectional rank），这在Alpha因子中很常见
 from scipy.stats import rankdata
 
+
 # region Auxiliary functions
 def ts_sum(df, window=10):
     """
@@ -148,29 +149,57 @@ def covariance(x, y, window=10):
 
 def rolling_rank(na):
     """
-    用于pd.rolling_apply的辅助函数。
+    用于pd.rolling_apply的辅助函数，计算数组中最后一个值在该数组内的排名。
     :param na: numpy数组。
-    :return: 返回数组中最后一个值的排名。
+    :return: 返回数组中最后一个值的排名（从小到大，最小值排名为1）。
+
+    作用: 判断当前值在滚动窗口内的相对位置
+    - 排名小（接近1）: 当前值是窗口内较小的值
+    - 排名大（接近窗口大小）: 当前值是窗口内较大的值
 
     示例:
     输入数组: [3, 1, 4, 2, 5]
-    输出: 4.0
-    解释: 在[3,1,4,2,5]中，最后一个值5的排名是4（从小到大排序）
+    rankdata返回: [3, 1, 4, 2, 5]（每个值的排名）
+    输出: 5.0
+    解释: 值5是最大的，所以排名第5
+
+    实际应用示例（价格序列）:
+    窗口[100, 102, 98]: 98排名1（最低）→ 可能超跌
+    窗口[102, 98, 105]: 105排名3（最高）→ 可能超买
     """
     return rankdata(na)[-1]
 
 
 def ts_rank(df, window=10):
     """
-    计算滚动排名的包装函数。
+    计算滚动排名的包装函数，用于判断当前值在近期窗口中的相对强弱。
     :param df: pandas DataFrame对象。
     :param window: 滚动窗口大小。
     :return: 返回过去'window'天的时间序列排名的pandas DataFrame。
 
+    作用: 判断当前值在滚动窗口内的相对位置（时间序列排名）
+    - 排名接近1: 当前值在窗口内较低 → 可能超跌，反弹信号
+    - 排名接近window: 当前值在窗口内较高 → 可能超买，回调信号
+
+    与rank()的区别:
+    - rank(): 横截面排名（比较同一时刻不同股票）
+    - ts_rank(): 时间序列排名（比较同一股票不同时间）
+
+    计算示例:
+    窗口[1,5,3]: rankdata=[1,3,2], 最后值3排名2（中等）
+    窗口[5,3,7]: rankdata=[2,1,3], 最后值7排名3（最高）
+    窗口[3,7,2]: rankdata=[2,3,1], 最后值2排名1（最低）
+
     示例:
     输入数据: [1, 5, 3, 7, 2]
-    window=3时的输出: [NaN, NaN, 3.0, 3.0, 1.0]
-    解释: 在[1,5,3]中3排第3, 在[5,3,7]中7排第3, 在[3,7,2]中2排第1
+    window=3时的输出: [NaN, NaN, 2.0, 3.0, 1.0]
+    解释: 在[1,5,3]中3排第2, 在[5,3,7]中7排第3, 在[3,7,2]中2排第1
+
+    应用场景 - 动量反转策略:
+    价格序列: [100, 105, 110, 108, 112]
+    ts_rank(window=3)输出: [NaN, NaN, 3, 2, 3]
+    排名3表示当前是3天内最高价 → 可能超买
+    排名1表示当前是3天内最低价 → 可能超跌
     """
     return df.rolling(window).apply(rolling_rank)
 
@@ -454,8 +483,7 @@ class Alphas(object):
         self.returns = df_data['S_DQ_PCTCHANGE']
         self.vwap = (df_data['S_DQ_AMOUNT'] * 1000) / (df_data['S_DQ_VOLUME'] * 100 + 1)
 
-        # Alpha#1	 (rank(Ts_ArgMax(SignedPower(((returns < 0) ? stddev(returns, 20) : close), 2.), 5)) -0.5)
-
+    # Alpha#1	 (rank(Ts_ArgMax(SignedPower(((returns < 0) ? stddev(returns, 20) : close), 2.), 5)) -0.5)
     def alpha001(self):
         inner = self.close
         inner[self.returns < 0] = stddev(self.returns, 20)
