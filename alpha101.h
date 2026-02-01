@@ -7,6 +7,7 @@
 #include <span>
 #include <set>
 #include <algorithm>  // 提供 sort, upper_bound 等算法
+#include <numeric>
 #include <ranges>     // 提供 sliding_window (C++23)
 
 using namespace std;
@@ -376,6 +377,68 @@ vector<float> ts_max(vector<float> a, int window) {
         } else {
             result.push_back(getmaxval(vector<float>(&a[i - window + 1], &a[i + 1])));
         }
+    }
+
+    return result;
+}
+
+vector<float> delta(vector<float> a, int period) {
+    vector<float> result;
+    for (int i = 0; i < a.size(); ++i) {
+        if (i < period) {
+            result.push_back(NAN);
+        } else {
+            result.push_back(a[i] - a[i - period]);
+        }
+    }
+
+    return result;
+}
+
+vector<float> delay(vector<float> a, int period) {
+    vector<float> result;
+
+    for (int i = 0; i < a.size(); ++i) {
+        if (i < period) {
+            result.push_back(NAN);
+        } else {
+            result.push_back(a[i - period]);  // 修复：返回滞后值，不是差分
+        }
+    }
+
+    return result;
+}
+
+vector<float> alpha_rank(vector<float> a) {
+    size_t n = a.size();
+    if (n == 0) return {};
+
+    vector<float> result(n);
+
+    vector<float> idx(a.size());
+    iota(idx.begin(), idx.end(), 0);
+
+    sort(idx.begin(), idx.end(), [a](int i, int j) {
+        return a[i] < a[j];
+    });
+
+    int i = 0;
+    while (i < a.size()) {
+        int j = i;
+
+        while (j < a.size() && a[idx[i]] == a[idx[j]]) {
+            j++;
+        }
+
+        float avg_rank = (i + 1 + j) / 2.0f;
+
+        float pct_rank = avg_rank / n;
+
+        for (int k = i; k < j; ++k) {
+            result[idx[k]] = pct_rank;
+        }
+
+        i = j;
     }
 
     return result;
