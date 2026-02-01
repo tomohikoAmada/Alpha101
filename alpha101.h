@@ -444,4 +444,7 @@ vector<float> alpha_rank(vector<float> a) {
     return result;
 }
 
+// 测试github
+// 测试
+
 #endif // ALPHA101_H
