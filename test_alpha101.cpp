@@ -2,7 +2,7 @@
 #include "alpha101.h"
 #include <cmath>
 
-// 辅助函数：比较两个 vector 是否相等（考虑 NaN）
+// Hilfsfunktion: Zwei Vektoren auf Gleichheit prüfen (NaN berücksichtigt)
 bool vectors_equal(const vector<float>& a, const vector<float>& b, float tolerance = 1e-5) {
     if (a.size() != b.size()) return false;
 
@@ -18,7 +18,7 @@ bool vectors_equal(const vector<float>& a, const vector<float>& b, float toleran
     return true;
 }
 
-// ========== Rolling TS Sum 测试 ==========
+// ========== Rolling TS Sum Tests ==========
 
 TEST(RollingTsSumTest, BasicTest) {
     vector<float> input = {1, 2, 3, 4, 5};
@@ -57,10 +57,10 @@ TEST(RollingTsSumTest, WindowOne) {
     EXPECT_FLOAT_EQ(result[2], 30);
 }
 
-// ========== Rolling Prod 测试 ==========
+// ========== Rolling Prod Tests ==========
 
 TEST(RollingProdTest, BasicTest) {
-    // 测试基本乘积: [2, 3, 4]
+    // Grundlegendes Produkt testen: [2, 3, 4]
     // 2 × 3 × 4 = 24
     vector<float> input = {2, 3, 4};
     float result = rolling_prod(input);
@@ -69,7 +69,7 @@ TEST(RollingProdTest, BasicTest) {
 }
 
 TEST(RollingProdTest, WithOne) {
-    // 包含1的乘积: [5, 1, 4]
+    // Produkt mit 1: [5, 1, 4]
     // 5 × 1 × 4 = 20
     vector<float> input = {5, 1, 4};
     float result = rolling_prod(input);
@@ -78,7 +78,7 @@ TEST(RollingProdTest, WithOne) {
 }
 
 TEST(RollingProdTest, WithZero) {
-    // 包含0的乘积: [2, 0, 5]
+    // Produkt mit 0: [2, 0, 5]
     // 2 × 0 × 5 = 0
     vector<float> input = {2, 0, 5};
     float result = rolling_prod(input);
@@ -87,7 +87,7 @@ TEST(RollingProdTest, WithZero) {
 }
 
 TEST(RollingProdTest, NegativeNumbers) {
-    // 负数乘积: [2, -3, 4]
+    // Mit negativen Zahlen: [2, -3, 4]
     // 2 × (-3) × 4 = -24
     vector<float> input = {2, -3, 4};
     float result = rolling_prod(input);
@@ -96,7 +96,7 @@ TEST(RollingProdTest, NegativeNumbers) {
 }
 
 TEST(RollingProdTest, TwoNegatives) {
-    // 两个负数: [-2, -3, 4]
+    // Zwei negative Zahlen: [-2, -3, 4]
     // (-2) × (-3) × 4 = 24
     vector<float> input = {-2, -3, 4};
     float result = rolling_prod(input);
@@ -105,8 +105,8 @@ TEST(RollingProdTest, TwoNegatives) {
 }
 
 TEST(RollingProdTest, SingleElement) {
-    // 单个元素: [5]
-    // 结果为 5
+    // Einzelnes Element: [5]
+    // Ergebnis ist 5
     vector<float> input = {5};
     float result = rolling_prod(input);
 
@@ -114,7 +114,7 @@ TEST(RollingProdTest, SingleElement) {
 }
 
 TEST(RollingProdTest, AllOnes) {
-    // 全是1: [1, 1, 1, 1]
+    // Alles Einsen: [1, 1, 1, 1]
     // 1 × 1 × 1 × 1 = 1
     vector<float> input = {1, 1, 1, 1};
     float result = rolling_prod(input);
@@ -123,7 +123,7 @@ TEST(RollingProdTest, AllOnes) {
 }
 
 TEST(RollingProdTest, DecimalNumbers) {
-    // 小数: [0.5, 2.0, 4.0]
+    // Dezimalzahlen: [0.5, 2.0, 4.0]
     // 0.5 × 2.0 × 4.0 = 4.0
     vector<float> input = {0.5, 2.0, 4.0};
     float result = rolling_prod(input);
@@ -132,7 +132,7 @@ TEST(RollingProdTest, DecimalNumbers) {
 }
 
 TEST(RollingProdTest, LargerSequence) {
-    // 较长序列: [1, 2, 3, 4, 5]
+    // Längere Folge: [1, 2, 3, 4, 5]
     // 1 × 2 × 3 × 4 × 5 = 120
     vector<float> input = {1, 2, 3, 4, 5};
     float result = rolling_prod(input);
@@ -140,12 +140,12 @@ TEST(RollingProdTest, LargerSequence) {
     EXPECT_FLOAT_EQ(result, 120.0);
 }
 
-// ========== Product (滚动乘积) 测试 ==========
+// ========== Product (rollendes Produkt) Tests ==========
 
 TEST(ProductTest, BasicTest) {
-    // 输入数据: [1, 2, 3, 4, 5]
-    // window=3时的输出: [NaN, NaN, 6, 24, 60]
-    // 解释: 6=1×2×3, 24=2×3×4, 60=3×4×5
+    // Eingabedaten: [1, 2, 3, 4, 5]
+    // Ausgabe bei window=3: [NaN, NaN, 6, 24, 60]
+    // Erklärung: 6=1×2×3, 24=2×3×4, 60=3×4×5
     vector<float> input = {1, 2, 3, 4, 5};
     vector<float> result = product(input, 3);
 
@@ -159,7 +159,7 @@ TEST(ProductTest, BasicTest) {
 
 TEST(ProductTest, WindowTwo) {
     // [2, 3, 4, 5], window=2
-    // 输出: [NaN, 6, 12, 20]
+    // Ausgabe: [NaN, 6, 12, 20]
     vector<float> input = {2, 3, 4, 5};
     vector<float> result = product(input, 2);
 
@@ -171,7 +171,7 @@ TEST(ProductTest, WindowTwo) {
 }
 
 TEST(ProductTest, WithZero) {
-    // 包含0的情况: [1, 2, 0, 3, 4], window=3
+    // Produkt mit 0: [1, 2, 0, 3, 4], window=3
     // [NaN, NaN, 0, 0, 0]
     vector<float> input = {1, 2, 0, 3, 4};
     vector<float> result = product(input, 3);
@@ -185,7 +185,7 @@ TEST(ProductTest, WithZero) {
 }
 
 TEST(ProductTest, WithNegatives) {
-    // 包含负数: [2, -3, 4, -1], window=2
+    // Mit negativen Zahlen: [2, -3, 4, -1], window=2
     // [NaN, -6, -12, -4]
     vector<float> input = {2, -3, 4, -1};
     vector<float> result = product(input, 2);
@@ -198,7 +198,7 @@ TEST(ProductTest, WithNegatives) {
 }
 
 TEST(ProductTest, WindowOne) {
-    // window=1 时，输出应该与输入相同
+    // Bei window=1 soll die Ausgabe gleich der Eingabe sein
     vector<float> input = {5, 10, 15, 20};
     vector<float> result = product(input, 1);
 
@@ -226,7 +226,7 @@ TEST(ProductTest, LargerWindow) {
 }
 
 TEST(ProductTest, AllOnes) {
-    // 全是1: [1, 1, 1, 1, 1], window=3
+    // Alles Einsen: [1, 1, 1, 1, 1], window=3
     // [NaN, NaN, 1, 1, 1]
     vector<float> input = {1, 1, 1, 1, 1};
     vector<float> result = product(input, 3);
@@ -240,7 +240,7 @@ TEST(ProductTest, AllOnes) {
 }
 
 TEST(ProductTest, DecimalNumbers) {
-    // 小数: [0.5, 2.0, 4.0, 0.5], window=2
+    // Dezimalzahlen: [0.5, 2.0, 4.0, 0.5], window=2
     // [NaN, 1.0, 8.0, 2.0]
     vector<float> input = {0.5, 2.0, 4.0, 0.5};
     vector<float> result = product(input, 2);
@@ -252,12 +252,12 @@ TEST(ProductTest, DecimalNumbers) {
     EXPECT_FLOAT_EQ(result[3], 2.0);    // 4.0×0.5
 }
 
-// ========== TS Min (滚动最小值) 测试 ==========
+// ========== TS Min (rollendes Minimum) Tests ==========
 
 TEST(TsMinTest, BasicTest) {
-    // 输入数据: [5, 3, 8, 2, 6]
-    // window=3时的输出: [NaN, NaN, 3, 2, 2]
-    // 解释: min([5,3,8])=3, min([3,8,2])=2, min([8,2,6])=2
+    // Eingabedaten: [5, 3, 8, 2, 6]
+    // Ausgabe bei window=3: [NaN, NaN, 3, 2, 2]
+    // Erklärung: min([5,3,8])=3, min([3,8,2])=2, min([8,2,6])=2
     vector<float> input = {5, 3, 8, 2, 6};
     vector<float> result = ts_min(input, 3);
 
@@ -270,8 +270,8 @@ TEST(TsMinTest, BasicTest) {
 }
 
 TEST(TsMinTest, MonotonicIncreasing) {
-    // 单调递增序列: [1, 2, 3, 4, 5], window=3
-    // 每个窗口的最小值是第一个元素
+    // Monoton steigende Folge: [1, 2, 3, 4, 5], window=3
+    // Das Minimum jedes Fensters ist das erste Element
     // [NaN, NaN, 1, 2, 3]
     vector<float> input = {1, 2, 3, 4, 5};
     vector<float> result = ts_min(input, 3);
@@ -285,8 +285,8 @@ TEST(TsMinTest, MonotonicIncreasing) {
 }
 
 TEST(TsMinTest, MonotonicDecreasing) {
-    // 单调递减序列: [10, 8, 6, 4, 2], window=3
-    // 每个窗口的最小值是最后一个元素
+    // Monoton fallende Folge: [10, 8, 6, 4, 2], window=3
+    // Das Minimum jedes Fensters ist das letzte Element
     // [NaN, NaN, 6, 4, 2]
     vector<float> input = {10, 8, 6, 4, 2};
     vector<float> result = ts_min(input, 3);
@@ -300,7 +300,7 @@ TEST(TsMinTest, MonotonicDecreasing) {
 }
 
 TEST(TsMinTest, WithNegatives) {
-    // 包含负数: [3, -1, 5, -2, 4], window=3
+    // Mit negativen Zahlen: [3, -1, 5, -2, 4], window=3
     // [NaN, NaN, -1, -2, -2]
     vector<float> input = {3, -1, 5, -2, 4};
     vector<float> result = ts_min(input, 3);
@@ -314,7 +314,7 @@ TEST(TsMinTest, WithNegatives) {
 }
 
 TEST(TsMinTest, WindowOne) {
-    // window=1 时，输出应该与输入相同
+    // Bei window=1 soll die Ausgabe gleich der Eingabe sein
     vector<float> input = {5, 10, 3, 8};
     vector<float> result = ts_min(input, 1);
 
@@ -340,7 +340,7 @@ TEST(TsMinTest, WindowTwo) {
 }
 
 TEST(TsMinTest, AllSameValues) {
-    // 所有值相同: [5, 5, 5, 5], window=3
+    // Alle Werte gleich: [5, 5, 5, 5], window=3
     // [NaN, NaN, 5, 5]
     vector<float> input = {5, 5, 5, 5};
     vector<float> result = ts_min(input, 3);
@@ -368,7 +368,7 @@ TEST(TsMinTest, LargerWindow) {
 }
 
 TEST(TsMinTest, DecimalNumbers) {
-    // 小数: [2.5, 1.2, 3.7, 0.9], window=3
+    // Dezimalzahlen: [2.5, 1.2, 3.7, 0.9], window=3
     // [NaN, NaN, 1.2, 0.9]
     vector<float> input = {2.5, 1.2, 3.7, 0.9};
     vector<float> result = ts_min(input, 3);
@@ -380,12 +380,12 @@ TEST(TsMinTest, DecimalNumbers) {
     EXPECT_NEAR(result[3], 0.9, 1e-5);  // min([1.2,3.7,0.9])
 }
 
-// ========== TS Max (滚动最大值) 测试 ==========
+// ========== TS Max (rollendes Maximum) Tests ==========
 
 TEST(TsMaxTest, BasicTest) {
-    // 输入数据: [5, 3, 8, 2, 6]
-    // window=3时的输出: [NaN, NaN, 8, 8, 8]
-    // 解释: max([5,3,8])=8, max([3,8,2])=8, max([8,2,6])=8
+    // Eingabedaten: [5, 3, 8, 2, 6]
+    // Ausgabe bei window=3: [NaN, NaN, 8, 8, 8]
+    // Erklärung: max([5,3,8])=8, max([3,8,2])=8, max([8,2,6])=8
     vector<float> input = {5, 3, 8, 2, 6};
     vector<float> result = ts_max(input, 3);
 
@@ -398,8 +398,8 @@ TEST(TsMaxTest, BasicTest) {
 }
 
 TEST(TsMaxTest, MonotonicIncreasing) {
-    // 单调递增序列: [1, 2, 3, 4, 5], window=3
-    // 每个窗口的最大值是最后一个元素
+    // Monoton steigende Folge: [1, 2, 3, 4, 5], window=3
+    // Das Maximum jedes Fensters ist das letzte Element
     // [NaN, NaN, 3, 4, 5]
     vector<float> input = {1, 2, 3, 4, 5};
     vector<float> result = ts_max(input, 3);
@@ -413,8 +413,8 @@ TEST(TsMaxTest, MonotonicIncreasing) {
 }
 
 TEST(TsMaxTest, MonotonicDecreasing) {
-    // 单调递减序列: [10, 8, 6, 4, 2], window=3
-    // 每个窗口的最大值是第一个元素
+    // Monoton fallende Folge: [10, 8, 6, 4, 2], window=3
+    // Das Maximum jedes Fensters ist das erste Element
     // [NaN, NaN, 10, 8, 6]
     vector<float> input = {10, 8, 6, 4, 2};
     vector<float> result = ts_max(input, 3);
@@ -428,7 +428,7 @@ TEST(TsMaxTest, MonotonicDecreasing) {
 }
 
 TEST(TsMaxTest, WithNegatives) {
-    // 包含负数: [3, -1, 5, -2, 4], window=3
+    // Mit negativen Zahlen: [3, -1, 5, -2, 4], window=3
     // [NaN, NaN, 5, 5, 5]
     vector<float> input = {3, -1, 5, -2, 4};
     vector<float> result = ts_max(input, 3);
@@ -442,7 +442,7 @@ TEST(TsMaxTest, WithNegatives) {
 }
 
 TEST(TsMaxTest, WindowOne) {
-    // window=1 时，输出应该与输入相同
+    // Bei window=1 soll die Ausgabe gleich der Eingabe sein
     vector<float> input = {5, 10, 3, 8};
     vector<float> result = ts_max(input, 1);
 
@@ -468,7 +468,7 @@ TEST(TsMaxTest, WindowTwo) {
 }
 
 TEST(TsMaxTest, AllSameValues) {
-    // 所有值相同: [5, 5, 5, 5], window=3
+    // Alle Werte gleich: [5, 5, 5, 5], window=3
     // [NaN, NaN, 5, 5]
     vector<float> input = {5, 5, 5, 5};
     vector<float> result = ts_max(input, 3);
@@ -496,7 +496,7 @@ TEST(TsMaxTest, LargerWindow) {
 }
 
 TEST(TsMaxTest, DecimalNumbers) {
-    // 小数: [2.5, 1.2, 3.7, 0.9], window=3
+    // Dezimalzahlen: [2.5, 1.2, 3.7, 0.9], window=3
     // [NaN, NaN, 3.7, 3.7]
     vector<float> input = {2.5, 1.2, 3.7, 0.9};
     vector<float> result = ts_max(input, 3);
@@ -509,7 +509,7 @@ TEST(TsMaxTest, DecimalNumbers) {
 }
 
 TEST(TsMaxTest, ZigzagPattern) {
-    // 锯齿形: [1, 5, 2, 6, 3], window=3
+    // Zickzack-Muster: [1, 5, 2, 6, 3], window=3
     // [NaN, NaN, 5, 6, 6]
     vector<float> input = {1, 5, 2, 6, 3};
     vector<float> result = ts_max(input, 3);
@@ -522,12 +522,12 @@ TEST(TsMaxTest, ZigzagPattern) {
     EXPECT_FLOAT_EQ(result[4], 6.0);    // max([2,6,3])
 }
 
-// ========== Delta (差分) 测试 ==========
+// ========== Delta (Differenz) Tests ==========
 
 TEST(DeltaTest, BasicTest) {
-    // 输入数据: [10, 12, 15, 13, 18]
-    // period=1时的输出: [NaN, 2, 3, -2, 5]
-    // 解释: 12-10=2, 15-12=3, 13-15=-2, 18-13=5
+    // Eingabedaten: [10, 12, 15, 13, 18]
+    // Ausgabe bei period=1: [NaN, 2, 3, -2, 5]
+    // Erklärung: 12-10=2, 15-12=3, 13-15=-2, 18-13=5
     vector<float> input = {10, 12, 15, 13, 18};
     vector<float> result = delta(input, 1);
 
@@ -540,9 +540,9 @@ TEST(DeltaTest, BasicTest) {
 }
 
 TEST(DeltaTest, PeriodTwo) {
-    // 输入数据: [10, 12, 15, 13, 18, 20]
-    // period=2时的输出: [NaN, NaN, 5, 1, 3, 7]
-    // 解释: 15-10=5, 13-12=1, 18-15=3, 20-13=7
+    // Eingabedaten: [10, 12, 15, 13, 18, 20]
+    // Ausgabe bei period=2: [NaN, NaN, 5, 1, 3, 7]
+    // Erklärung: 15-10=5, 13-12=1, 18-15=3, 20-13=7
     vector<float> input = {10, 12, 15, 13, 18, 20};
     vector<float> result = delta(input, 2);
 
@@ -570,7 +570,7 @@ TEST(DeltaTest, LargerPeriod) {
 }
 
 TEST(DeltaTest, WithNegatives) {
-    // 包含负数: [5, 2, -3, 1, -2]
+    // Mit negativen Zahlen: [5, 2, -3, 1, -2]
     // period=1: [NaN, -3, -5, 4, -3]
     vector<float> input = {5, 2, -3, 1, -2};
     vector<float> result = delta(input, 1);
@@ -584,7 +584,7 @@ TEST(DeltaTest, WithNegatives) {
 }
 
 TEST(DeltaTest, MonotonicIncreasing) {
-    // 单调递增: [1, 2, 3, 4, 5]
+    // Monoton steigend: [1, 2, 3, 4, 5]
     // period=1: [NaN, 1, 1, 1, 1]
     vector<float> input = {1, 2, 3, 4, 5};
     vector<float> result = delta(input, 1);
@@ -598,7 +598,7 @@ TEST(DeltaTest, MonotonicIncreasing) {
 }
 
 TEST(DeltaTest, MonotonicDecreasing) {
-    // 单调递减: [10, 8, 6, 4, 2]
+    // Monoton fallend: [10, 8, 6, 4, 2]
     // period=1: [NaN, -2, -2, -2, -2]
     vector<float> input = {10, 8, 6, 4, 2};
     vector<float> result = delta(input, 1);
@@ -612,7 +612,7 @@ TEST(DeltaTest, MonotonicDecreasing) {
 }
 
 TEST(DeltaTest, AllSameValues) {
-    // 所有值相同: [5, 5, 5, 5]
+    // Alle Werte gleich: [5, 5, 5, 5]
     // period=1: [NaN, 0, 0, 0]
     vector<float> input = {5, 5, 5, 5};
     vector<float> result = delta(input, 1);
@@ -625,7 +625,7 @@ TEST(DeltaTest, AllSameValues) {
 }
 
 TEST(DeltaTest, DecimalNumbers) {
-    // 小数: [10.5, 12.3, 15.7, 13.2]
+    // Dezimalzahlen: [10.5, 12.3, 15.7, 13.2]
     // period=1: [NaN, 1.8, 3.4, -2.5]
     vector<float> input = {10.5, 12.3, 15.7, 13.2};
     vector<float> result = delta(input, 1);
@@ -638,7 +638,7 @@ TEST(DeltaTest, DecimalNumbers) {
 }
 
 TEST(DeltaTest, ZeroChange) {
-    // 包含相同连续值: [10, 10, 15, 15, 20]
+    // Mit gleichen aufeinanderfolgenden Werten: [10, 10, 15, 15, 20]
     // period=1: [NaN, 0, 5, 0, 5]
     vector<float> input = {10, 10, 15, 15, 20};
     vector<float> result = delta(input, 1);
@@ -651,12 +651,12 @@ TEST(DeltaTest, ZeroChange) {
     EXPECT_FLOAT_EQ(result[4], 5.0);    // 20-15
 }
 
-// ========== Delay (滞后) 测试 ==========
+// ========== Delay (Verzögerung) Tests ==========
 
 TEST(DelayTest, BasicTest) {
-    // 输入数据: [10, 12, 15, 13, 18]
-    // period=1时的输出: [NaN, 10, 12, 15, 13]
-    // 解释: 每个值都是前一天的值
+    // Eingabedaten: [10, 12, 15, 13, 18]
+    // Ausgabe bei period=1: [NaN, 10, 12, 15, 13]
+    // Erklärung: Jeder Wert ist der Wert des Vortages
     vector<float> input = {10, 12, 15, 13, 18};
     vector<float> result = delay(input, 1);
 
@@ -669,9 +669,9 @@ TEST(DelayTest, BasicTest) {
 }
 
 TEST(DelayTest, PeriodTwo) {
-    // 输入数据: [10, 12, 15, 13, 18, 20]
-    // period=2时的输出: [NaN, NaN, 10, 12, 15, 13]
-    // 解释: 每个值都是前两天的值
+    // Eingabedaten: [10, 12, 15, 13, 18, 20]
+    // Ausgabe bei period=2: [NaN, NaN, 10, 12, 15, 13]
+    // Erklärung: Jeder Wert ist der Wert vor zwei Tagen
     vector<float> input = {10, 12, 15, 13, 18, 20};
     vector<float> result = delay(input, 2);
 
@@ -699,7 +699,7 @@ TEST(DelayTest, LargerPeriod) {
 }
 
 TEST(DelayTest, WithNegatives) {
-    // 包含负数: [5, -2, 8, -3, 10]
+    // Mit negativen Zahlen: [5, -2, 8, -3, 10]
     // period=1: [NaN, 5, -2, 8, -3]
     vector<float> input = {5, -2, 8, -3, 10};
     vector<float> result = delay(input, 1);
@@ -713,7 +713,7 @@ TEST(DelayTest, WithNegatives) {
 }
 
 TEST(DelayTest, MonotonicIncreasing) {
-    // 单调递增: [1, 2, 3, 4, 5]
+    // Monoton steigend: [1, 2, 3, 4, 5]
     // period=1: [NaN, 1, 2, 3, 4]
     vector<float> input = {1, 2, 3, 4, 5};
     vector<float> result = delay(input, 1);
@@ -727,7 +727,7 @@ TEST(DelayTest, MonotonicIncreasing) {
 }
 
 TEST(DelayTest, AllSameValues) {
-    // 所有值相同: [5, 5, 5, 5]
+    // Alle Werte gleich: [5, 5, 5, 5]
     // period=1: [NaN, 5, 5, 5]
     vector<float> input = {5, 5, 5, 5};
     vector<float> result = delay(input, 1);
@@ -740,7 +740,7 @@ TEST(DelayTest, AllSameValues) {
 }
 
 TEST(DelayTest, DecimalNumbers) {
-    // 小数: [10.5, 12.3, 15.7, 13.2]
+    // Dezimalzahlen: [10.5, 12.3, 15.7, 13.2]
     // period=1: [NaN, 10.5, 12.3, 15.7]
     vector<float> input = {10.5, 12.3, 15.7, 13.2};
     vector<float> result = delay(input, 1);
@@ -753,7 +753,7 @@ TEST(DelayTest, DecimalNumbers) {
 }
 
 TEST(DelayTest, ZeroValues) {
-    // 包含0: [10, 0, 15, 0, 20]
+    // Mit 0-Werten: [10, 0, 15, 0, 20]
     // period=1: [NaN, 10, 0, 15, 0]
     vector<float> input = {10, 0, 15, 0, 20};
     vector<float> result = delay(input, 1);
@@ -767,7 +767,7 @@ TEST(DelayTest, ZeroValues) {
 }
 
 TEST(DelayTest, LargePeriod) {
-    // period=5 时，前5个元素都是NaN
+    // Bei period=5 sind die ersten 5 Elemente NaN
     vector<float> input = {1, 2, 3, 4, 5, 6, 7, 8};
     vector<float> result = delay(input, 5);
 
@@ -782,7 +782,7 @@ TEST(DelayTest, LargePeriod) {
     EXPECT_FLOAT_EQ(result[7], 3.0);    // input[2]
 }
 
-// ========== Rolling SMA 测试 ==========
+// ========== Rolling SMA Tests ==========
 
 TEST(RollingSmaTest, BasicTest) {
     vector<float> input = {2, 4, 6, 8, 10};
@@ -808,7 +808,7 @@ TEST(RollingSmaTest, WindowTwo) {
     EXPECT_FLOAT_EQ(result[4], 45);
 }
 
-// ========== Rolling Stddev 测试 ==========
+// ========== Rolling Stddev Tests ==========
 
 TEST(RollingStddevTest, BasicTest) {
     vector<float> input = {1, 2, 3, 4, 5};
@@ -822,10 +822,10 @@ TEST(RollingStddevTest, BasicTest) {
     EXPECT_NEAR(result[4], 1.0, 1e-5);
 }
 
-// ========== Rolling Correlation 测试 ==========
+// ========== Rolling Correlation Tests ==========
 
 TEST(RollingCorrelationTest, PositiveCorrelation) {
-    // y = 2x, 完全正相关
+    // y = 2x, vollständige positive Korrelation
     vector<float> x = {1, 2, 3, 4, 5};
     vector<float> y = {2, 4, 6, 8, 10};
     vector<float> result = rolling_correlation(x, y, 3);
@@ -839,7 +839,7 @@ TEST(RollingCorrelationTest, PositiveCorrelation) {
 }
 
 TEST(RollingCorrelationTest, NegativeCorrelation) {
-    // 负相关
+    // Negative Korrelation
     vector<float> x = {1, 2, 3, 4, 5};
     vector<float> y = {10, 8, 6, 4, 2};
     vector<float> result = rolling_correlation(x, y, 3);
@@ -853,9 +853,9 @@ TEST(RollingCorrelationTest, NegativeCorrelation) {
 }
 
 TEST(RollingCorrelationTest, ManualVerification) {
-    // 手动验证：平均值x̄=2, ȳ=4
-    // 偏差x: [-1, 0, 1], 偏差y: [-2, 0, 2]
-    // 相关系数: 4 / √(2×8) = 1.0
+    // Manuelle Verifikation: Mittelwert x̄=2, ȳ=4
+    // Abweichung x: [-1, 0, 1], Abweichung y: [-2, 0, 2]
+    // Korrelationskoeffizient: 4 / √(2×8) = 1.0
     vector<float> x = {1, 2, 3};
     vector<float> y = {2, 4, 6};
     vector<float> result = rolling_correlation(x, y, 3);
@@ -866,7 +866,7 @@ TEST(RollingCorrelationTest, ManualVerification) {
     EXPECT_NEAR(result[2], 1.0, 1e-5);
 }
 
-// ========== Rolling Covariance 测试 ==========
+// ========== Rolling Covariance Tests ==========
 
 TEST(RollingCovarianceTest, BasicTest) {
     vector<float> x = {1, 2, 3, 4, 5};
@@ -882,10 +882,10 @@ TEST(RollingCovarianceTest, BasicTest) {
 }
 
 TEST(RollingCovarianceTest, ManualVerification) {
-    // 平均值: x̄=2, ȳ=4
-    // 偏差: x=[-1,0,1], y=[-2,0,2]
-    // 偏差乘积: [2,0,2]
-    // 协方差: (2+0+2)/(3-1) = 2.0
+    // Mittelwert: x̄=2, ȳ=4
+    // Abweichung: x=[-1,0,1], y=[-2,0,2]
+    // Abweichungsprodukt: [2,0,2]
+    // Kovarianz: (2+0+2)/(3-1) = 2.0
     vector<float> x = {1, 2, 3};
     vector<float> y = {2, 4, 6};
     vector<float> result = rolling_covariance(x, y, 3);
@@ -909,12 +909,12 @@ TEST(RollingCovarianceTest, NegativeCovariance) {
     EXPECT_NEAR(result[4], -2.0, 1e-5);
 }
 
-// ========== Rolling Rank 测试 ==========
+// ========== Rolling Rank Tests ==========
 
 TEST(RollingRankTest, BasicTest) {
-    // 输入数组: [3, 1, 4, 2, 5]
-    // 排序后: [1, 2, 3, 4, 5]
-    // 最后值5在位置4，排名=5
+    // Eingabe-Array: [3, 1, 4, 2, 5]
+    // Nach Sortierung: [1, 2, 3, 4, 5]
+    // Letzter Wert 5 an Position 4, Rang=5
     vector<float> input = {3, 1, 4, 2, 5};
     float result = rolling_rank(input);
 
@@ -922,7 +922,7 @@ TEST(RollingRankTest, BasicTest) {
 }
 
 TEST(RollingRankTest, LowestValue) {
-    // 窗口[100, 102, 98]: 98是最小值，排名1
+    // Fenster [100, 102, 98]: 98 ist der kleinste Wert, Rang 1
     vector<float> input = {100, 102, 98};
     float result = rolling_rank(input);
 
@@ -930,7 +930,7 @@ TEST(RollingRankTest, LowestValue) {
 }
 
 TEST(RollingRankTest, HighestValue) {
-    // 窗口[102, 98, 105]: 105是最大值，排名3
+    // Fenster [102, 98, 105]: 105 ist der größte Wert, Rang 3
     vector<float> input = {102, 98, 105};
     float result = rolling_rank(input);
 
@@ -938,7 +938,7 @@ TEST(RollingRankTest, HighestValue) {
 }
 
 TEST(RollingRankTest, MiddleValue) {
-    // [5, 1, 3, 2, 4]，最后值4，排序后[1,2,3,4,5]，4排名第4
+    // [5, 1, 3, 2, 4], letzter Wert 4, nach Sortierung [1,2,3,4,5], 4 belegt Rang 4
     vector<float> input = {5, 1, 3, 2, 4};
     float result = rolling_rank(input);
 
@@ -946,7 +946,7 @@ TEST(RollingRankTest, MiddleValue) {
 }
 
 TEST(RollingRankTest, SingleElement) {
-    // 单个元素，排名为1
+    // Einzelnes Element, Rang = 1
     vector<float> input = {42};
     float result = rolling_rank(input);
 
@@ -954,7 +954,7 @@ TEST(RollingRankTest, SingleElement) {
 }
 
 TEST(RollingRankTest, DuplicateValues) {
-    // [1, 2, 2, 3]，最后值3，排序后[1,2,2,3]，3排名第4
+    // [1, 2, 2, 3], letzter Wert 3, nach Sortierung [1,2,2,3], 3 belegt Rang 4
     vector<float> input = {1, 2, 2, 3};
     float result = rolling_rank(input);
 
@@ -962,9 +962,9 @@ TEST(RollingRankTest, DuplicateValues) {
 }
 
 TEST(RollingRankTest, DuplicateLastValue) {
-    // [1, 3, 2, 3, 3]，最后值3
-    // 排序后: [1, 2, 3, 3, 3]
-    // 三个3占据位置3,4,5，平均排名=(3+4+5)/3=4.0
+    // [1, 3, 2, 3, 3], letzter Wert 3
+    // Nach Sortierung: [1, 2, 3, 3, 3]
+    // Drei 3er belegen Plätze 3,4,5, Durchschnittsrang=(3+4+5)/3=4.0
     vector<float> input = {1, 3, 2, 3, 3};
     float result = rolling_rank(input);
 
@@ -972,8 +972,8 @@ TEST(RollingRankTest, DuplicateLastValue) {
 }
 
 TEST(RollingRankTest, AllSameValues) {
-    // [5, 5, 5, 5]，所有值相同
-    // 占据位置1,2,3,4，平均排名=(1+2+3+4)/4=2.5
+    // [5, 5, 5, 5], alle Werte gleich
+    // belegen Plätze 1,2,3,4, Durchschnittsrang=(1+2+3+4)/4=2.5
     vector<float> input = {5, 5, 5, 5};
     float result = rolling_rank(input);
 
@@ -981,64 +981,64 @@ TEST(RollingRankTest, AllSameValues) {
 }
 
 TEST(RollingRankTest, TwoDuplicates) {
-    // [1, 2, 3, 2]，最后值2
-    // 排序后: [1, 2, 2, 3]
-    // 两个2占据位置2,3，平均排名=(2+3)/2=2.5
+    // [1, 2, 3, 2], letzter Wert 2
+    // Nach Sortierung: [1, 2, 2, 3]
+    // Zwei 2er belegen Plätze 2,3, Durchschnittsrang=(2+3)/2=2.5
     vector<float> input = {1, 2, 3, 2};
     float result = rolling_rank(input);
 
     EXPECT_FLOAT_EQ(result, 2.5);
 }
 
-// ========== TS Rank 测试 ==========
+// ========== TS Rank Tests ==========
 
 TEST(TsRankTest, BasicTest) {
-    // 输入数据: [1, 5, 3, 7, 2]
-    // window=3时的输出: [NaN, NaN, 2.0, 3.0, 1.0]
-    // 解释: 在[1,5,3]中3排第2, 在[5,3,7]中7排第3, 在[3,7,2]中2排第1
+    // Eingabedaten: [1, 5, 3, 7, 2]
+    // Ausgabe bei window=3: [NaN, NaN, 2.0, 3.0, 1.0]
+    // Erklärung: In [1,5,3] belegt 3 Rang 2, in [5,3,7] belegt 7 Rang 3, in [3,7,2] belegt 2 Rang 1
     vector<float> input = {1, 5, 3, 7, 2};
     vector<float> result = ts_rank(input, 3);
 
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 2.0);  // [1,5,3]: 3排第2
-    EXPECT_FLOAT_EQ(result[3], 3.0);  // [5,3,7]: 7排第3（最大）
-    EXPECT_FLOAT_EQ(result[4], 1.0);  // [3,7,2]: 2排第1（最小）
+    EXPECT_FLOAT_EQ(result[2], 2.0);  // [1,5,3]: 3 belegt Rang 2
+    EXPECT_FLOAT_EQ(result[3], 3.0);  // [5,3,7]: 7 belegt Rang 3 (Maximum)
+    EXPECT_FLOAT_EQ(result[4], 1.0);  // [3,7,2]: 2 belegt Rang 1 (Minimum)
 }
 
 TEST(TsRankTest, MonotonicIncreasing) {
-    // 单调递增序列
+    // Monoton steigende Folge
     // [1, 2, 3, 4, 5], window=3
-    // 每个窗口的最后值都是最大的，排名都是3
+    // Der letzte Wert jedes Fensters ist der größte, Rang ist immer 3
     vector<float> input = {1, 2, 3, 4, 5};
     vector<float> result = ts_rank(input, 3);
 
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 3.0);  // [1,2,3]: 3排第3
-    EXPECT_FLOAT_EQ(result[3], 3.0);  // [2,3,4]: 4排第3
-    EXPECT_FLOAT_EQ(result[4], 3.0);  // [3,4,5]: 5排第3
+    EXPECT_FLOAT_EQ(result[2], 3.0);  // [1,2,3]: 3 belegt Rang 3
+    EXPECT_FLOAT_EQ(result[3], 3.0);  // [2,3,4]: 4 belegt Rang 3
+    EXPECT_FLOAT_EQ(result[4], 3.0);  // [3,4,5]: 5 belegt Rang 3
 }
 
 TEST(TsRankTest, MonotonicDecreasing) {
-    // 单调递减序列
+    // Monoton fallende Folge
     // [5, 4, 3, 2, 1], window=3
-    // 每个窗口的最后值都是最小的，排名都是1
+    // Der letzte Wert jedes Fensters ist der kleinste, Rang ist immer 1
     vector<float> input = {5, 4, 3, 2, 1};
     vector<float> result = ts_rank(input, 3);
 
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 1.0);  // [5,4,3]: 3排第1
-    EXPECT_FLOAT_EQ(result[3], 1.0);  // [4,3,2]: 2排第1
-    EXPECT_FLOAT_EQ(result[4], 1.0);  // [3,2,1]: 1排第1
+    EXPECT_FLOAT_EQ(result[2], 1.0);  // [5,4,3]: 3 belegt Rang 1
+    EXPECT_FLOAT_EQ(result[3], 1.0);  // [4,3,2]: 2 belegt Rang 1
+    EXPECT_FLOAT_EQ(result[4], 1.0);  // [3,2,1]: 1 belegt Rang 1
 }
 
 TEST(TsRankTest, PriceSequenceExample) {
-    // 价格序列: [100, 102, 98, 105, 103]
+    // Kursfolge: [100, 102, 98, 105, 103]
     // window=3
     vector<float> input = {100, 102, 98, 105, 103};
     vector<float> result = ts_rank(input, 3);
@@ -1046,13 +1046,13 @@ TEST(TsRankTest, PriceSequenceExample) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 1.0);  // [100,102,98]: 98排第1（超跌）
-    EXPECT_FLOAT_EQ(result[3], 3.0);  // [102,98,105]: 105排第3（超买）
-    EXPECT_FLOAT_EQ(result[4], 2.0);  // [98,105,103]: 103排第2（中等）
+    EXPECT_FLOAT_EQ(result[2], 1.0);  // [100,102,98]: 98 belegt Rang 1 (überverkauft)
+    EXPECT_FLOAT_EQ(result[3], 3.0);  // [102,98,105]: 105 belegt Rang 3 (überkauft)
+    EXPECT_FLOAT_EQ(result[4], 2.0);  // [98,105,103]: 103 belegt Rang 2 (mittel)
 }
 
 TEST(TsRankTest, WithDuplicates) {
-    // 包含重复值
+    // Mit Duplikaten
     // [1, 3, 2, 3, 3], window=3
     vector<float> input = {1, 3, 2, 3, 3};
     vector<float> result = ts_rank(input, 3);
@@ -1060,15 +1060,15 @@ TEST(TsRankTest, WithDuplicates) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 2.0);   // [1,3,2]: 2排第2
-    EXPECT_FLOAT_EQ(result[3], 2.5);   // [3,2,3]: 排序后[2,3,3]，3的平均排名=(2+3)/2=2.5
-    EXPECT_FLOAT_EQ(result[4], 2.5);   // [2,3,3]: 排序后[2,3,3]，3的平均排名=(2+3)/2=2.5
+    EXPECT_FLOAT_EQ(result[2], 2.0);   // [1,3,2]: 2 belegt Rang 2
+    EXPECT_FLOAT_EQ(result[3], 2.5);   // [3,2,3]: nach Sortierung [2,3,3], Durchschnittsrang von 3=(2+3)/2=2.5
+    EXPECT_FLOAT_EQ(result[4], 2.5);   // [2,3,3]: nach Sortierung [2,3,3], Durchschnittsrang von 3=(2+3)/2=2.5
 }
 
-// ========== TS Rank Optimized 测试 ==========
+// ========== TS Rank Optimized Tests ==========
 
 TEST(TsRankOptimizedTest, BasicTest) {
-    // 验证优化版本与原版本结果一致
+    // Überprüfen, ob optimierte und Originalversion gleiche Ergebnisse liefern
     vector<float> input = {1, 5, 3, 7, 2};
     vector<float> result_original = ts_rank(input, 3);
     vector<float> result_optimized = ts_rank_optimized(input, 3);
@@ -1084,7 +1084,7 @@ TEST(TsRankOptimizedTest, BasicTest) {
 }
 
 TEST(TsRankOptimizedTest, LargeDataset) {
-    // 测试较大数据集
+    // Größeren Datensatz testen
     vector<float> input;
     for (int i = 0; i < 1000; ++i) {
         input.push_back(i % 100);
@@ -1104,7 +1104,7 @@ TEST(TsRankOptimizedTest, LargeDataset) {
 }
 
 TEST(TsRankOptimizedTest, WithDuplicates) {
-    // 验证重复值处理一致
+    // Konsistenz der Duplikatbehandlung prüfen
     vector<float> input = {1, 3, 2, 3, 3};
     vector<float> result_original = ts_rank(input, 3);
     vector<float> result_optimized = ts_rank_optimized(input, 3);
@@ -1119,29 +1119,29 @@ TEST(TsRankOptimizedTest, WithDuplicates) {
     }
 }
 
-// ========== Rank (横截面排名) 测试 ==========
+// ========== Rank (Querschnittsrang) Tests ==========
 
 TEST(RankTest, BasicExample) {
-    // Python docstring 示例: [10, 50, 30, 20, 40]
-    // 排序: 10 < 20 < 30 < 40 < 50
-    // 常规排名: [1, 5, 3, 2, 4]
-    // 百分比排名: [0.2, 1.0, 0.6, 0.4, 0.8]
+    // Python-Docstring-Beispiel: [10, 50, 30, 20, 40]
+    // Sortierung: 10 < 20 < 30 < 40 < 50
+    // Regulärer Rang: [1, 5, 3, 2, 4]
+    // Prozentrang: [0.2, 1.0, 0.6, 0.4, 0.8]
     vector<float> input = {10, 50, 30, 20, 40};
     vector<float> result = alpha_rank(input);
 
     ASSERT_EQ(result.size(), 5);
-    EXPECT_FLOAT_EQ(result[0], 0.2);   // 10最小 -> 1/5
-    EXPECT_FLOAT_EQ(result[1], 1.0);   // 50最大 -> 5/5
-    EXPECT_FLOAT_EQ(result[2], 0.6);   // 30中等 -> 3/5
-    EXPECT_FLOAT_EQ(result[3], 0.4);   // 20第二小 -> 2/5
-    EXPECT_FLOAT_EQ(result[4], 0.8);   // 40第二大 -> 4/5
+    EXPECT_FLOAT_EQ(result[0], 0.2);   // 10 kleinster -> 1/5
+    EXPECT_FLOAT_EQ(result[1], 1.0);   // 50 größter -> 5/5
+    EXPECT_FLOAT_EQ(result[2], 0.6);   // 30 mittel -> 3/5
+    EXPECT_FLOAT_EQ(result[3], 0.4);   // 20 zweitkleinster -> 2/5
+    EXPECT_FLOAT_EQ(result[4], 0.8);   // 40 zweitgrößter -> 4/5
 }
 
 TEST(RankTest, TwoDuplicates) {
-    // Python docstring 示例1: [10, 30, 30, 20, 40]
-    // 排序: 10(1) < 20(2) < 30(3,4) < 40(5)
-    // 两个30占据位置3和4，平均排名 = (3+4)/2 = 3.5
-    // 百分比排名: [0.2, 0.7, 0.7, 0.4, 1.0]
+    // Python-Docstring-Beispiel 1: [10, 30, 30, 20, 40]
+    // Sortierung: 10(1) < 20(2) < 30(3,4) < 40(5)
+    // Zwei 30er belegen Plätze 3 und 4, Durchschnittsrang = (3+4)/2 = 3.5
+    // Prozentrang: [0.2, 0.7, 0.7, 0.4, 1.0]
     vector<float> input = {10, 30, 30, 20, 40};
     vector<float> result = alpha_rank(input);
 
@@ -1154,10 +1154,10 @@ TEST(RankTest, TwoDuplicates) {
 }
 
 TEST(RankTest, ThreeDuplicates) {
-    // Python docstring 示例2: [10, 30, 30, 30, 40]
-    // 排序: 10(1) < 30(2,3,4) < 40(5)
-    // 三个30占据位置2,3,4，平均排名 = (2+3+4)/3 = 3.0
-    // 百分比排名: [0.2, 0.6, 0.6, 0.6, 1.0]
+    // Python-Docstring-Beispiel 2: [10, 30, 30, 30, 40]
+    // Sortierung: 10(1) < 30(2,3,4) < 40(5)
+    // Drei 30er belegen Plätze 2,3,4, Durchschnittsrang = (2+3+4)/3 = 3.0
+    // Prozentrang: [0.2, 0.6, 0.6, 0.6, 1.0]
     vector<float> input = {10, 30, 30, 30, 40};
     vector<float> result = alpha_rank(input);
 
@@ -1170,10 +1170,10 @@ TEST(RankTest, ThreeDuplicates) {
 }
 
 TEST(RankTest, FourDuplicates) {
-    // Python docstring 示例3: [50, 30, 30, 30, 30]
-    // 排序: 30(1,2,3,4) < 50(5)
-    // 四个30占据位置1,2,3,4，平均排名 = (1+2+3+4)/4 = 2.5
-    // 百分比排名: [1.0, 0.5, 0.5, 0.5, 0.5]
+    // Python-Docstring-Beispiel 3: [50, 30, 30, 30, 30]
+    // Sortierung: 30(1,2,3,4) < 50(5)
+    // Vier 30er belegen Plätze 1,2,3,4, Durchschnittsrang = (1+2+3+4)/4 = 2.5
+    // Prozentrang: [1.0, 0.5, 0.5, 0.5, 0.5]
     vector<float> input = {50, 30, 30, 30, 30};
     vector<float> result = alpha_rank(input);
 
@@ -1186,9 +1186,9 @@ TEST(RankTest, FourDuplicates) {
 }
 
 TEST(RankTest, AllSameValues) {
-    // 所有值相同: [5, 5, 5, 5, 5]
-    // 占据位置1,2,3,4,5，平均排名 = (1+2+3+4+5)/5 = 3.0
-    // 百分比排名: [0.6, 0.6, 0.6, 0.6, 0.6]
+    // Alle Werte gleich: [5, 5, 5, 5, 5]
+    // belegen Plätze 1,2,3,4,5, Durchschnittsrang = (1+2+3+4+5)/5 = 3.0
+    // Prozentrang: [0.6, 0.6, 0.6, 0.6, 0.6]
     vector<float> input = {5, 5, 5, 5, 5};
     vector<float> result = alpha_rank(input);
 
@@ -1201,8 +1201,8 @@ TEST(RankTest, AllSameValues) {
 }
 
 TEST(RankTest, SingleElement) {
-    // 单个元素: [42]
-    // 排名1，百分比 = 1/1 = 1.0
+    // Einzelnes Element: [42]
+    // Rang 1, Prozentanteil = 1/1 = 1.0
     vector<float> input = {42};
     vector<float> result = alpha_rank(input);
 
@@ -1211,7 +1211,7 @@ TEST(RankTest, SingleElement) {
 }
 
 TEST(RankTest, EmptyArray) {
-    // 空数组
+    // Leeres Array
     vector<float> input = {};
     vector<float> result = alpha_rank(input);
 
@@ -1219,8 +1219,8 @@ TEST(RankTest, EmptyArray) {
 }
 
 TEST(RankTest, TwoElements) {
-    // 两个不同的元素: [10, 20]
-    // 百分比排名: [0.5, 1.0]
+    // Zwei verschiedene Elemente: [10, 20]
+    // Prozentrang: [0.5, 1.0]
     vector<float> input = {10, 20};
     vector<float> result = alpha_rank(input);
 
@@ -1230,9 +1230,9 @@ TEST(RankTest, TwoElements) {
 }
 
 TEST(RankTest, TwoElementsSame) {
-    // 两个相同元素: [10, 10]
-    // 平均排名 = (1+2)/2 = 1.5
-    // 百分比排名: [0.75, 0.75]
+    // Zwei gleiche Elemente: [10, 10]
+    // Durchschnittsrang = (1+2)/2 = 1.5
+    // Prozentrang: [0.75, 0.75]
     vector<float> input = {10, 10};
     vector<float> result = alpha_rank(input);
 
@@ -1242,10 +1242,10 @@ TEST(RankTest, TwoElementsSame) {
 }
 
 TEST(RankTest, NegativeNumbers) {
-    // 包含负数: [-10, 20, -5, 15, 0]
-    // 排序: -10 < -5 < 0 < 15 < 20
-    // 排名: [1, 5, 2, 4, 3]
-    // 百分比: [0.2, 1.0, 0.4, 0.8, 0.6]
+    // Mit negativen Zahlen: [-10, 20, -5, 15, 0]
+    // Sortierung: -10 < -5 < 0 < 15 < 20
+    // Rang: [1, 5, 2, 4, 3]
+    // Prozentanteil: [0.2, 1.0, 0.4, 0.8, 0.6]
     vector<float> input = {-10, 20, -5, 15, 0};
     vector<float> result = alpha_rank(input);
 
@@ -1258,10 +1258,10 @@ TEST(RankTest, NegativeNumbers) {
 }
 
 TEST(RankTest, DecimalNumbers) {
-    // 小数: [1.5, 2.5, 1.5, 3.5, 2.5]
-    // 排序: 1.5(1,2) < 2.5(3,4) < 3.5(5)
-    // 1.5平均排名=(1+2)/2=1.5, 2.5平均排名=(3+4)/2=3.5
-    // 百分比: [0.3, 0.7, 0.3, 1.0, 0.7]
+    // Dezimalzahlen: [1.5, 2.5, 1.5, 3.5, 2.5]
+    // Sortierung: 1.5(1,2) < 2.5(3,4) < 3.5(5)
+    // 1.5 Durchschnittsrang=(1+2)/2=1.5, 2.5 Durchschnittsrang=(3+4)/2=3.5
+    // Prozentanteil: [0.3, 0.7, 0.3, 1.0, 0.7]
     vector<float> input = {1.5, 2.5, 1.5, 3.5, 2.5};
     vector<float> result = alpha_rank(input);
 
@@ -1274,8 +1274,8 @@ TEST(RankTest, DecimalNumbers) {
 }
 
 TEST(RankTest, MonotonicIncreasing) {
-    // 单调递增: [1, 2, 3, 4, 5]
-    // 百分比排名: [0.2, 0.4, 0.6, 0.8, 1.0]
+    // Monoton steigend: [1, 2, 3, 4, 5]
+    // Prozentrang: [0.2, 0.4, 0.6, 0.8, 1.0]
     vector<float> input = {1, 2, 3, 4, 5};
     vector<float> result = alpha_rank(input);
 
@@ -1288,8 +1288,8 @@ TEST(RankTest, MonotonicIncreasing) {
 }
 
 TEST(RankTest, MonotonicDecreasing) {
-    // 单调递减: [5, 4, 3, 2, 1]
-    // 百分比排名: [1.0, 0.8, 0.6, 0.4, 0.2]
+    // Monoton fallend: [5, 4, 3, 2, 1]
+    // Prozentrang: [1.0, 0.8, 0.6, 0.4, 0.2]
     vector<float> input = {5, 4, 3, 2, 1};
     vector<float> result = alpha_rank(input);
 
@@ -1302,52 +1302,52 @@ TEST(RankTest, MonotonicDecreasing) {
 }
 
 TEST(RankTest, StockReturnExample) {
-    // Python docstring 应用场景: 股票收益率排名
-    // 收益率: [0.02, 0.05, 0.01, -0.01, 0.03]
-    // 排序: -0.01 < 0.01 < 0.02 < 0.03 < 0.05
-    // 百分比排名: [0.6, 1.0, 0.4, 0.2, 0.8]
+    // Anwendungsfall aus Python-Docstring: Aktienrendite-Ranking
+    // Renditen: [0.02, 0.05, 0.01, -0.01, 0.03]
+    // Sortierung: -0.01 < 0.01 < 0.02 < 0.03 < 0.05
+    // Prozentrang: [0.6, 1.0, 0.4, 0.2, 0.8]
     vector<float> returns = {0.02, 0.05, 0.01, -0.01, 0.03};
     vector<float> result = alpha_rank(returns);
 
     ASSERT_EQ(result.size(), 5);
-    EXPECT_FLOAT_EQ(result[0], 0.6);   // 0.02 -> 中等
-    EXPECT_FLOAT_EQ(result[1], 1.0);   // 0.05 -> 强势股
-    EXPECT_FLOAT_EQ(result[2], 0.4);   // 0.01 -> 偏弱
-    EXPECT_FLOAT_EQ(result[3], 0.2);   // -0.01 -> 弱势股
-    EXPECT_FLOAT_EQ(result[4], 0.8);   // 0.03 -> 偏强
+    EXPECT_FLOAT_EQ(result[0], 0.6);   // 0.02 -> mittel
+    EXPECT_FLOAT_EQ(result[1], 1.0);   // 0.05 -> starke Aktie
+    EXPECT_FLOAT_EQ(result[2], 0.4);   // 0.01 -> leicht schwach
+    EXPECT_FLOAT_EQ(result[3], 0.2);   // -0.01 -> schwache Aktie
+    EXPECT_FLOAT_EQ(result[4], 0.8);   // 0.03 -> leicht stark
 }
 
 TEST(RankTest, LimitUpStocksExample) {
-    // Python docstring 实际案例: 涨停股处理
-    // 三只涨停股(10%)，一只普通股(5%)，一只弱势股(2%)
-    // 收益率: [0.10, 0.10, 0.10, 0.05, 0.02]
-    // 排序: 0.02(1) < 0.05(2) < 0.10(3,4,5)
-    // 三个0.10平均排名=(3+4+5)/3=4.0
-    // 百分比排名: [0.8, 0.8, 0.8, 0.4, 0.2]
+    // Praxisszenario: Aktien mit Kursanstieg-Limit
+    // Drei Aktien mit Kursanstieg-Limit (10%), eine Normalaktie (5%), eine schwache Aktie (2%)
+    // Renditen: [0.10, 0.10, 0.10, 0.05, 0.02]
+    // Sortierung: 0.02(1) < 0.05(2) < 0.10(3,4,5)
+    // Drei 0.10er Durchschnittsrang=(3+4+5)/3=4.0
+    // Prozentrang: [0.8, 0.8, 0.8, 0.4, 0.2]
     vector<float> returns = {0.10, 0.10, 0.10, 0.05, 0.02};
     vector<float> result = alpha_rank(returns);
 
     ASSERT_EQ(result.size(), 5);
-    EXPECT_FLOAT_EQ(result[0], 0.8);   // 涨停股
-    EXPECT_FLOAT_EQ(result[1], 0.8);   // 涨停股
-    EXPECT_FLOAT_EQ(result[2], 0.8);   // 涨停股
-    EXPECT_FLOAT_EQ(result[3], 0.4);   // 普通股
-    EXPECT_FLOAT_EQ(result[4], 0.2);   // 弱势股
+    EXPECT_FLOAT_EQ(result[0], 0.8);   // Aktie mit Kursanstieg-Limit
+    EXPECT_FLOAT_EQ(result[1], 0.8);   // Aktie mit Kursanstieg-Limit
+    EXPECT_FLOAT_EQ(result[2], 0.8);   // Aktie mit Kursanstieg-Limit
+    EXPECT_FLOAT_EQ(result[3], 0.4);   // Normalaktie
+    EXPECT_FLOAT_EQ(result[4], 0.2);   // schwache Aktie
 }
 
 TEST(RankTest, LargerDataset) {
-    // 测试较大数据集: 10个元素
+    // Größeren Datensatz testen: 10 Elemente
     vector<float> input = {15, 25, 10, 30, 20, 25, 5, 35, 20, 10};
     vector<float> result = alpha_rank(input);
 
     ASSERT_EQ(result.size(), 10);
 
-    // 排序: 5(1) < 10(2,3) < 15(4) < 20(5,6) < 25(7,8) < 30(9) < 35(10)
+    // Sortierung: 5(1) < 10(2,3) < 15(4) < 20(5,6) < 25(7,8) < 30(9) < 35(10)
     // 5 -> 1/10 = 0.1
-    // 10平均排名=(2+3)/2=2.5 -> 2.5/10 = 0.25
+    // 10 Durchschnittsrang=(2+3)/2=2.5 -> 2.5/10 = 0.25
     // 15 -> 4/10 = 0.4
-    // 20平均排名=(5+6)/2=5.5 -> 5.5/10 = 0.55
-    // 25平均排名=(7+8)/2=7.5 -> 7.5/10 = 0.75
+    // 20 Durchschnittsrang=(5+6)/2=5.5 -> 5.5/10 = 0.55
+    // 25 Durchschnittsrang=(7+8)/2=7.5 -> 7.5/10 = 0.75
     // 30 -> 9/10 = 0.9
     // 35 -> 10/10 = 1.0
 
@@ -1363,10 +1363,10 @@ TEST(RankTest, LargerDataset) {
     EXPECT_FLOAT_EQ(result[9], 0.25);  // 10
 }
 
-// ========== TS Rank Ultra 测试 ==========
+// ========== TS Rank Ultra Tests ==========
 
 TEST(TsRankUltraTest, BasicTest) {
-    // 验证 ultra 版本与原版结果一致
+    // Überprüfen, ob Ultra-Version und Originalversion gleiche Ergebnisse liefern
     vector<float> input = {1, 5, 3, 7, 2};
     vector<float> result_original = ts_rank(input, 3);
     vector<float> result_ultra = ts_rank_ultra(input, 3);
@@ -1382,7 +1382,7 @@ TEST(TsRankUltraTest, BasicTest) {
 }
 
 TEST(TsRankUltraTest, LargeDataset) {
-    // 测试大数据集（这是 ultra 版本的优势）
+    // Großen Datensatz testen (das ist der Vorteil der Ultra-Version)
     vector<float> input;
     for (int i = 0; i < 10000; ++i) {
         input.push_back(i % 100);
@@ -1402,7 +1402,7 @@ TEST(TsRankUltraTest, LargeDataset) {
 }
 
 TEST(TsRankUltraTest, WithDuplicates) {
-    // 验证重复值处理一致
+    // Konsistenz der Duplikatbehandlung prüfen
     vector<float> input = {1, 3, 2, 3, 3, 2, 1, 4};
     vector<float> result_original = ts_rank(input, 4);
     vector<float> result_ultra = ts_rank_ultra(input, 4);
@@ -1417,4 +1417,157 @@ TEST(TsRankUltraTest, WithDuplicates) {
     }
 }
 
-// main 函数由 GTest::gtest_main 提供，不需要手动编写
+// ========== Scale (Skalierung) Tests ==========
+
+TEST(ScaleTest, BasicExample) {
+    // Python-Docstring-Beispiel: [1, 2, 3, 4], k=1
+    // sum(abs) = 1+2+3+4 = 10
+    // Ausgabe: [0.1, 0.2, 0.3, 0.4]
+    vector<float> input = {1, 2, 3, 4};
+    vector<float> result = scale(input);
+
+    ASSERT_EQ(result.size(), 4);
+    EXPECT_NEAR(result[0], 0.1f, 1e-6);
+    EXPECT_NEAR(result[1], 0.2f, 1e-6);
+    EXPECT_NEAR(result[2], 0.3f, 1e-6);
+    EXPECT_NEAR(result[3], 0.4f, 1e-6);
+}
+
+TEST(ScaleTest, SumAbsEqualsK) {
+    // Kerneigenschaft prüfen: sum(abs(result)) == k
+    vector<float> input = {1, 2, 3, 4};
+    vector<float> result = scale(input);
+
+    float sum_abs = 0;
+    for (float v : result) sum_abs += std::abs(v);
+    EXPECT_NEAR(sum_abs, 1.0f, 1e-5);
+}
+
+TEST(ScaleTest, WithKParameter) {
+    // Bei k=2: sum(abs(result)) == 2
+    vector<float> input = {1, 2, 3, 4};
+    vector<float> result = scale(input, 2.0f);
+
+    ASSERT_EQ(result.size(), 4);
+    EXPECT_NEAR(result[0], 0.2f, 1e-6);
+    EXPECT_NEAR(result[1], 0.4f, 1e-6);
+    EXPECT_NEAR(result[2], 0.6f, 1e-6);
+    EXPECT_NEAR(result[3], 0.8f, 1e-6);
+
+    float sum_abs = 0;
+    for (float v : result) sum_abs += std::abs(v);
+    EXPECT_NEAR(sum_abs, 2.0f, 1e-5);
+}
+
+TEST(ScaleTest, WithNegativeNumbers) {
+    // Mit negativen Zahlen: [-1, 2, 3, 4]
+    // sum(abs) = 1+2+3+4 = 10
+    // Ausgabe: [-0.1, 0.2, 0.3, 0.4]
+    // Bei negativen Zahlen wird abs für die Summe verwendet (wie in Python)
+    vector<float> input = {-1, 2, 3, 4};
+    vector<float> result = scale(input);
+
+    ASSERT_EQ(result.size(), 4);
+    EXPECT_NEAR(result[0], -0.1f, 1e-6);
+    EXPECT_NEAR(result[1],  0.2f, 1e-6);
+    EXPECT_NEAR(result[2],  0.3f, 1e-6);
+    EXPECT_NEAR(result[3],  0.4f, 1e-6);
+
+    float sum_abs = 0;
+    for (float v : result) sum_abs += std::abs(v);
+    EXPECT_NEAR(sum_abs, 1.0f, 1e-5);
+}
+
+TEST(ScaleTest, AllNegativeNumbers) {
+    // Alle negative Zahlen: [-2, -3, -5]
+    // sum(abs) = 2+3+5 = 10
+    // Ausgabe: [-0.2, -0.3, -0.5]
+    vector<float> input = {-2, -3, -5};
+    vector<float> result = scale(input);
+
+    ASSERT_EQ(result.size(), 3);
+    EXPECT_NEAR(result[0], -0.2f, 1e-6);
+    EXPECT_NEAR(result[1], -0.3f, 1e-6);
+    EXPECT_NEAR(result[2], -0.5f, 1e-6);
+
+    float sum_abs = 0;
+    for (float v : result) sum_abs += std::abs(v);
+    EXPECT_NEAR(sum_abs, 1.0f, 1e-5);
+}
+
+TEST(ScaleTest, SingleElement) {
+    // Einzelnes Element: [5], k=1
+    // sum(abs) = 5, Ausgabe: [1.0]
+    vector<float> input = {5};
+    vector<float> result = scale(input);
+
+    ASSERT_EQ(result.size(), 1);
+    EXPECT_NEAR(result[0], 1.0f, 1e-6);
+}
+
+TEST(ScaleTest, SingleElementWithK) {
+    // Einzelnes Element: [5], k=3
+    // sum(abs) = 5, Ausgabe: [3.0]
+    vector<float> input = {5};
+    vector<float> result = scale(input, 3.0f);
+
+    ASSERT_EQ(result.size(), 1);
+    EXPECT_NEAR(result[0], 3.0f, 1e-6);
+}
+
+TEST(ScaleTest, AllSameValues) {
+    // Alle Werte gleich: [2, 2, 2, 2], k=1
+    // sum(abs) = 8, Ausgabe: [0.25, 0.25, 0.25, 0.25]
+    vector<float> input = {2, 2, 2, 2};
+    vector<float> result = scale(input);
+
+    ASSERT_EQ(result.size(), 4);
+    for (float v : result) {
+        EXPECT_NEAR(v, 0.25f, 1e-6);
+    }
+}
+
+TEST(ScaleTest, MixedSignSymmetric) {
+    // Positiv-negativ-symmetrisch: [-1, 1], sum(abs)=2
+    // Ausgabe: [-0.5, 0.5]
+    vector<float> input = {-1, 1};
+    vector<float> result = scale(input);
+
+    ASSERT_EQ(result.size(), 2);
+    EXPECT_NEAR(result[0], -0.5f, 1e-6);
+    EXPECT_NEAR(result[1],  0.5f, 1e-6);
+}
+
+TEST(ScaleTest, DecimalInput) {
+    // Dezimale Eingabe: [0.5, 1.5, 3.0]
+    // sum(abs) = 5.0
+    // Ausgabe: [0.1, 0.3, 0.6]
+    vector<float> input = {0.5f, 1.5f, 3.0f};
+    vector<float> result = scale(input);
+
+    ASSERT_EQ(result.size(), 3);
+    EXPECT_NEAR(result[0], 0.1f, 1e-5);
+    EXPECT_NEAR(result[1], 0.3f, 1e-5);
+    EXPECT_NEAR(result[2], 0.6f, 1e-5);
+}
+
+TEST(ScaleTest, StockReturnsExample) {
+    // Praxisszenario: Skalierung von Aktien-Überrenditen
+    // Renditen: [0.02, -0.01, 0.03, -0.04]
+    // sum(abs) = 0.02+0.01+0.03+0.04 = 0.10
+    // Ausgabe: [0.2, -0.1, 0.3, -0.4], sum(abs) = 1.0
+    vector<float> returns = {0.02f, -0.01f, 0.03f, -0.04f};
+    vector<float> result = scale(returns);
+
+    ASSERT_EQ(result.size(), 4);
+    EXPECT_NEAR(result[0],  0.2f, 1e-5);
+    EXPECT_NEAR(result[1], -0.1f, 1e-5);
+    EXPECT_NEAR(result[2],  0.3f, 1e-5);
+    EXPECT_NEAR(result[3], -0.4f, 1e-5);
+
+    float sum_abs = 0;
+    for (float v : result) sum_abs += std::abs(v);
+    EXPECT_NEAR(sum_abs, 1.0f, 1e-5);
+}
+
+// main-Funktion wird von GTest::gtest_main bereitgestellt, kein manuelles Schreiben nötig

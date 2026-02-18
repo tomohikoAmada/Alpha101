@@ -6,37 +6,37 @@
 #include <cmath>
 #include <span>
 #include <set>
-#include <algorithm>  // 提供 sort, upper_bound 等算法
+#include <algorithm>  // Stellt Algorithmen wie sort, upper_bound usw. bereit
 #include <numeric>
-#include <ranges>     // 提供 sliding_window (C++23)
+#include <ranges>     // Stellt sliding_window bereit (C++23)
 
 using namespace std;
 
-// 辅助函数：打印结果
+// Hilfsfunktion: Ergebnis ausgeben
 void print_result(const vector<float> &result);
 
-// 滚动求和
+// Rollende Summe
 vector<float> rolling_ts_sum(vector<float> DataFrame, int window);
 
-// 滚动简单移动平均
+// Rollender einfacher gleitender Durchschnitt
 vector<float> rolling_sma(vector<float> DataFrame, int window);
 
-// 滚动标准差
+// Rollende Standardabweichung
 vector<float> rolling_stddev(vector<float> DataFrame, int window);
 
-// 单个窗口的相关系数
+// Korrelationskoeffizient für ein einzelnes Fenster
 float correlation(vector<float> a, vector<float> b, int window);
 
-// 滚动相关系数
+// Rollender Korrelationskoeffizient
 vector<float> rolling_correlation(vector<float> a, vector<float> b, int window);
 
-// 单个窗口的协方差
+// Kovarianz für ein einzelnes Fenster
 float covariance(vector<float> a, vector<float> b, int window);
 
-// 滚动协方差
+// Rollende Kovarianz
 vector<float> rolling_covariance(vector<float> a, vector<float> b, int window);
 
-// ====== 实现部分 ======
+// ====== Implementierung ======
 
 void print_result(const vector<float> &result) {
     cout << "[";
@@ -201,35 +201,35 @@ vector<float> rolling_covariance(vector<float> a, vector<float> b, int window) {
 float rolling_rank(vector<float> a) {
     if (a.empty()) return 0.0f;
 
-    float last_value = a.back(); // 获取最后一个值
+    float last_value = a.back(); // Letzten Wert holen
 
-    // 排序以找到排名（传值，不影响原数组）
+    // Sortieren zur Rangbestimmung (Kopie, Original bleibt unverändert)
     sort(a.begin(), a.end());
 
-    // 找到所有等于 last_value 的值的范围
-    // lower_bound: 第一个不小于 last_value 的位置
-    // upper_bound: 第一个大于 last_value 的位置
+    // Bereich aller Werte gleich last_value bestimmen
+    // lower_bound: erste Position, die nicht kleiner als last_value ist
+    // upper_bound: erste Position, die größer als last_value ist
     auto lower = lower_bound(a.begin(), a.end(), last_value);
     auto upper = upper_bound(a.begin(), a.end(), last_value);
 
-    // 计算平均排名
-    // 例如：[1, 2, 3, 3, 3]，三个3占据位置3,4,5（索引2,3,4）
-    // lower索引=2, upper索引=5
-    // 排名范围：3到5，平均排名=(3+4+5)/3=4.0
-    size_t first_rank = distance(a.begin(), lower) + 1; // 第一个相同值的排名
-    size_t last_rank = distance(a.begin(), upper); // 最后一个相同值的排名
-    float avg_rank = (first_rank + last_rank) / 2.0f; // 平均排名
+    // Durchschnittsrang berechnen
+    // Beispiel: [1, 2, 3, 3, 3] – drei 3er belegen Plätze 3,4,5 (Index 2,3,4)
+    // lower-Index=2, upper-Index=5
+    // Rangbereich: 3 bis 5, Durchschnittsrang=(3+4+5)/3=4.0
+    size_t first_rank = distance(a.begin(), lower) + 1; // Rang des ersten gleichen Wertes
+    size_t last_rank = distance(a.begin(), upper); // Rang des letzten gleichen Wertes
+    float avg_rank = (first_rank + last_rank) / 2.0f; // Durchschnittsrang
 
     return avg_rank;
 }
 
-// rolling_rank 的优化版本：使用 span 避免在调用点创建临时 vector，span 是 C++20 特性，只是数据的"视图"，不拥有数据，不拷贝
+// Optimierte Version von rolling_rank: verwendet span, um temporäre Vektoren zu vermeiden. span ist ein C++20-Feature – eine reine Datenansicht ohne Besitz oder Kopie
 float rolling_rank(span<const float> data) {
     if (data.empty()) return 0.0f;
 
     float last_value = data.back();
 
-    // 在这里创建临时 vector 用于排序（无法避免，因为需要排序）
+    // Temporären Vektor zum Sortieren erstellen (unvermeidlich, da Sortierung erforderlich)
     vector<float> sorted(data.begin(), data.end());
     sort(sorted.begin(), sorted.end());
 
@@ -248,15 +248,15 @@ vector<float> ts_rank(vector<float> a, int window) {
 
     for (int i = 0; i < a.size(); ++i) {
         if (i + 1 < window) {
-            // 前 window-1 个位置返回 NaN
+            // Erste window-1 Positionen geben NaN zurück
             result.push_back(NAN);
         } else {
-            // 提取窗口 [i-window+1, i]，包含 window 个元素
-            // C++ 范围构造函数是 [first, last)，所以结束位置是 i+1
+            // Fenster [i-window+1, i] extrahieren, enthält window Elemente
+            // C++ Bereichskonstruktor ist [first, last), daher Endposition i+1
             vector<float> tmp(&a[i - window + 1], &a[i + 1]);
             result.push_back(rolling_rank(tmp));
 
-            // 可以写成简化的
+            // Vereinfacht schreibbar als
             // result.push_back(rolling_rank(vector<float>(&a[i - window + 1], &a[i + 1])));
         }
     }
@@ -264,7 +264,7 @@ vector<float> ts_rank(vector<float> a, int window) {
     return result;
 }
 
-// 使用 span 优化的版本：避免创建临时 vector
+// Mit span optimierte Version: vermeidet Erstellung temporärer Vektoren
 vector<float> ts_rank_optimized(const vector<float> &a, int window) {
     size_t n = a.size();
     vector<float> result(n);
@@ -275,35 +275,35 @@ vector<float> ts_rank_optimized(const vector<float> &a, int window) {
     return result;
 }
 
-// 超级优化版本：使用滑动窗口 + multiset，复杂度：O(n × log window) vs 原来的 O(n × window × log window)
+// Hochoptimierte Version: gleitendes Fenster + multiset, Komplexität: O(n × log window) statt O(n × window × log window)
 vector<float> ts_rank_ultra(const vector<float> &a, int window) {
     size_t n = a.size();
     vector<float> result(n);
 
-    multiset<float> ordered_window; // 自动保持有序
+    multiset<float> ordered_window; // Automatisch sortiert
 
     for (size_t i = 0; i < n; ++i) {
-        // 添加新元素到窗口
+        // Neues Element zum Fenster hinzufügen
         ordered_window.insert(a[i]);
 
-        // 如果窗口满了，移除最旧的元素
+        // Ältestes Element entfernen, wenn Fenster voll ist
         if (i >= window) {
-            // find() 返回第一个匹配的元素，然后删除
+            // find() gibt das erste passende Element zurück, dann löschen
             ordered_window.erase(ordered_window.find(a[i - window]));
         }
 
-        // 计算排名
+        // Rang berechnen
         if (i + 1 < window) {
             result[i] = NAN;
         } else {
             float last_value = a[i];
 
-            // lower_bound: 第一个不小于 last_value 的位置
-            // upper_bound: 第一个大于 last_value 的位置
+            // lower_bound: erste Position, die nicht kleiner als last_value ist
+            // upper_bound: erste Position, die größer als last_value ist
             auto lower = ordered_window.lower_bound(last_value);
             auto upper = ordered_window.upper_bound(last_value);
 
-            // 计算平均排名
+            // Durchschnittsrang berechnen
             size_t rank_start = distance(ordered_window.begin(), lower) + 1;
             size_t rank_end = distance(ordered_window.begin(), upper);
 
@@ -346,7 +346,7 @@ vector<float> ts_min(vector<float> a, int window) {
         return aa.front();
     };
 
-    // 不想使用auto的话，这是另一种写法，使用函数指针指向匿名函数 并传参
+    // Alternative ohne auto: Funktionszeiger auf Lambda mit Parameter
     // float (*getminval_without_auto)(vector<float>) = [](vector<float> aa) {
     //     sort(aa.begin(), aa.end());
     //     return aa.front();
@@ -402,7 +402,7 @@ vector<float> delay(vector<float> a, int period) {
         if (i < period) {
             result.push_back(NAN);
         } else {
-            result.push_back(a[i - period]);  // 修复：返回滞后值，不是差分
+            result.push_back(a[i - period]);  // Korrektur: verzögerter Wert wird zurückgegeben, keine Differenz
         }
     }
 
@@ -444,7 +444,21 @@ vector<float> alpha_rank(vector<float> a) {
     return result;
 }
 
-// 测试github
-// 测试
+vector<float> scale(vector<float> a, float k = 1.0f) {
+    float sum = 0;
+    for (size_t i = 0; i < a.size(); i++)
+    {
+        sum += std::abs(a[i]);
+    }
+
+    vector<float> result;
+
+    for (size_t i = 0; i < a.size(); i++)
+    {
+        result.push_back(a[i] * k / sum);
+    }
+
+    return result;
+}
 
 #endif // ALPHA101_H

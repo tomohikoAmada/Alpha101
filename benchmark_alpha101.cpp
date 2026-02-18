@@ -2,7 +2,7 @@
 #include "alpha101.h"
 #include <random>
 
-// 生成随机数据的辅助函数
+// Hilfsfunktion zur Erzeugung von Zufallsdaten
 vector<float> generate_random_data(size_t size, int seed = 42) {
     vector<float> data;
     data.reserve(size);
@@ -55,7 +55,7 @@ static void BM_RollingTsSum_Large(benchmark::State& state) {
 }
 BENCHMARK(BM_RollingTsSum_Large);
 
-// ========== Product (滚动乘积) Benchmarks ==========
+// ========== Product (rollendes Produkt) Benchmarks ==========
 
 static void BM_Product_Small(benchmark::State& state) {
     vector<float> data = generate_random_data(100);
@@ -105,7 +105,7 @@ static void BM_Product_VaryingWindow(benchmark::State& state) {
 }
 BENCHMARK(BM_Product_VaryingWindow)->Arg(5)->Arg(10)->Arg(20)->Arg(50)->Arg(100);
 
-// ========== TS Min (滚动最小值) Benchmarks ==========
+// ========== TS Min (rollendes Minimum) Benchmarks ==========
 
 static void BM_TsMin_Small(benchmark::State& state) {
     vector<float> data = generate_random_data(100);
@@ -155,7 +155,7 @@ static void BM_TsMin_VaryingWindow(benchmark::State& state) {
 }
 BENCHMARK(BM_TsMin_VaryingWindow)->Arg(5)->Arg(10)->Arg(20)->Arg(50)->Arg(100);
 
-// ========== TS Max (滚动最大值) Benchmarks ==========
+// ========== TS Max (rollendes Maximum) Benchmarks ==========
 
 static void BM_TsMax_Small(benchmark::State& state) {
     vector<float> data = generate_random_data(100);
@@ -205,7 +205,7 @@ static void BM_TsMax_VaryingWindow(benchmark::State& state) {
 }
 BENCHMARK(BM_TsMax_VaryingWindow)->Arg(5)->Arg(10)->Arg(20)->Arg(50)->Arg(100);
 
-// ========== Delta (差分) Benchmarks ==========
+// ========== Delta (Differenz) Benchmarks ==========
 
 static void BM_Delta_Small(benchmark::State& state) {
     vector<float> data = generate_random_data(100);
@@ -267,7 +267,7 @@ static void BM_Delta_VaryingPeriod(benchmark::State& state) {
 }
 BENCHMARK(BM_Delta_VaryingPeriod)->Arg(1)->Arg(5)->Arg(10)->Arg(20)->Arg(50)->Arg(100);
 
-// ========== Delay (滞后) Benchmarks ==========
+// ========== Delay (Verzögerung) Benchmarks ==========
 
 static void BM_Delay_Small(benchmark::State& state) {
     vector<float> data = generate_random_data(100);
@@ -450,7 +450,7 @@ static void BM_RollingCovariance_Large(benchmark::State& state) {
 }
 BENCHMARK(BM_RollingCovariance_Large);
 
-// ========== 不同窗口大小的性能对比 ==========
+// ========== Leistungsvergleich bei unterschiedlichen Fenstergrößen ==========
 
 static void BM_RollingSma_VaryingWindow(benchmark::State& state) {
     int window = state.range(0);
@@ -464,7 +464,7 @@ static void BM_RollingSma_VaryingWindow(benchmark::State& state) {
 }
 BENCHMARK(BM_RollingSma_VaryingWindow)->Arg(5)->Arg(10)->Arg(20)->Arg(50)->Arg(100);
 
-// ========== 不同数据大小的性能对比 ==========
+// ========== Leistungsvergleich bei unterschiedlichen Datenmengen ==========
 
 static void BM_RollingCorrelation_VaryingDataSize(benchmark::State& state) {
     size_t size = state.range(0);
@@ -485,7 +485,7 @@ BENCHMARK(BM_RollingCorrelation_VaryingDataSize)
     ->Arg(5000)
     ->Arg(10000);
 
-// ========== TS Rank 性能对比 ==========
+// ========== TS Rank Leistungsvergleich ==========
 
 static void BM_TsRank_Original_Small(benchmark::State& state) {
     vector<float> data = generate_random_data(100, 42);
@@ -559,14 +559,14 @@ static void BM_TsRank_Optimized_Large(benchmark::State& state) {
 }
 BENCHMARK(BM_TsRank_Optimized_Large);
 
-// ========== 直接对比（自动计算相对性能）==========
+// ========== Direktvergleich (automatische relative Leistungsberechnung) ==========
 
 static void BM_TsRank_Compare(benchmark::State& state) {
     size_t data_size = state.range(0);
     int window = state.range(1);
     vector<float> data = generate_random_data(data_size, 42);
 
-    // state.name() 包含 "Original" 或 "Optimized"
+    // state.name() enthält "Original" oder "Optimized"
     bool use_optimized = state.range(2);
 
     for (auto _ : state) {
@@ -581,17 +581,17 @@ static void BM_TsRank_Compare(benchmark::State& state) {
     state.SetItemsProcessed(state.iterations() * data_size);
 }
 
-// 对比不同数据量和窗口大小
+// Vergleich bei unterschiedlichen Datenmengen und Fenstergrößen
 BENCHMARK(BM_TsRank_Compare)
-    ->Args({100, 10, 0})   // 100 个数据，窗口 10，原版
-    ->Args({100, 10, 1})   // 100 个数据，窗口 10，优化版
-    ->Args({1000, 20, 0})  // 1000 个数据，窗口 20，原版
-    ->Args({1000, 20, 1})  // 1000 个数据，窗口 20，优化版
-    ->Args({10000, 50, 0}) // 10000 个数据，窗口 50，原版
-    ->Args({10000, 50, 1}) // 10000 个数据，窗口 50，优化版
+    ->Args({100, 10, 0})   // 100 Datenpunkte, Fenster 10, Original
+    ->Args({100, 10, 1})   // 100 Datenpunkte, Fenster 10, Optimiert
+    ->Args({1000, 20, 0})  // 1000 Datenpunkte, Fenster 20, Original
+    ->Args({1000, 20, 1})  // 1000 Datenpunkte, Fenster 20, Optimiert
+    ->Args({10000, 50, 0}) // 10000 Datenpunkte, Fenster 50, Original
+    ->Args({10000, 50, 1}) // 10000 Datenpunkte, Fenster 50, Optimiert
     ->ArgNames({"data_size", "window", "optimized"});
 
-// ========== TS Rank Ultra (滑动窗口优化) 性能对比 ==========
+// ========== TS Rank Ultra (gleitendes Fenster optimiert) Leistungsvergleich ==========
 
 static void BM_TsRank_Ultra_Small(benchmark::State& state) {
     vector<float> data = generate_random_data(100, 42);
@@ -629,7 +629,7 @@ static void BM_TsRank_Ultra_Large(benchmark::State& state) {
 }
 BENCHMARK(BM_TsRank_Ultra_Large);
 
-// 三个版本的直接对比
+// Direktvergleich der drei Versionen
 static void BM_TsRank_ThreeWay_Compare(benchmark::State& state) {
     size_t data_size = state.range(0);
     int window = state.range(1);
@@ -652,17 +652,17 @@ static void BM_TsRank_ThreeWay_Compare(benchmark::State& state) {
     state.SetItemsProcessed(state.iterations() * data_size);
 }
 
-// 对比三个版本：原始、span优化、滑动窗口优化
+// Vergleich der drei Versionen: Original, span-optimiert, gleitendes-Fenster-optimiert
 BENCHMARK(BM_TsRank_ThreeWay_Compare)
-    ->Args({10000, 50, 0})  // 10000 个数据，窗口 50，原始版本
-    ->Args({10000, 50, 1})  // 10000 个数据，窗口 50，span 优化
-    ->Args({10000, 50, 2})  // 10000 个数据，窗口 50，ultra 优化
+    ->Args({10000, 50, 0})  // 10000 Datenpunkte, Fenster 50, Originalversion
+    ->Args({10000, 50, 1})  // 10000 Datenpunkte, Fenster 50, span-optimiert
+    ->Args({10000, 50, 2})  // 10000 Datenpunkte, Fenster 50, ultra-optimiert
     ->ArgNames({"data_size", "window", "version"});
 
-// ========== Rank (横截面排名) Benchmarks ==========
+// ========== Rank (Querschnittsrang) Benchmarks ==========
 
 static void BM_Rank_Small(benchmark::State& state) {
-    // 小数据量：100个元素
+    // Kleine Datenmenge: 100 Elemente
     vector<float> data = generate_random_data(100, 42);
 
     for (auto _ : state) {
@@ -674,7 +674,7 @@ static void BM_Rank_Small(benchmark::State& state) {
 BENCHMARK(BM_Rank_Small);
 
 static void BM_Rank_Medium(benchmark::State& state) {
-    // 中等数据量：1000个元素
+    // Mittlere Datenmenge: 1000 Elemente
     vector<float> data = generate_random_data(1000, 42);
 
     for (auto _ : state) {
@@ -686,7 +686,7 @@ static void BM_Rank_Medium(benchmark::State& state) {
 BENCHMARK(BM_Rank_Medium);
 
 static void BM_Rank_Large(benchmark::State& state) {
-    // 大数据量：10000个元素
+    // Große Datenmenge: 10000 Elemente
     vector<float> data = generate_random_data(10000, 42);
 
     for (auto _ : state) {
@@ -698,7 +698,7 @@ static void BM_Rank_Large(benchmark::State& state) {
 BENCHMARK(BM_Rank_Large);
 
 static void BM_Rank_VeryLarge(benchmark::State& state) {
-    // 超大数据量：100000个元素（模拟真实股票数量）
+    // Sehr große Datenmenge: 100000 Elemente (simuliert reale Aktienanzahl)
     vector<float> data = generate_random_data(100000, 42);
 
     for (auto _ : state) {
@@ -709,7 +709,7 @@ static void BM_Rank_VeryLarge(benchmark::State& state) {
 }
 BENCHMARK(BM_Rank_VeryLarge);
 
-// ========== 不同数据规模的性能对比 ==========
+// ========== Leistungsvergleich bei verschiedenen Datengrößen ==========
 
 static void BM_Rank_VaryingSize(benchmark::State& state) {
     size_t size = state.range(0);
@@ -730,27 +730,27 @@ BENCHMARK(BM_Rank_VaryingSize)
     ->Arg(50000)
     ->Arg(100000);
 
-// ========== 不同重复值比例的性能测试 ==========
+// ========== Leistungstest bei verschiedenen Duplikatanteilen ==========
 
-// 辅助函数：生成具有特定重复比例的数据
+// Hilfsfunktion: Daten mit bestimmtem Duplikatanteil erzeugen
 vector<float> generate_data_with_duplicates(size_t size, float duplicate_ratio, int seed = 42) {
     vector<float> data;
     data.reserve(size);
 
     std::mt19937 gen(seed);
-    // 根据重复比例决定唯一值的数量
+    // Anzahl eindeutiger Werte anhand des Duplikatanteils bestimmen
     size_t unique_count = static_cast<size_t>(size * (1.0f - duplicate_ratio));
-    unique_count = std::max(unique_count, size_t(1));  // 至少1个唯一值
+    unique_count = std::max(unique_count, size_t(1));  // Mindestens 1 eindeutiger Wert
 
     std::uniform_int_distribution<size_t> dis(0, unique_count - 1);
 
-    // 生成唯一值池
+    // Eindeutige Wertemenge erzeugen
     vector<float> unique_values;
     for (size_t i = 0; i < unique_count; ++i) {
         unique_values.push_back(static_cast<float>(i));
     }
 
-    // 从唯一值池中随机选择
+    // Zufällig aus der Wertemenge auswählen
     for (size_t i = 0; i < size; ++i) {
         size_t idx = dis(gen);
         data.push_back(unique_values[idx]);
@@ -760,7 +760,7 @@ vector<float> generate_data_with_duplicates(size_t size, float duplicate_ratio, 
 }
 
 static void BM_Rank_NoDuplicates(benchmark::State& state) {
-    // 完全没有重复值（最优情况）
+    // Keine Duplikate (bester Fall)
     vector<float> data = generate_data_with_duplicates(10000, 0.0f, 42);
 
     for (auto _ : state) {
@@ -772,7 +772,7 @@ static void BM_Rank_NoDuplicates(benchmark::State& state) {
 BENCHMARK(BM_Rank_NoDuplicates);
 
 static void BM_Rank_FewDuplicates(benchmark::State& state) {
-    // 10%重复值
+    // 10% Duplikate
     vector<float> data = generate_data_with_duplicates(10000, 0.1f, 42);
 
     for (auto _ : state) {
@@ -784,7 +784,7 @@ static void BM_Rank_FewDuplicates(benchmark::State& state) {
 BENCHMARK(BM_Rank_FewDuplicates);
 
 static void BM_Rank_ManyDuplicates(benchmark::State& state) {
-    // 50%重复值
+    // 50% Duplikate
     vector<float> data = generate_data_with_duplicates(10000, 0.5f, 42);
 
     for (auto _ : state) {
@@ -796,7 +796,7 @@ static void BM_Rank_ManyDuplicates(benchmark::State& state) {
 BENCHMARK(BM_Rank_ManyDuplicates);
 
 static void BM_Rank_MostlyDuplicates(benchmark::State& state) {
-    // 90%重复值
+    // 90% Duplikate
     vector<float> data = generate_data_with_duplicates(10000, 0.9f, 42);
 
     for (auto _ : state) {
@@ -808,7 +808,7 @@ static void BM_Rank_MostlyDuplicates(benchmark::State& state) {
 BENCHMARK(BM_Rank_MostlyDuplicates);
 
 static void BM_Rank_AllSame(benchmark::State& state) {
-    // 所有值相同（最坏情况）
+    // Alle Werte gleich (schlechtester Fall)
     vector<float> data(10000, 42.0f);
 
     for (auto _ : state) {
@@ -819,10 +819,10 @@ static void BM_Rank_AllSame(benchmark::State& state) {
 }
 BENCHMARK(BM_Rank_AllSame);
 
-// ========== 不同数据分布的性能测试 ==========
+// ========== Leistungstest bei verschiedenen Datenverteilungen ==========
 
 static void BM_Rank_MonotonicIncreasing(benchmark::State& state) {
-    // 单调递增序列（最优排序情况）
+    // Monoton steigende Folge (bester Sortierfall)
     vector<float> data;
     data.reserve(10000);
     for (int i = 0; i < 10000; ++i) {
@@ -838,7 +838,7 @@ static void BM_Rank_MonotonicIncreasing(benchmark::State& state) {
 BENCHMARK(BM_Rank_MonotonicIncreasing);
 
 static void BM_Rank_MonotonicDecreasing(benchmark::State& state) {
-    // 单调递减序列（需要反转）
+    // Monoton fallende Folge (Umkehrung erforderlich)
     vector<float> data;
     data.reserve(10000);
     for (int i = 10000; i > 0; --i) {
@@ -854,7 +854,7 @@ static void BM_Rank_MonotonicDecreasing(benchmark::State& state) {
 BENCHMARK(BM_Rank_MonotonicDecreasing);
 
 static void BM_Rank_RandomData(benchmark::State& state) {
-    // 随机分布数据（典型情况）
+    // Zufällig verteilte Daten (typischer Fall)
     vector<float> data = generate_random_data(10000, 42);
 
     for (auto _ : state) {
@@ -865,15 +865,15 @@ static void BM_Rank_RandomData(benchmark::State& state) {
 }
 BENCHMARK(BM_Rank_RandomData);
 
-// ========== 现实场景模拟 ==========
+// ========== Simulation realer Szenarien ==========
 
 static void BM_Rank_StockReturns(benchmark::State& state) {
-    // 模拟股票收益率排名（正态分布，少量重复）
+    // Simulation von Aktienrendite-Ranking (Normalverteilung, wenige Duplikate)
     vector<float> data;
-    data.reserve(5000);  // 模拟5000只股票
+    data.reserve(5000);  // 5000 Aktien simulieren
 
     std::mt19937 gen(42);
-    std::normal_distribution<float> dis(0.0f, 0.02f);  // 均值0%，标准差2%
+    std::normal_distribution<float> dis(0.0f, 0.02f);  // Mittelwert 0%, Standardabweichung 2%
 
     for (int i = 0; i < 5000; ++i) {
         data.push_back(dis(gen));
@@ -889,7 +889,7 @@ static void BM_Rank_StockReturns(benchmark::State& state) {
 BENCHMARK(BM_Rank_StockReturns);
 
 static void BM_Rank_LimitUpStocks(benchmark::State& state) {
-    // 模拟涨跌停场景（大量重复值）
+    // Simulation von Kursgrenzszenarien (viele Duplikate)
     vector<float> data;
     data.reserve(5000);
 
@@ -899,11 +899,11 @@ static void BM_Rank_LimitUpStocks(benchmark::State& state) {
     for (int i = 0; i < 5000; ++i) {
         float r = dis(gen);
         if (r < 0.05) {
-            data.push_back(0.10f);   // 5%涨停
+            data.push_back(0.10f);   // 5% Kursanstieg-Limit
         } else if (r < 0.10) {
-            data.push_back(-0.10f);  // 5%跌停
+            data.push_back(-0.10f);  // 5% Kursabfall-Limit
         } else {
-            // 90%正常波动
+            // 90% normale Schwankung
             std::normal_distribution<float> normal_dis(0.0f, 0.02f);
             data.push_back(normal_dis(gen));
         }
@@ -918,7 +918,7 @@ static void BM_Rank_LimitUpStocks(benchmark::State& state) {
 }
 BENCHMARK(BM_Rank_LimitUpStocks);
 
-// ========== 内存访问模式分析 ==========
+// ========== Analyse der Speicherzugriffsmuster ==========
 
 static void BM_Rank_MemoryPattern(benchmark::State& state) {
     size_t size = state.range(0);
@@ -928,13 +928,110 @@ static void BM_Rank_MemoryPattern(benchmark::State& state) {
     for (auto _ : state) {
         auto result = alpha_rank(data);
         benchmark::DoNotOptimize(result);
-        // 估算内存访问：输入数组 + 索引数组 + 结果数组
+        // Geschätzte Speicherzugriffe: Eingabearray + Indexarray + Ergebnisarray
         total_bytes += size * sizeof(float) * 3;
     }
     state.SetBytesProcessed(total_bytes);
     state.SetItemsProcessed(state.iterations() * size);
 }
 BENCHMARK(BM_Rank_MemoryPattern)
+    ->Arg(100)
+    ->Arg(1000)
+    ->Arg(10000)
+    ->Arg(100000)
+    ->ArgName("size");
+
+// ========== Scale (Skalierung) Benchmarks ==========
+
+static void BM_Scale_Small(benchmark::State& state) {
+    vector<float> data = generate_random_data(100);
+
+    for (auto _ : state) {
+        auto result = scale(data);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_Scale_Small);
+
+static void BM_Scale_Medium(benchmark::State& state) {
+    vector<float> data = generate_random_data(1000);
+
+    for (auto _ : state) {
+        auto result = scale(data);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_Scale_Medium);
+
+static void BM_Scale_Large(benchmark::State& state) {
+    vector<float> data = generate_random_data(10000);
+
+    for (auto _ : state) {
+        auto result = scale(data);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_Scale_Large);
+
+static void BM_Scale_VeryLarge(benchmark::State& state) {
+    vector<float> data = generate_random_data(100000);
+
+    for (auto _ : state) {
+        auto result = scale(data);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_Scale_VeryLarge);
+
+// Skalierungsleistung mit negativen Zahlen (Einfluss von abs auf Performance)
+static void BM_Scale_WithNegatives(benchmark::State& state) {
+    // Daten mit negativen Werten erzeugen [-50, 50)
+    vector<float> data;
+    data.reserve(10000);
+    std::mt19937 gen(42);
+    std::uniform_real_distribution<float> dis(-50.0f, 50.0f);
+    for (size_t i = 0; i < 10000; i++) {
+        data.push_back(dis(gen));
+    }
+
+    for (auto _ : state) {
+        auto result = scale(data);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_Scale_WithNegatives);
+
+// Leistungsvergleich bei verschiedenen k-Werten
+static void BM_Scale_VaryingK(benchmark::State& state) {
+    float k = static_cast<float>(state.range(0));
+    vector<float> data = generate_random_data(10000);
+
+    for (auto _ : state) {
+        auto result = scale(data, k);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_Scale_VaryingK)->Arg(1)->Arg(2)->Arg(10)->Arg(100);
+
+// Leistungsvergleich bei verschiedenen Datengrößen
+static void BM_Scale_VaryingSize(benchmark::State& state) {
+    size_t size = state.range(0);
+    vector<float> data = generate_random_data(size);
+
+    for (auto _ : state) {
+        auto result = scale(data);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetBytesProcessed(state.iterations() * size * sizeof(float));
+    state.SetItemsProcessed(state.iterations() * size);
+}
+BENCHMARK(BM_Scale_VaryingSize)
     ->Arg(100)
     ->Arg(1000)
     ->Arg(10000)
