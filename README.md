@@ -1,0 +1,1 @@
+Neuimplementierung der Alpha101-Faktoren in C++. Basierend auf früheren Python-Implementierungen ist es das Ziel dieses Projekts, die Logik hinter den Faktoren zu durchdringen und parallel dazu meine Deutschkenntnisse zu vertiefen.
