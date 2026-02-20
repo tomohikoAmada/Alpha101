@@ -1,19 +1,19 @@
 #ifndef ALPHA101_H
 #define ALPHA101_H
 
-#include <iostream>
-#include <vector>
-#include <cmath>
-#include <span>
-#include <set>
 #include <algorithm>  // Stellt Algorithmen wie sort, upper_bound usw. bereit
+#include <cmath>
+#include <iostream>
 #include <numeric>
-#include <ranges>     // Stellt sliding_window bereit (C++23)
+#include <ranges>  // Stellt sliding_window bereit (C++23)
+#include <set>
+#include <span>
+#include <vector>
 
 using namespace std;
 
 // Hilfsfunktion: Ergebnis ausgeben
-void print_result(const vector<float> &result);
+void print_result(const vector<float>& result);
 
 // Rollende Summe
 vector<float> rolling_ts_sum(vector<float> DataFrame, int window);
@@ -36,9 +36,12 @@ float covariance(vector<float> a, vector<float> b, int window);
 // Rollende Kovarianz
 vector<float> rolling_covariance(vector<float> a, vector<float> b, int window);
 
+// Linearer gewichteter gleitender Durchschnitt (LWMA)
+vector<float> decay_linear(vector<float> a, int period = 10);
+
 // ====== Implementierung ======
 
-void print_result(const vector<float> &result) {
+void print_result(const vector<float>& result) {
     cout << "[";
     for (size_t i = 0; i < result.size(); i++) {
         if (isnan(result[i])) {
@@ -201,7 +204,7 @@ vector<float> rolling_covariance(vector<float> a, vector<float> b, int window) {
 float rolling_rank(vector<float> a) {
     if (a.empty()) return 0.0f;
 
-    float last_value = a.back(); // Letzten Wert holen
+    float last_value = a.back();  // Letzten Wert holen
 
     // Sortieren zur Rangbestimmung (Kopie, Original bleibt unverändert)
     sort(a.begin(), a.end());
@@ -216,20 +219,23 @@ float rolling_rank(vector<float> a) {
     // Beispiel: [1, 2, 3, 3, 3] – drei 3er belegen Plätze 3,4,5 (Index 2,3,4)
     // lower-Index=2, upper-Index=5
     // Rangbereich: 3 bis 5, Durchschnittsrang=(3+4+5)/3=4.0
-    size_t first_rank = distance(a.begin(), lower) + 1; // Rang des ersten gleichen Wertes
-    size_t last_rank = distance(a.begin(), upper); // Rang des letzten gleichen Wertes
-    float avg_rank = (first_rank + last_rank) / 2.0f; // Durchschnittsrang
+    size_t first_rank = distance(a.begin(), lower) + 1;  // Rang des ersten gleichen Wertes
+    size_t last_rank = distance(a.begin(), upper);       // Rang des letzten gleichen Wertes
+    float avg_rank = (first_rank + last_rank) / 2.0f;    // Durchschnittsrang
 
     return avg_rank;
 }
 
-// Optimierte Version von rolling_rank: verwendet span, um temporäre Vektoren zu vermeiden. span ist ein C++20-Feature – eine reine Datenansicht ohne Besitz oder Kopie
+// Optimierte Version von rolling_rank: verwendet span, um temporäre Vektoren zu
+// vermeiden. span ist ein C++20-Feature – eine reine Datenansicht ohne Besitz
+// oder Kopie
 float rolling_rank(span<const float> data) {
     if (data.empty()) return 0.0f;
 
     float last_value = data.back();
 
-    // Temporären Vektor zum Sortieren erstellen (unvermeidlich, da Sortierung erforderlich)
+    // Temporären Vektor zum Sortieren erstellen (unvermeidlich, da Sortierung
+    // erforderlich)
     vector<float> sorted(data.begin(), data.end());
     sort(sorted.begin(), sorted.end());
 
@@ -257,7 +263,8 @@ vector<float> ts_rank(vector<float> a, int window) {
             result.push_back(rolling_rank(tmp));
 
             // Vereinfacht schreibbar als
-            // result.push_back(rolling_rank(vector<float>(&a[i - window + 1], &a[i + 1])));
+            // result.push_back(rolling_rank(vector<float>(&a[i - window + 1], &a[i +
+            // 1])));
         }
     }
 
@@ -265,22 +272,21 @@ vector<float> ts_rank(vector<float> a, int window) {
 }
 
 // Mit span optimierte Version: vermeidet Erstellung temporärer Vektoren
-vector<float> ts_rank_optimized(const vector<float> &a, int window) {
+vector<float> ts_rank_optimized(const vector<float>& a, int window) {
     size_t n = a.size();
     vector<float> result(n);
     for (size_t i = 0; i < n; ++i)
-        result[i] = i + 1 < window
-                        ? NAN
-                        : rolling_rank(span<const float>(&a[i - window + 1], window));
+        result[i] = i + 1 < window ? NAN : rolling_rank(span<const float>(&a[i - window + 1], window));
     return result;
 }
 
-// Hochoptimierte Version: gleitendes Fenster + multiset, Komplexität: O(n × log window) statt O(n × window × log window)
-vector<float> ts_rank_ultra(const vector<float> &a, int window) {
+// Hochoptimierte Version: gleitendes Fenster + multiset, Komplexität: O(n × log
+// window) statt O(n × window × log window)
+vector<float> ts_rank_ultra(const vector<float>& a, int window) {
     size_t n = a.size();
     vector<float> result(n);
 
-    multiset<float> ordered_window; // Automatisch sortiert
+    multiset<float> ordered_window;  // Automatisch sortiert
 
     for (size_t i = 0; i < n; ++i) {
         // Neues Element zum Fenster hinzufügen
@@ -402,7 +408,8 @@ vector<float> delay(vector<float> a, int period) {
         if (i < period) {
             result.push_back(NAN);
         } else {
-            result.push_back(a[i - period]);  // Korrektur: verzögerter Wert wird zurückgegeben, keine Differenz
+            result.push_back(a[i - period]);  // Korrektur: verzögerter Wert wird
+                                              // zurückgegeben, keine Differenz
         }
     }
 
@@ -418,9 +425,7 @@ vector<float> alpha_rank(vector<float> a) {
     vector<float> idx(a.size());
     iota(idx.begin(), idx.end(), 0);
 
-    sort(idx.begin(), idx.end(), [a](int i, int j) {
-        return a[i] < a[j];
-    });
+    sort(idx.begin(), idx.end(), [a](int i, int j) { return a[i] < a[j]; });
 
     int i = 0;
     while (i < a.size()) {
@@ -446,19 +451,74 @@ vector<float> alpha_rank(vector<float> a) {
 
 vector<float> scale(vector<float> a, float k = 1.0f) {
     float sum = 0;
-    for (size_t i = 0; i < a.size(); i++)
-    {
+    for (size_t i = 0; i < a.size(); i++) {
         sum += std::abs(a[i]);
     }
 
     vector<float> result;
 
-    for (size_t i = 0; i < a.size(); i++)
-    {
+    for (size_t i = 0; i < a.size(); i++) {
         result.push_back(a[i] * k / sum);
     }
 
     return result;
 }
 
-#endif // ALPHA101_H
+inline vector<int> ts_argmax(vector<float> a, int window = 10) {
+    vector<int> result(a.size(), 0);
+
+    for (size_t i = window - 1; i < a.size(); i++) {
+        int maxIdx = 0;
+        for (int j = 1; j < window; j++) {
+            if (a[i - window + 1 + j] > a[i - window + 1 + maxIdx]) {
+                maxIdx = j;
+            }
+        }
+        result[i] = maxIdx + 1;  // 1-indexed
+    }
+
+    return result;
+}
+
+inline vector<int> ts_argmin(vector<float> a, int window = 10) {
+    vector<int> result(a.size(), 0);
+
+    for (size_t i = window - 1; i < a.size(); i++) {
+        int minIdx = 0;
+        for (int j = 1; j < window; j++) {
+            if (a[i - window + 1 + j] < a[i - window + 1 + minIdx]) {
+                minIdx = j;
+            }
+        }
+        result[i] = minIdx + 1;  // 1-indexed
+    }
+
+    return result;
+}
+
+inline vector<float> decay_linear(vector<float> a, int period) {
+    size_t n = a.size();
+    vector<float> result(n, NAN);
+
+    // divisor = 1+2+...+period，用等差数列公式计算
+    float divisor = period * (period + 1) / 2.0f;
+
+    // 预计算权重：y[k] = (k+1)/divisor，k=0 对应窗口最旧元素，k=period-1
+    // 对应最新元素
+    vector<float> y(period);
+    for (int k = 0; k < period; ++k) {
+        y[k] = (k + 1) / divisor;
+    }
+
+    for (size_t i = period - 1; i < n; ++i) {
+        float val = 0.0f;
+        for (int k = 0; k < period; ++k) {
+            val += a[i - period + 1 + k] * y[k];
+        }
+        result[i] = val;
+    }
+
+    return result;
+}
+
+#endif  // ALPHA101_H

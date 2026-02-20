@@ -390,7 +390,7 @@ def ts_argmax(df, window=10):
     示例:
     输入数据: [3, 1, 5, 2, 4]
     window=3时的输出: [NaN, NaN, 3, 1, 1]
-    解释: [3,1,5]中5在位置3, [1,5,2]中5在位置1, [5,2,4]中5在位置1
+    解释: [3,1,5]中5在位置3, [1,5,2]中5在位置2, [5,2,4]中5在位置1
     """
     return df.rolling(window).apply(np.argmax) + 1
 
@@ -417,10 +417,16 @@ def decay_linear(df, period=10):
     :param period: LWMA周期。
     :return: 返回线性加权移动平均值的pandas DataFrame。
 
-    示例:
-    输入数据: [1, 2, 3, 4, 5]
-    period=3时，权重为[1/6, 2/6, 3/6]
-    最近的数据权重更大，例如对于[1,2,3]，LWMA = 1*(1/6) + 2*(2/6) + 3*(3/6) = 2.33
+    权重规则：period=3 时，divisor = 3*(3+1)/2 = 6（等差数列求和），weights = [1/6, 2/6, 3/6]（越新权重越大）
+
+    示例1（row=2，窗口=[1,2,3]）:
+      1*(1/6) + 2*(2/6) + 3*(3/6) = 1/6 + 4/6 + 9/6 = 14/6 ≈ 2.333
+
+    示例2（row=3，窗口滑动为[2,3,4]）:
+      2*(1/6) + 3*(2/6) + 4*(3/6) = 2/6 + 6/6 + 12/6 = 20/6 ≈ 3.333
+
+    示例3（row=4，窗口滑动为[3,4,5]）:
+      3*(1/6) + 4*(2/6) + 5*(3/6) = 3/6 + 8/6 + 15/6 = 26/6 ≈ 4.333
     """
     # 清理数据
     if df.isnull().values.any():
@@ -431,7 +437,7 @@ def decay_linear(df, period=10):
     na_lwma[:period, :] = df.iloc[:period, :]
     na_series = df.as_matrix()
 
-    divisor = period * (period + 1) / 2
+    divisor = period * (period + 1) / 2  # 原始权重 1+2+...+period 的总和（等差数列求和），用于归一化使所有权重之和等于1
     y = (np.arange(period) + 1) * 1.0 / divisor
     # 使用实际的收盘价计算LWMA
     # 回测引擎应确保没有前视偏差

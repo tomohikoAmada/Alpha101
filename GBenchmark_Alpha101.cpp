@@ -1,6 +1,8 @@
 #include <benchmark/benchmark.h>
-#include "alpha101.h"
+
 #include <random>
+
+#include "Alpha101.h"
 
 // Hilfsfunktion zur Erzeugung von Zufallsdaten
 vector<float> generate_random_data(size_t size, int seed = 42) {
@@ -478,12 +480,7 @@ static void BM_RollingCorrelation_VaryingDataSize(benchmark::State& state) {
     }
     state.SetItemsProcessed(state.iterations() * size);
 }
-BENCHMARK(BM_RollingCorrelation_VaryingDataSize)
-    ->Arg(100)
-    ->Arg(500)
-    ->Arg(1000)
-    ->Arg(5000)
-    ->Arg(10000);
+BENCHMARK(BM_RollingCorrelation_VaryingDataSize)->Arg(100)->Arg(500)->Arg(1000)->Arg(5000)->Arg(10000);
 
 // ========== TS Rank Leistungsvergleich ==========
 
@@ -583,12 +580,12 @@ static void BM_TsRank_Compare(benchmark::State& state) {
 
 // Vergleich bei unterschiedlichen Datenmengen und Fenstergrößen
 BENCHMARK(BM_TsRank_Compare)
-    ->Args({100, 10, 0})   // 100 Datenpunkte, Fenster 10, Original
-    ->Args({100, 10, 1})   // 100 Datenpunkte, Fenster 10, Optimiert
-    ->Args({1000, 20, 0})  // 1000 Datenpunkte, Fenster 20, Original
-    ->Args({1000, 20, 1})  // 1000 Datenpunkte, Fenster 20, Optimiert
-    ->Args({10000, 50, 0}) // 10000 Datenpunkte, Fenster 50, Original
-    ->Args({10000, 50, 1}) // 10000 Datenpunkte, Fenster 50, Optimiert
+    ->Args({100, 10, 0})    // 100 Datenpunkte, Fenster 10, Original
+    ->Args({100, 10, 1})    // 100 Datenpunkte, Fenster 10, Optimiert
+    ->Args({1000, 20, 0})   // 1000 Datenpunkte, Fenster 20, Original
+    ->Args({1000, 20, 1})   // 1000 Datenpunkte, Fenster 20, Optimiert
+    ->Args({10000, 50, 0})  // 10000 Datenpunkte, Fenster 50, Original
+    ->Args({10000, 50, 1})  // 10000 Datenpunkte, Fenster 50, Optimiert
     ->ArgNames({"data_size", "window", "optimized"});
 
 // ========== TS Rank Ultra (gleitendes Fenster optimiert) Leistungsvergleich ==========
@@ -721,14 +718,7 @@ static void BM_Rank_VaryingSize(benchmark::State& state) {
     }
     state.SetItemsProcessed(state.iterations() * size);
 }
-BENCHMARK(BM_Rank_VaryingSize)
-    ->Arg(10)
-    ->Arg(100)
-    ->Arg(1000)
-    ->Arg(5000)
-    ->Arg(10000)
-    ->Arg(50000)
-    ->Arg(100000);
+BENCHMARK(BM_Rank_VaryingSize)->Arg(10)->Arg(100)->Arg(1000)->Arg(5000)->Arg(10000)->Arg(50000)->Arg(100000);
 
 // ========== Leistungstest bei verschiedenen Duplikatanteilen ==========
 
@@ -899,7 +889,7 @@ static void BM_Rank_LimitUpStocks(benchmark::State& state) {
     for (int i = 0; i < 5000; ++i) {
         float r = dis(gen);
         if (r < 0.05) {
-            data.push_back(0.10f);   // 5% Kursanstieg-Limit
+            data.push_back(0.10f);  // 5% Kursanstieg-Limit
         } else if (r < 0.10) {
             data.push_back(-0.10f);  // 5% Kursabfall-Limit
         } else {
@@ -934,12 +924,7 @@ static void BM_Rank_MemoryPattern(benchmark::State& state) {
     state.SetBytesProcessed(total_bytes);
     state.SetItemsProcessed(state.iterations() * size);
 }
-BENCHMARK(BM_Rank_MemoryPattern)
-    ->Arg(100)
-    ->Arg(1000)
-    ->Arg(10000)
-    ->Arg(100000)
-    ->ArgName("size");
+BENCHMARK(BM_Rank_MemoryPattern)->Arg(100)->Arg(1000)->Arg(10000)->Arg(100000)->ArgName("size");
 
 // ========== Scale (Skalierung) Benchmarks ==========
 
@@ -1031,11 +1016,195 @@ static void BM_Scale_VaryingSize(benchmark::State& state) {
     state.SetBytesProcessed(state.iterations() * size * sizeof(float));
     state.SetItemsProcessed(state.iterations() * size);
 }
-BENCHMARK(BM_Scale_VaryingSize)
-    ->Arg(100)
-    ->Arg(1000)
-    ->Arg(10000)
-    ->Arg(100000)
-    ->ArgName("size");
+BENCHMARK(BM_Scale_VaryingSize)->Arg(100)->Arg(1000)->Arg(10000)->Arg(100000)->ArgName("size");
+
+// ========== TS Argmax Benchmarks ==========
+
+static void BM_TsArgmax_Small(benchmark::State& state) {
+    vector<float> data = generate_random_data(100);
+    int window = 10;
+
+    for (auto _ : state) {
+        auto result = ts_argmax(data, window);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_TsArgmax_Small);
+
+static void BM_TsArgmax_Medium(benchmark::State& state) {
+    vector<float> data = generate_random_data(1000);
+    int window = 20;
+
+    for (auto _ : state) {
+        auto result = ts_argmax(data, window);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_TsArgmax_Medium);
+
+static void BM_TsArgmax_Large(benchmark::State& state) {
+    vector<float> data = generate_random_data(10000);
+    int window = 50;
+
+    for (auto _ : state) {
+        auto result = ts_argmax(data, window);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_TsArgmax_Large);
+
+static void BM_TsArgmax_VaryingWindow(benchmark::State& state) {
+    int window = state.range(0);
+    vector<float> data = generate_random_data(10000);
+
+    for (auto _ : state) {
+        auto result = ts_argmax(data, window);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_TsArgmax_VaryingWindow)->Arg(5)->Arg(10)->Arg(20)->Arg(50)->Arg(100);
+
+// Vergleich ts_argmax vs ts_max (strukturell ähnlich, unterschiedliche Rückgabetypen)
+static void BM_TsArgmax_vs_TsMax(benchmark::State& state) {
+    int version = state.range(0);  // 0=ts_argmax, 1=ts_max
+    vector<float> data = generate_random_data(10000);
+    int window = 50;
+
+    for (auto _ : state) {
+        if (version == 0) {
+            auto result = ts_argmax(data, window);
+            benchmark::DoNotOptimize(result);
+        } else {
+            auto result = ts_max(data, window);
+            benchmark::DoNotOptimize(result);
+        }
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_TsArgmax_vs_TsMax)->Arg(0)->Arg(1)->ArgNames({"version"});
+
+// ========== TS Argmin Benchmarks ==========
+
+static void BM_TsArgmin_Small(benchmark::State& state) {
+    vector<float> data = generate_random_data(100);
+    int window = 10;
+
+    for (auto _ : state) {
+        auto result = ts_argmin(data, window);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_TsArgmin_Small);
+
+static void BM_TsArgmin_Medium(benchmark::State& state) {
+    vector<float> data = generate_random_data(1000);
+    int window = 20;
+
+    for (auto _ : state) {
+        auto result = ts_argmin(data, window);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_TsArgmin_Medium);
+
+static void BM_TsArgmin_Large(benchmark::State& state) {
+    vector<float> data = generate_random_data(10000);
+    int window = 50;
+
+    for (auto _ : state) {
+        auto result = ts_argmin(data, window);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_TsArgmin_Large);
+
+static void BM_TsArgmin_VaryingWindow(benchmark::State& state) {
+    int window = state.range(0);
+    vector<float> data = generate_random_data(10000);
+
+    for (auto _ : state) {
+        auto result = ts_argmin(data, window);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_TsArgmin_VaryingWindow)->Arg(5)->Arg(10)->Arg(20)->Arg(50)->Arg(100);
+
+// Vergleich ts_argmin vs ts_min (strukturell ähnlich, unterschiedliche Rückgabetypen)
+static void BM_TsArgmin_vs_TsMin(benchmark::State& state) {
+    int version = state.range(0);  // 0=ts_argmin, 1=ts_min
+    vector<float> data = generate_random_data(10000);
+    int window = 50;
+
+    for (auto _ : state) {
+        if (version == 0) {
+            auto result = ts_argmin(data, window);
+            benchmark::DoNotOptimize(result);
+        } else {
+            auto result = ts_min(data, window);
+            benchmark::DoNotOptimize(result);
+        }
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_TsArgmin_vs_TsMin)->Arg(0)->Arg(1)->ArgNames({"version"});
+
+// ========== Decay Linear Benchmarks ==========
+
+static void BM_DecayLinear_Small(benchmark::State& state) {
+    vector<float> data = generate_random_data(100);
+    int window = 5;
+
+    for (auto _ : state) {
+        auto result = decay_linear(data, window);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_DecayLinear_Small);
+
+static void BM_DecayLinear_Medium(benchmark::State& state) {
+    vector<float> data = generate_random_data(1000);
+    int window = 20;
+
+    for (auto _ : state) {
+        auto result = decay_linear(data, window);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_DecayLinear_Medium);
+
+static void BM_DecayLinear_Large(benchmark::State& state) {
+    vector<float> data = generate_random_data(10000);
+    int window = 50;
+
+    for (auto _ : state) {
+        auto result = decay_linear(data, window);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_DecayLinear_Large);
+
+// Fenstergröße als Parameter variieren
+static void BM_DecayLinear_VaryWindow(benchmark::State& state) {
+    vector<float> data = generate_random_data(5000);
+    int window = static_cast<int>(state.range(0));
+
+    for (auto _ : state) {
+        auto result = decay_linear(data, window);
+        benchmark::DoNotOptimize(result);
+    }
+    state.SetItemsProcessed(state.iterations() * data.size());
+}
+BENCHMARK(BM_DecayLinear_VaryWindow)->Arg(5)->Arg(20)->Arg(50)->Arg(100)->ArgNames({"window"});
 
 BENCHMARK_MAIN();

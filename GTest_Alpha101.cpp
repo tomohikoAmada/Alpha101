@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
-#include "alpha101.h"
+
 #include <cmath>
+
+#include "Alpha101.h"
 
 // Hilfsfunktion: Zwei Vektoren auf Gleichheit prüfen (NaN berücksichtigt)
 bool vectors_equal(const vector<float>& a, const vector<float>& b, float tolerance = 1e-5) {
@@ -152,9 +154,9 @@ TEST(ProductTest, BasicTest) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 6.0);    // 1×2×3
-    EXPECT_FLOAT_EQ(result[3], 24.0);   // 2×3×4
-    EXPECT_FLOAT_EQ(result[4], 60.0);   // 3×4×5
+    EXPECT_FLOAT_EQ(result[2], 6.0);   // 1×2×3
+    EXPECT_FLOAT_EQ(result[3], 24.0);  // 2×3×4
+    EXPECT_FLOAT_EQ(result[4], 60.0);  // 3×4×5
 }
 
 TEST(ProductTest, WindowTwo) {
@@ -165,9 +167,9 @@ TEST(ProductTest, WindowTwo) {
 
     ASSERT_EQ(result.size(), 4);
     EXPECT_TRUE(isnan(result[0]));
-    EXPECT_FLOAT_EQ(result[1], 6.0);    // 2×3
-    EXPECT_FLOAT_EQ(result[2], 12.0);   // 3×4
-    EXPECT_FLOAT_EQ(result[3], 20.0);   // 4×5
+    EXPECT_FLOAT_EQ(result[1], 6.0);   // 2×3
+    EXPECT_FLOAT_EQ(result[2], 12.0);  // 3×4
+    EXPECT_FLOAT_EQ(result[3], 20.0);  // 4×5
 }
 
 TEST(ProductTest, WithZero) {
@@ -179,9 +181,9 @@ TEST(ProductTest, WithZero) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 0.0);    // 1×2×0
-    EXPECT_FLOAT_EQ(result[3], 0.0);    // 2×0×3
-    EXPECT_FLOAT_EQ(result[4], 0.0);    // 0×3×4
+    EXPECT_FLOAT_EQ(result[2], 0.0);  // 1×2×0
+    EXPECT_FLOAT_EQ(result[3], 0.0);  // 2×0×3
+    EXPECT_FLOAT_EQ(result[4], 0.0);  // 0×3×4
 }
 
 TEST(ProductTest, WithNegatives) {
@@ -247,9 +249,9 @@ TEST(ProductTest, DecimalNumbers) {
 
     ASSERT_EQ(result.size(), 4);
     EXPECT_TRUE(isnan(result[0]));
-    EXPECT_FLOAT_EQ(result[1], 1.0);    // 0.5×2.0
-    EXPECT_FLOAT_EQ(result[2], 8.0);    // 2.0×4.0
-    EXPECT_FLOAT_EQ(result[3], 2.0);    // 4.0×0.5
+    EXPECT_FLOAT_EQ(result[1], 1.0);  // 0.5×2.0
+    EXPECT_FLOAT_EQ(result[2], 8.0);  // 2.0×4.0
+    EXPECT_FLOAT_EQ(result[3], 2.0);  // 4.0×0.5
 }
 
 // ========== TS Min (rollendes Minimum) Tests ==========
@@ -264,9 +266,9 @@ TEST(TsMinTest, BasicTest) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 3.0);    // min([5,3,8])
-    EXPECT_FLOAT_EQ(result[3], 2.0);    // min([3,8,2])
-    EXPECT_FLOAT_EQ(result[4], 2.0);    // min([8,2,6])
+    EXPECT_FLOAT_EQ(result[2], 3.0);  // min([5,3,8])
+    EXPECT_FLOAT_EQ(result[3], 2.0);  // min([3,8,2])
+    EXPECT_FLOAT_EQ(result[4], 2.0);  // min([8,2,6])
 }
 
 TEST(TsMinTest, MonotonicIncreasing) {
@@ -279,9 +281,9 @@ TEST(TsMinTest, MonotonicIncreasing) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 1.0);    // min([1,2,3])
-    EXPECT_FLOAT_EQ(result[3], 2.0);    // min([2,3,4])
-    EXPECT_FLOAT_EQ(result[4], 3.0);    // min([3,4,5])
+    EXPECT_FLOAT_EQ(result[2], 1.0);  // min([1,2,3])
+    EXPECT_FLOAT_EQ(result[3], 2.0);  // min([2,3,4])
+    EXPECT_FLOAT_EQ(result[4], 3.0);  // min([3,4,5])
 }
 
 TEST(TsMinTest, MonotonicDecreasing) {
@@ -294,9 +296,9 @@ TEST(TsMinTest, MonotonicDecreasing) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 6.0);    // min([10,8,6])
-    EXPECT_FLOAT_EQ(result[3], 4.0);    // min([8,6,4])
-    EXPECT_FLOAT_EQ(result[4], 2.0);    // min([6,4,2])
+    EXPECT_FLOAT_EQ(result[2], 6.0);  // min([10,8,6])
+    EXPECT_FLOAT_EQ(result[3], 4.0);  // min([8,6,4])
+    EXPECT_FLOAT_EQ(result[4], 2.0);  // min([6,4,2])
 }
 
 TEST(TsMinTest, WithNegatives) {
@@ -308,9 +310,9 @@ TEST(TsMinTest, WithNegatives) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], -1.0);   // min([3,-1,5])
-    EXPECT_FLOAT_EQ(result[3], -2.0);   // min([-1,5,-2])
-    EXPECT_FLOAT_EQ(result[4], -2.0);   // min([5,-2,4])
+    EXPECT_FLOAT_EQ(result[2], -1.0);  // min([3,-1,5])
+    EXPECT_FLOAT_EQ(result[3], -2.0);  // min([-1,5,-2])
+    EXPECT_FLOAT_EQ(result[4], -2.0);  // min([5,-2,4])
 }
 
 TEST(TsMinTest, WindowOne) {
@@ -333,10 +335,10 @@ TEST(TsMinTest, WindowTwo) {
 
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
-    EXPECT_FLOAT_EQ(result[1], 2.0);    // min([7,2])
-    EXPECT_FLOAT_EQ(result[2], 2.0);    // min([2,9])
-    EXPECT_FLOAT_EQ(result[3], 3.0);    // min([9,3])
-    EXPECT_FLOAT_EQ(result[4], 3.0);    // min([3,5])
+    EXPECT_FLOAT_EQ(result[1], 2.0);  // min([7,2])
+    EXPECT_FLOAT_EQ(result[2], 2.0);  // min([2,9])
+    EXPECT_FLOAT_EQ(result[3], 3.0);  // min([9,3])
+    EXPECT_FLOAT_EQ(result[4], 3.0);  // min([3,5])
 }
 
 TEST(TsMinTest, AllSameValues) {
@@ -362,9 +364,9 @@ TEST(TsMinTest, LargerWindow) {
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
     EXPECT_TRUE(isnan(result[2]));
-    EXPECT_FLOAT_EQ(result[3], 1.0);    // min([8,3,9,1])
-    EXPECT_FLOAT_EQ(result[4], 1.0);    // min([3,9,1,6])
-    EXPECT_FLOAT_EQ(result[5], 1.0);    // min([9,1,6,4])
+    EXPECT_FLOAT_EQ(result[3], 1.0);  // min([8,3,9,1])
+    EXPECT_FLOAT_EQ(result[4], 1.0);  // min([3,9,1,6])
+    EXPECT_FLOAT_EQ(result[5], 1.0);  // min([9,1,6,4])
 }
 
 TEST(TsMinTest, DecimalNumbers) {
@@ -392,9 +394,9 @@ TEST(TsMaxTest, BasicTest) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 8.0);    // max([5,3,8])
-    EXPECT_FLOAT_EQ(result[3], 8.0);    // max([3,8,2])
-    EXPECT_FLOAT_EQ(result[4], 8.0);    // max([8,2,6])
+    EXPECT_FLOAT_EQ(result[2], 8.0);  // max([5,3,8])
+    EXPECT_FLOAT_EQ(result[3], 8.0);  // max([3,8,2])
+    EXPECT_FLOAT_EQ(result[4], 8.0);  // max([8,2,6])
 }
 
 TEST(TsMaxTest, MonotonicIncreasing) {
@@ -407,9 +409,9 @@ TEST(TsMaxTest, MonotonicIncreasing) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 3.0);    // max([1,2,3])
-    EXPECT_FLOAT_EQ(result[3], 4.0);    // max([2,3,4])
-    EXPECT_FLOAT_EQ(result[4], 5.0);    // max([3,4,5])
+    EXPECT_FLOAT_EQ(result[2], 3.0);  // max([1,2,3])
+    EXPECT_FLOAT_EQ(result[3], 4.0);  // max([2,3,4])
+    EXPECT_FLOAT_EQ(result[4], 5.0);  // max([3,4,5])
 }
 
 TEST(TsMaxTest, MonotonicDecreasing) {
@@ -422,9 +424,9 @@ TEST(TsMaxTest, MonotonicDecreasing) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 10.0);   // max([10,8,6])
-    EXPECT_FLOAT_EQ(result[3], 8.0);    // max([8,6,4])
-    EXPECT_FLOAT_EQ(result[4], 6.0);    // max([6,4,2])
+    EXPECT_FLOAT_EQ(result[2], 10.0);  // max([10,8,6])
+    EXPECT_FLOAT_EQ(result[3], 8.0);   // max([8,6,4])
+    EXPECT_FLOAT_EQ(result[4], 6.0);   // max([6,4,2])
 }
 
 TEST(TsMaxTest, WithNegatives) {
@@ -436,9 +438,9 @@ TEST(TsMaxTest, WithNegatives) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 5.0);    // max([3,-1,5])
-    EXPECT_FLOAT_EQ(result[3], 5.0);    // max([-1,5,-2])
-    EXPECT_FLOAT_EQ(result[4], 5.0);    // max([5,-2,4])
+    EXPECT_FLOAT_EQ(result[2], 5.0);  // max([3,-1,5])
+    EXPECT_FLOAT_EQ(result[3], 5.0);  // max([-1,5,-2])
+    EXPECT_FLOAT_EQ(result[4], 5.0);  // max([5,-2,4])
 }
 
 TEST(TsMaxTest, WindowOne) {
@@ -461,10 +463,10 @@ TEST(TsMaxTest, WindowTwo) {
 
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
-    EXPECT_FLOAT_EQ(result[1], 7.0);    // max([7,2])
-    EXPECT_FLOAT_EQ(result[2], 9.0);    // max([2,9])
-    EXPECT_FLOAT_EQ(result[3], 9.0);    // max([9,3])
-    EXPECT_FLOAT_EQ(result[4], 5.0);    // max([3,5])
+    EXPECT_FLOAT_EQ(result[1], 7.0);  // max([7,2])
+    EXPECT_FLOAT_EQ(result[2], 9.0);  // max([2,9])
+    EXPECT_FLOAT_EQ(result[3], 9.0);  // max([9,3])
+    EXPECT_FLOAT_EQ(result[4], 5.0);  // max([3,5])
 }
 
 TEST(TsMaxTest, AllSameValues) {
@@ -490,9 +492,9 @@ TEST(TsMaxTest, LargerWindow) {
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
     EXPECT_TRUE(isnan(result[2]));
-    EXPECT_FLOAT_EQ(result[3], 9.0);    // max([8,3,9,1])
-    EXPECT_FLOAT_EQ(result[4], 9.0);    // max([3,9,1,6])
-    EXPECT_FLOAT_EQ(result[5], 9.0);    // max([9,1,6,4])
+    EXPECT_FLOAT_EQ(result[3], 9.0);  // max([8,3,9,1])
+    EXPECT_FLOAT_EQ(result[4], 9.0);  // max([3,9,1,6])
+    EXPECT_FLOAT_EQ(result[5], 9.0);  // max([9,1,6,4])
 }
 
 TEST(TsMaxTest, DecimalNumbers) {
@@ -517,9 +519,9 @@ TEST(TsMaxTest, ZigzagPattern) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 5.0);    // max([1,5,2])
-    EXPECT_FLOAT_EQ(result[3], 6.0);    // max([5,2,6])
-    EXPECT_FLOAT_EQ(result[4], 6.0);    // max([2,6,3])
+    EXPECT_FLOAT_EQ(result[2], 5.0);  // max([1,5,2])
+    EXPECT_FLOAT_EQ(result[3], 6.0);  // max([5,2,6])
+    EXPECT_FLOAT_EQ(result[4], 6.0);  // max([2,6,3])
 }
 
 // ========== Delta (Differenz) Tests ==========
@@ -533,10 +535,10 @@ TEST(DeltaTest, BasicTest) {
 
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
-    EXPECT_FLOAT_EQ(result[1], 2.0);    // 12-10
-    EXPECT_FLOAT_EQ(result[2], 3.0);    // 15-12
-    EXPECT_FLOAT_EQ(result[3], -2.0);   // 13-15
-    EXPECT_FLOAT_EQ(result[4], 5.0);    // 18-13
+    EXPECT_FLOAT_EQ(result[1], 2.0);   // 12-10
+    EXPECT_FLOAT_EQ(result[2], 3.0);   // 15-12
+    EXPECT_FLOAT_EQ(result[3], -2.0);  // 13-15
+    EXPECT_FLOAT_EQ(result[4], 5.0);   // 18-13
 }
 
 TEST(DeltaTest, PeriodTwo) {
@@ -549,10 +551,10 @@ TEST(DeltaTest, PeriodTwo) {
     ASSERT_EQ(result.size(), 6);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 5.0);    // 15-10
-    EXPECT_FLOAT_EQ(result[3], 1.0);    // 13-12
-    EXPECT_FLOAT_EQ(result[4], 3.0);    // 18-15
-    EXPECT_FLOAT_EQ(result[5], 7.0);    // 20-13
+    EXPECT_FLOAT_EQ(result[2], 5.0);  // 15-10
+    EXPECT_FLOAT_EQ(result[3], 1.0);  // 13-12
+    EXPECT_FLOAT_EQ(result[4], 3.0);  // 18-15
+    EXPECT_FLOAT_EQ(result[5], 7.0);  // 20-13
 }
 
 TEST(DeltaTest, LargerPeriod) {
@@ -564,9 +566,9 @@ TEST(DeltaTest, LargerPeriod) {
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
     EXPECT_TRUE(isnan(result[2]));
-    EXPECT_FLOAT_EQ(result[3], 3.0);    // 13-10
-    EXPECT_FLOAT_EQ(result[4], 6.0);    // 18-12
-    EXPECT_FLOAT_EQ(result[5], 8.0);    // 23-15
+    EXPECT_FLOAT_EQ(result[3], 3.0);  // 13-10
+    EXPECT_FLOAT_EQ(result[4], 6.0);  // 18-12
+    EXPECT_FLOAT_EQ(result[5], 8.0);  // 23-15
 }
 
 TEST(DeltaTest, WithNegatives) {
@@ -577,10 +579,10 @@ TEST(DeltaTest, WithNegatives) {
 
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
-    EXPECT_FLOAT_EQ(result[1], -3.0);   // 2-5
-    EXPECT_FLOAT_EQ(result[2], -5.0);   // -3-2
-    EXPECT_FLOAT_EQ(result[3], 4.0);    // 1-(-3)
-    EXPECT_FLOAT_EQ(result[4], -3.0);   // -2-1
+    EXPECT_FLOAT_EQ(result[1], -3.0);  // 2-5
+    EXPECT_FLOAT_EQ(result[2], -5.0);  // -3-2
+    EXPECT_FLOAT_EQ(result[3], 4.0);   // 1-(-3)
+    EXPECT_FLOAT_EQ(result[4], -3.0);  // -2-1
 }
 
 TEST(DeltaTest, MonotonicIncreasing) {
@@ -645,10 +647,10 @@ TEST(DeltaTest, ZeroChange) {
 
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
-    EXPECT_FLOAT_EQ(result[1], 0.0);    // 10-10
-    EXPECT_FLOAT_EQ(result[2], 5.0);    // 15-10
-    EXPECT_FLOAT_EQ(result[3], 0.0);    // 15-15
-    EXPECT_FLOAT_EQ(result[4], 5.0);    // 20-15
+    EXPECT_FLOAT_EQ(result[1], 0.0);  // 10-10
+    EXPECT_FLOAT_EQ(result[2], 5.0);  // 15-10
+    EXPECT_FLOAT_EQ(result[3], 0.0);  // 15-15
+    EXPECT_FLOAT_EQ(result[4], 5.0);  // 20-15
 }
 
 // ========== Delay (Verzögerung) Tests ==========
@@ -662,10 +664,10 @@ TEST(DelayTest, BasicTest) {
 
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
-    EXPECT_FLOAT_EQ(result[1], 10.0);   // delay 1: input[0]
-    EXPECT_FLOAT_EQ(result[2], 12.0);   // delay 1: input[1]
-    EXPECT_FLOAT_EQ(result[3], 15.0);   // delay 1: input[2]
-    EXPECT_FLOAT_EQ(result[4], 13.0);   // delay 1: input[3]
+    EXPECT_FLOAT_EQ(result[1], 10.0);  // delay 1: input[0]
+    EXPECT_FLOAT_EQ(result[2], 12.0);  // delay 1: input[1]
+    EXPECT_FLOAT_EQ(result[3], 15.0);  // delay 1: input[2]
+    EXPECT_FLOAT_EQ(result[4], 13.0);  // delay 1: input[3]
 }
 
 TEST(DelayTest, PeriodTwo) {
@@ -678,10 +680,10 @@ TEST(DelayTest, PeriodTwo) {
     ASSERT_EQ(result.size(), 6);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 10.0);   // delay 2: input[0]
-    EXPECT_FLOAT_EQ(result[3], 12.0);   // delay 2: input[1]
-    EXPECT_FLOAT_EQ(result[4], 15.0);   // delay 2: input[2]
-    EXPECT_FLOAT_EQ(result[5], 13.0);   // delay 2: input[3]
+    EXPECT_FLOAT_EQ(result[2], 10.0);  // delay 2: input[0]
+    EXPECT_FLOAT_EQ(result[3], 12.0);  // delay 2: input[1]
+    EXPECT_FLOAT_EQ(result[4], 15.0);  // delay 2: input[2]
+    EXPECT_FLOAT_EQ(result[5], 13.0);  // delay 2: input[3]
 }
 
 TEST(DelayTest, LargerPeriod) {
@@ -693,9 +695,9 @@ TEST(DelayTest, LargerPeriod) {
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
     EXPECT_TRUE(isnan(result[2]));
-    EXPECT_FLOAT_EQ(result[3], 10.0);   // delay 3: input[0]
-    EXPECT_FLOAT_EQ(result[4], 12.0);   // delay 3: input[1]
-    EXPECT_FLOAT_EQ(result[5], 15.0);   // delay 3: input[2]
+    EXPECT_FLOAT_EQ(result[3], 10.0);  // delay 3: input[0]
+    EXPECT_FLOAT_EQ(result[4], 12.0);  // delay 3: input[1]
+    EXPECT_FLOAT_EQ(result[5], 15.0);  // delay 3: input[2]
 }
 
 TEST(DelayTest, WithNegatives) {
@@ -777,9 +779,9 @@ TEST(DelayTest, LargePeriod) {
     EXPECT_TRUE(isnan(result[2]));
     EXPECT_TRUE(isnan(result[3]));
     EXPECT_TRUE(isnan(result[4]));
-    EXPECT_FLOAT_EQ(result[5], 1.0);    // input[0]
-    EXPECT_FLOAT_EQ(result[6], 2.0);    // input[1]
-    EXPECT_FLOAT_EQ(result[7], 3.0);    // input[2]
+    EXPECT_FLOAT_EQ(result[5], 1.0);  // input[0]
+    EXPECT_FLOAT_EQ(result[6], 2.0);  // input[1]
+    EXPECT_FLOAT_EQ(result[7], 3.0);  // input[2]
 }
 
 // ========== Rolling SMA Tests ==========
@@ -1060,9 +1062,9 @@ TEST(TsRankTest, WithDuplicates) {
     ASSERT_EQ(result.size(), 5);
     EXPECT_TRUE(isnan(result[0]));
     EXPECT_TRUE(isnan(result[1]));
-    EXPECT_FLOAT_EQ(result[2], 2.0);   // [1,3,2]: 2 belegt Rang 2
-    EXPECT_FLOAT_EQ(result[3], 2.5);   // [3,2,3]: nach Sortierung [2,3,3], Durchschnittsrang von 3=(2+3)/2=2.5
-    EXPECT_FLOAT_EQ(result[4], 2.5);   // [2,3,3]: nach Sortierung [2,3,3], Durchschnittsrang von 3=(2+3)/2=2.5
+    EXPECT_FLOAT_EQ(result[2], 2.0);  // [1,3,2]: 2 belegt Rang 2
+    EXPECT_FLOAT_EQ(result[3], 2.5);  // [3,2,3]: nach Sortierung [2,3,3], Durchschnittsrang von 3=(2+3)/2=2.5
+    EXPECT_FLOAT_EQ(result[4], 2.5);  // [2,3,3]: nach Sortierung [2,3,3], Durchschnittsrang von 3=(2+3)/2=2.5
 }
 
 // ========== TS Rank Optimized Tests ==========
@@ -1130,11 +1132,11 @@ TEST(RankTest, BasicExample) {
     vector<float> result = alpha_rank(input);
 
     ASSERT_EQ(result.size(), 5);
-    EXPECT_FLOAT_EQ(result[0], 0.2);   // 10 kleinster -> 1/5
-    EXPECT_FLOAT_EQ(result[1], 1.0);   // 50 größter -> 5/5
-    EXPECT_FLOAT_EQ(result[2], 0.6);   // 30 mittel -> 3/5
-    EXPECT_FLOAT_EQ(result[3], 0.4);   // 20 zweitkleinster -> 2/5
-    EXPECT_FLOAT_EQ(result[4], 0.8);   // 40 zweitgrößter -> 4/5
+    EXPECT_FLOAT_EQ(result[0], 0.2);  // 10 kleinster -> 1/5
+    EXPECT_FLOAT_EQ(result[1], 1.0);  // 50 größter -> 5/5
+    EXPECT_FLOAT_EQ(result[2], 0.6);  // 30 mittel -> 3/5
+    EXPECT_FLOAT_EQ(result[3], 0.4);  // 20 zweitkleinster -> 2/5
+    EXPECT_FLOAT_EQ(result[4], 0.8);  // 40 zweitgrößter -> 4/5
 }
 
 TEST(RankTest, TwoDuplicates) {
@@ -1146,11 +1148,11 @@ TEST(RankTest, TwoDuplicates) {
     vector<float> result = alpha_rank(input);
 
     ASSERT_EQ(result.size(), 5);
-    EXPECT_FLOAT_EQ(result[0], 0.2);   // 10 -> 1/5
-    EXPECT_FLOAT_EQ(result[1], 0.7);   // 30 -> 3.5/5
-    EXPECT_FLOAT_EQ(result[2], 0.7);   // 30 -> 3.5/5
-    EXPECT_FLOAT_EQ(result[3], 0.4);   // 20 -> 2/5
-    EXPECT_FLOAT_EQ(result[4], 1.0);   // 40 -> 5/5
+    EXPECT_FLOAT_EQ(result[0], 0.2);  // 10 -> 1/5
+    EXPECT_FLOAT_EQ(result[1], 0.7);  // 30 -> 3.5/5
+    EXPECT_FLOAT_EQ(result[2], 0.7);  // 30 -> 3.5/5
+    EXPECT_FLOAT_EQ(result[3], 0.4);  // 20 -> 2/5
+    EXPECT_FLOAT_EQ(result[4], 1.0);  // 40 -> 5/5
 }
 
 TEST(RankTest, ThreeDuplicates) {
@@ -1162,11 +1164,11 @@ TEST(RankTest, ThreeDuplicates) {
     vector<float> result = alpha_rank(input);
 
     ASSERT_EQ(result.size(), 5);
-    EXPECT_FLOAT_EQ(result[0], 0.2);   // 10 -> 1/5
-    EXPECT_FLOAT_EQ(result[1], 0.6);   // 30 -> 3.0/5
-    EXPECT_FLOAT_EQ(result[2], 0.6);   // 30 -> 3.0/5
-    EXPECT_FLOAT_EQ(result[3], 0.6);   // 30 -> 3.0/5
-    EXPECT_FLOAT_EQ(result[4], 1.0);   // 40 -> 5/5
+    EXPECT_FLOAT_EQ(result[0], 0.2);  // 10 -> 1/5
+    EXPECT_FLOAT_EQ(result[1], 0.6);  // 30 -> 3.0/5
+    EXPECT_FLOAT_EQ(result[2], 0.6);  // 30 -> 3.0/5
+    EXPECT_FLOAT_EQ(result[3], 0.6);  // 30 -> 3.0/5
+    EXPECT_FLOAT_EQ(result[4], 1.0);  // 40 -> 5/5
 }
 
 TEST(RankTest, FourDuplicates) {
@@ -1178,11 +1180,11 @@ TEST(RankTest, FourDuplicates) {
     vector<float> result = alpha_rank(input);
 
     ASSERT_EQ(result.size(), 5);
-    EXPECT_FLOAT_EQ(result[0], 1.0);   // 50 -> 5/5
-    EXPECT_FLOAT_EQ(result[1], 0.5);   // 30 -> 2.5/5
-    EXPECT_FLOAT_EQ(result[2], 0.5);   // 30 -> 2.5/5
-    EXPECT_FLOAT_EQ(result[3], 0.5);   // 30 -> 2.5/5
-    EXPECT_FLOAT_EQ(result[4], 0.5);   // 30 -> 2.5/5
+    EXPECT_FLOAT_EQ(result[0], 1.0);  // 50 -> 5/5
+    EXPECT_FLOAT_EQ(result[1], 0.5);  // 30 -> 2.5/5
+    EXPECT_FLOAT_EQ(result[2], 0.5);  // 30 -> 2.5/5
+    EXPECT_FLOAT_EQ(result[3], 0.5);  // 30 -> 2.5/5
+    EXPECT_FLOAT_EQ(result[4], 0.5);  // 30 -> 2.5/5
 }
 
 TEST(RankTest, AllSameValues) {
@@ -1225,8 +1227,8 @@ TEST(RankTest, TwoElements) {
     vector<float> result = alpha_rank(input);
 
     ASSERT_EQ(result.size(), 2);
-    EXPECT_FLOAT_EQ(result[0], 0.5);   // 10 -> 1/2
-    EXPECT_FLOAT_EQ(result[1], 1.0);   // 20 -> 2/2
+    EXPECT_FLOAT_EQ(result[0], 0.5);  // 10 -> 1/2
+    EXPECT_FLOAT_EQ(result[1], 1.0);  // 20 -> 2/2
 }
 
 TEST(RankTest, TwoElementsSame) {
@@ -1250,11 +1252,11 @@ TEST(RankTest, NegativeNumbers) {
     vector<float> result = alpha_rank(input);
 
     ASSERT_EQ(result.size(), 5);
-    EXPECT_FLOAT_EQ(result[0], 0.2);   // -10 -> 1/5
-    EXPECT_FLOAT_EQ(result[1], 1.0);   // 20 -> 5/5
-    EXPECT_FLOAT_EQ(result[2], 0.4);   // -5 -> 2/5
-    EXPECT_FLOAT_EQ(result[3], 0.8);   // 15 -> 4/5
-    EXPECT_FLOAT_EQ(result[4], 0.6);   // 0 -> 3/5
+    EXPECT_FLOAT_EQ(result[0], 0.2);  // -10 -> 1/5
+    EXPECT_FLOAT_EQ(result[1], 1.0);  // 20 -> 5/5
+    EXPECT_FLOAT_EQ(result[2], 0.4);  // -5 -> 2/5
+    EXPECT_FLOAT_EQ(result[3], 0.8);  // 15 -> 4/5
+    EXPECT_FLOAT_EQ(result[4], 0.6);  // 0 -> 3/5
 }
 
 TEST(RankTest, DecimalNumbers) {
@@ -1266,11 +1268,11 @@ TEST(RankTest, DecimalNumbers) {
     vector<float> result = alpha_rank(input);
 
     ASSERT_EQ(result.size(), 5);
-    EXPECT_FLOAT_EQ(result[0], 0.3);   // 1.5 -> 1.5/5
-    EXPECT_FLOAT_EQ(result[1], 0.7);   // 2.5 -> 3.5/5
-    EXPECT_FLOAT_EQ(result[2], 0.3);   // 1.5 -> 1.5/5
-    EXPECT_FLOAT_EQ(result[3], 1.0);   // 3.5 -> 5/5
-    EXPECT_FLOAT_EQ(result[4], 0.7);   // 2.5 -> 3.5/5
+    EXPECT_FLOAT_EQ(result[0], 0.3);  // 1.5 -> 1.5/5
+    EXPECT_FLOAT_EQ(result[1], 0.7);  // 2.5 -> 3.5/5
+    EXPECT_FLOAT_EQ(result[2], 0.3);  // 1.5 -> 1.5/5
+    EXPECT_FLOAT_EQ(result[3], 1.0);  // 3.5 -> 5/5
+    EXPECT_FLOAT_EQ(result[4], 0.7);  // 2.5 -> 3.5/5
 }
 
 TEST(RankTest, MonotonicIncreasing) {
@@ -1310,11 +1312,11 @@ TEST(RankTest, StockReturnExample) {
     vector<float> result = alpha_rank(returns);
 
     ASSERT_EQ(result.size(), 5);
-    EXPECT_FLOAT_EQ(result[0], 0.6);   // 0.02 -> mittel
-    EXPECT_FLOAT_EQ(result[1], 1.0);   // 0.05 -> starke Aktie
-    EXPECT_FLOAT_EQ(result[2], 0.4);   // 0.01 -> leicht schwach
-    EXPECT_FLOAT_EQ(result[3], 0.2);   // -0.01 -> schwache Aktie
-    EXPECT_FLOAT_EQ(result[4], 0.8);   // 0.03 -> leicht stark
+    EXPECT_FLOAT_EQ(result[0], 0.6);  // 0.02 -> mittel
+    EXPECT_FLOAT_EQ(result[1], 1.0);  // 0.05 -> starke Aktie
+    EXPECT_FLOAT_EQ(result[2], 0.4);  // 0.01 -> leicht schwach
+    EXPECT_FLOAT_EQ(result[3], 0.2);  // -0.01 -> schwache Aktie
+    EXPECT_FLOAT_EQ(result[4], 0.8);  // 0.03 -> leicht stark
 }
 
 TEST(RankTest, LimitUpStocksExample) {
@@ -1328,11 +1330,11 @@ TEST(RankTest, LimitUpStocksExample) {
     vector<float> result = alpha_rank(returns);
 
     ASSERT_EQ(result.size(), 5);
-    EXPECT_FLOAT_EQ(result[0], 0.8);   // Aktie mit Kursanstieg-Limit
-    EXPECT_FLOAT_EQ(result[1], 0.8);   // Aktie mit Kursanstieg-Limit
-    EXPECT_FLOAT_EQ(result[2], 0.8);   // Aktie mit Kursanstieg-Limit
-    EXPECT_FLOAT_EQ(result[3], 0.4);   // Normalaktie
-    EXPECT_FLOAT_EQ(result[4], 0.2);   // schwache Aktie
+    EXPECT_FLOAT_EQ(result[0], 0.8);  // Aktie mit Kursanstieg-Limit
+    EXPECT_FLOAT_EQ(result[1], 0.8);  // Aktie mit Kursanstieg-Limit
+    EXPECT_FLOAT_EQ(result[2], 0.8);  // Aktie mit Kursanstieg-Limit
+    EXPECT_FLOAT_EQ(result[3], 0.4);  // Normalaktie
+    EXPECT_FLOAT_EQ(result[4], 0.2);  // schwache Aktie
 }
 
 TEST(RankTest, LargerDataset) {
@@ -1469,9 +1471,9 @@ TEST(ScaleTest, WithNegativeNumbers) {
 
     ASSERT_EQ(result.size(), 4);
     EXPECT_NEAR(result[0], -0.1f, 1e-6);
-    EXPECT_NEAR(result[1],  0.2f, 1e-6);
-    EXPECT_NEAR(result[2],  0.3f, 1e-6);
-    EXPECT_NEAR(result[3],  0.4f, 1e-6);
+    EXPECT_NEAR(result[1], 0.2f, 1e-6);
+    EXPECT_NEAR(result[2], 0.3f, 1e-6);
+    EXPECT_NEAR(result[3], 0.4f, 1e-6);
 
     float sum_abs = 0;
     for (float v : result) sum_abs += std::abs(v);
@@ -1535,7 +1537,7 @@ TEST(ScaleTest, MixedSignSymmetric) {
 
     ASSERT_EQ(result.size(), 2);
     EXPECT_NEAR(result[0], -0.5f, 1e-6);
-    EXPECT_NEAR(result[1],  0.5f, 1e-6);
+    EXPECT_NEAR(result[1], 0.5f, 1e-6);
 }
 
 TEST(ScaleTest, DecimalInput) {
@@ -1560,14 +1562,253 @@ TEST(ScaleTest, StockReturnsExample) {
     vector<float> result = scale(returns);
 
     ASSERT_EQ(result.size(), 4);
-    EXPECT_NEAR(result[0],  0.2f, 1e-5);
+    EXPECT_NEAR(result[0], 0.2f, 1e-5);
     EXPECT_NEAR(result[1], -0.1f, 1e-5);
-    EXPECT_NEAR(result[2],  0.3f, 1e-5);
+    EXPECT_NEAR(result[2], 0.3f, 1e-5);
     EXPECT_NEAR(result[3], -0.4f, 1e-5);
 
     float sum_abs = 0;
     for (float v : result) sum_abs += std::abs(v);
     EXPECT_NEAR(sum_abs, 1.0f, 1e-5);
+}
+
+// ========== TS Argmax Tests ==========
+
+TEST(TsArgmaxTest, BasicTest) {
+    // [3,1,5]: argmax=2 (0-indexed) -> +1 = 3
+    // [1,5,2]: argmax=1 (0-indexed) -> +1 = 2
+    // [5,2,4]: argmax=0 (0-indexed) -> +1 = 1
+    vector<float> input = {3, 1, 5, 2, 4};
+    vector<int> result = ts_argmax(input, 3);
+
+    ASSERT_EQ(result.size(), 5);
+    EXPECT_EQ(result[0], 0);  // NaN-Äquivalent
+    EXPECT_EQ(result[1], 0);  // NaN-Äquivalent
+    EXPECT_EQ(result[2], 3);  // [3,1,5]: max=5 an Position 3
+    EXPECT_EQ(result[3], 2);  // [1,5,2]: max=5 an Position 2
+    EXPECT_EQ(result[4], 1);  // [5,2,4]: max=5 an Position 1
+}
+
+TEST(TsArgmaxTest, MaxAtFirstPosition) {
+    // Maximum immer am Anfang des Fensters
+    vector<float> input = {9, 1, 2, 1, 2};
+    vector<int> result = ts_argmax(input, 3);
+
+    ASSERT_EQ(result.size(), 5);
+    EXPECT_EQ(result[2], 1);  // [9,1,2]: max=9 an Position 1
+    EXPECT_EQ(result[3], 2);  // [1,2,1]: max=2 an Position 2
+    EXPECT_EQ(result[4], 1);  // [2,1,2]: max=2 an Position 1 (erster Treffer)
+}
+
+TEST(TsArgmaxTest, MaxAtLastPosition) {
+    // Maximum immer am Ende des Fensters (monoton steigend)
+    vector<float> input = {1, 2, 3, 4, 5};
+    vector<int> result = ts_argmax(input, 3);
+
+    ASSERT_EQ(result.size(), 5);
+    EXPECT_EQ(result[2], 3);  // [1,2,3]: max=3 an Position 3
+    EXPECT_EQ(result[3], 3);  // [2,3,4]: max=4 an Position 3
+    EXPECT_EQ(result[4], 3);  // [3,4,5]: max=5 an Position 3
+}
+
+TEST(TsArgmaxTest, Window2) {
+    // window=2, argmax gibt 0-indexed zurück, +1 ergibt 1-indexed
+    // [3,1]: argmax=0 -> +1=1
+    // [1,4]: argmax=1 -> +1=2
+    // [4,1]: argmax=0 -> +1=1
+    // [1,5]: argmax=1 -> +1=2
+    vector<float> input = {3, 1, 4, 1, 5};
+    vector<int> result = ts_argmax(input, 2);
+
+    ASSERT_EQ(result.size(), 5);
+    EXPECT_EQ(result[0], 0);  // NaN-Äquivalent
+    EXPECT_EQ(result[1], 1);  // [3,1]: max=3 an Position 1
+    EXPECT_EQ(result[2], 2);  // [1,4]: max=4 an Position 2
+    EXPECT_EQ(result[3], 1);  // [4,1]: max=4 an Position 1
+    EXPECT_EQ(result[4], 2);  // [1,5]: max=5 an Position 2
+}
+
+TEST(TsArgmaxTest, ResultSize) {
+    vector<float> input = {1, 2, 3, 4, 5};
+    EXPECT_EQ(ts_argmax(input, 3).size(), input.size());
+}
+
+TEST(TsArgmaxTest, DefaultWindow) {
+    // Standardfenstergröße = 10
+    vector<float> input(15, 1.0f);
+    input[5] = 99.0f;  // Maximum an Position 5
+    vector<int> result = ts_argmax(input, 10);
+
+    ASSERT_EQ(result.size(), 15);
+    // Für i=9: Fenster=[1,1,1,1,1,99,1,1,1,1] (Index 0-9), max=99 an Index 5 -> +1=6
+    EXPECT_EQ(result[9], 6);
+}
+
+// ========== TS Argmin Tests ==========
+
+TEST(TsArgminTest, BasicTest) {
+    // [3,1,5]: argmin=1 (0-indexed) -> +1 = 2
+    // [1,5,2]: argmin=0 (0-indexed) -> +1 = 1
+    // [5,2,4]: argmin=1 (0-indexed) -> +1 = 2
+    vector<float> input = {3, 1, 5, 2, 4};
+    vector<int> result = ts_argmin(input, 3);
+
+    ASSERT_EQ(result.size(), 5);
+    EXPECT_EQ(result[0], 0);  // NaN-Äquivalent
+    EXPECT_EQ(result[1], 0);  // NaN-Äquivalent
+    EXPECT_EQ(result[2], 2);  // [3,1,5]: min=1 an Position 2
+    EXPECT_EQ(result[3], 1);  // [1,5,2]: min=1 an Position 1
+    EXPECT_EQ(result[4], 2);  // [5,2,4]: min=2 an Position 2
+}
+
+TEST(TsArgminTest, MinAtFirstPosition) {
+    // Minimum immer am Anfang des Fensters (monoton fallend)
+    vector<float> input = {5, 4, 3, 2, 1};
+    vector<int> result = ts_argmin(input, 3);
+
+    ASSERT_EQ(result.size(), 5);
+    EXPECT_EQ(result[2], 3);  // [5,4,3]: min=3 an Position 3
+    EXPECT_EQ(result[3], 3);  // [4,3,2]: min=2 an Position 3
+    EXPECT_EQ(result[4], 3);  // [3,2,1]: min=1 an Position 3
+}
+
+TEST(TsArgminTest, MinAtLastPosition) {
+    // Minimum immer am Ende des Fensters (monoton steigend)
+    vector<float> input = {1, 2, 3, 4, 5};
+    vector<int> result = ts_argmin(input, 3);
+
+    ASSERT_EQ(result.size(), 5);
+    EXPECT_EQ(result[2], 1);  // [1,2,3]: min=1 an Position 1
+    EXPECT_EQ(result[3], 1);  // [2,3,4]: min=2 an Position 1
+    EXPECT_EQ(result[4], 1);  // [3,4,5]: min=3 an Position 1
+}
+
+TEST(TsArgminTest, Window2) {
+    // window=2
+    // [3,1]: argmin=1 -> +1=2
+    // [1,4]: argmin=0 -> +1=1
+    // [4,1]: argmin=1 -> +1=2
+    // [1,5]: argmin=0 -> +1=1
+    vector<float> input = {3, 1, 4, 1, 5};
+    vector<int> result = ts_argmin(input, 2);
+
+    ASSERT_EQ(result.size(), 5);
+    EXPECT_EQ(result[0], 0);  // NaN-Äquivalent
+    EXPECT_EQ(result[1], 2);  // [3,1]: min=1 an Position 2
+    EXPECT_EQ(result[2], 1);  // [1,4]: min=1 an Position 1
+    EXPECT_EQ(result[3], 2);  // [4,1]: min=1 an Position 2
+    EXPECT_EQ(result[4], 1);  // [1,5]: min=1 an Position 1
+}
+
+TEST(TsArgminTest, ResultSize) {
+    vector<float> input = {1, 2, 3, 4, 5};
+    EXPECT_EQ(ts_argmin(input, 3).size(), input.size());
+}
+
+TEST(TsArgminTest, DefaultWindow) {
+    // Standardfenstergröße = 10
+    vector<float> input(15, 99.0f);
+    input[5] = 1.0f;  // Minimum an Position 5
+    vector<int> result = ts_argmin(input, 10);
+
+    ASSERT_EQ(result.size(), 15);
+    // Für i=9: Fenster=[99,99,99,99,99,1,99,99,99,99] (Index 0-9), min=1 an Index 5 -> +1=6
+    EXPECT_EQ(result[9], 6);
+}
+
+// ========== Decay Linear Tests ==========
+
+TEST(DecayLinearTest, BasicTest) {
+    // period=3, divisor=6, Gewichte=[1/6, 2/6, 3/6]
+    // result[2] = 1*(1/6) + 2*(2/6) + 3*(3/6) = 14/6 ≈ 2.3333
+    // result[3] = 2*(1/6) + 3*(2/6) + 4*(3/6) = 20/6 ≈ 3.3333
+    // result[4] = 3*(1/6) + 4*(2/6) + 5*(3/6) = 26/6 ≈ 4.3333
+    vector<float> input = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
+    vector<float> result = decay_linear(input, 3);
+
+    ASSERT_EQ(result.size(), 5);
+    EXPECT_TRUE(isnan(result[0]));
+    EXPECT_TRUE(isnan(result[1]));
+    EXPECT_NEAR(result[2], 14.0f / 6.0f, 1e-5f);
+    EXPECT_NEAR(result[3], 20.0f / 6.0f, 1e-5f);
+    EXPECT_NEAR(result[4], 26.0f / 6.0f, 1e-5f);
+}
+
+TEST(DecayLinearTest, WindowOne) {
+    // period=1: Gewicht=1, Ergebnis entspricht der Eingabe
+    vector<float> input = {3.0f, 7.0f, 2.0f, 9.0f};
+    vector<float> result = decay_linear(input, 1);
+
+    ASSERT_EQ(result.size(), 4);
+    EXPECT_FLOAT_EQ(result[0], 3.0f);
+    EXPECT_FLOAT_EQ(result[1], 7.0f);
+    EXPECT_FLOAT_EQ(result[2], 2.0f);
+    EXPECT_FLOAT_EQ(result[3], 9.0f);
+}
+
+TEST(DecayLinearTest, WindowTwo) {
+    // period=2, divisor=3, Gewichte=[1/3, 2/3]
+    // result[1] = 1*(1/3) + 2*(2/3) = 5/3
+    // result[2] = 2*(1/3) + 3*(2/3) = 8/3
+    // result[3] = 3*(1/3) + 4*(2/3) = 11/3
+    vector<float> input = {1.0f, 2.0f, 3.0f, 4.0f};
+    vector<float> result = decay_linear(input, 2);
+
+    ASSERT_EQ(result.size(), 4);
+    EXPECT_TRUE(isnan(result[0]));
+    EXPECT_NEAR(result[1], 5.0f / 3.0f, 1e-5f);
+    EXPECT_NEAR(result[2], 8.0f / 3.0f, 1e-5f);
+    EXPECT_NEAR(result[3], 11.0f / 3.0f, 1e-5f);
+}
+
+TEST(DecayLinearTest, NanPrefixLength) {
+    // Die ersten (period-1) Elemente müssen NaN sein
+    int period = 5;
+    vector<float> input(10, 1.0f);
+    vector<float> result = decay_linear(input, period);
+
+    ASSERT_EQ(result.size(), 10);
+    for (int i = 0; i < period - 1; ++i) {
+        EXPECT_TRUE(isnan(result[i])) << "Index " << i << " sollte NaN sein";
+    }
+    for (size_t i = period - 1; i < result.size(); ++i) {
+        EXPECT_FALSE(isnan(result[i])) << "Index " << i << " sollte kein NaN sein";
+    }
+}
+
+TEST(DecayLinearTest, AllSameValues) {
+    // Konstanter Eingabevektor: gewichteter Mittelwert = Konstante selbst
+    float c = 5.0f;
+    vector<float> input(8, c);
+    vector<float> result = decay_linear(input, 4);
+
+    ASSERT_EQ(result.size(), 8);
+    for (size_t i = 3; i < result.size(); ++i) {
+        EXPECT_NEAR(result[i], c, 1e-5f) << "Index " << i;
+    }
+}
+
+TEST(DecayLinearTest, RecentValuesWeightedHigher) {
+    // Spätere Elemente haben höhere Gewichte → Ergebnis näher am letzten Wert
+    // Fenster [0, 0, 10], period=3: result = 0*(1/6) + 0*(2/6) + 10*(3/6) = 5.0
+    vector<float> input = {0.0f, 0.0f, 10.0f};
+    vector<float> result = decay_linear(input, 3);
+
+    ASSERT_EQ(result.size(), 3);
+    EXPECT_NEAR(result[2], 5.0f, 1e-5f);
+
+    // Umgekehrt: [10, 0, 0] → 10*(1/6) + 0 + 0 ≈ 1.6667
+    vector<float> input2 = {10.0f, 0.0f, 0.0f};
+    vector<float> result2 = decay_linear(input2, 3);
+    EXPECT_NEAR(result2[2], 10.0f / 6.0f, 1e-5f);
+
+    // Neuerer Wert wird stärker gewichtet
+    EXPECT_GT(result[2], result2[2]);
+}
+
+TEST(DecayLinearTest, ResultSize) {
+    vector<float> input = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
+    EXPECT_EQ(decay_linear(input, 3).size(), input.size());
 }
 
 // main-Funktion wird von GTest::gtest_main bereitgestellt, kein manuelles Schreiben nötig

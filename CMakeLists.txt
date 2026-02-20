@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 project(Alpha101)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # 告诉 MSVC 用 UTF-8 编码读取源文件（防止中文字符串编译出错）
 if(MSVC)
@@ -54,9 +55,9 @@ add_executable(useeigen useeigen.cpp)
 target_link_libraries(useeigen Eigen3::Eigen)
 
 # 测试可执行文件
-add_executable(run_tests test_alpha101.cpp)
+add_executable(run_tests GTest_Alpha101.cpp)
 target_link_libraries(run_tests GTest::gtest_main)
 
 # 性能测试可执行文件
-add_executable(run_benchmarks benchmark_alpha101.cpp)
+add_executable(run_benchmarks GBenchmark_Alpha101.cpp)
 target_link_libraries(run_benchmarks benchmark::benchmark)

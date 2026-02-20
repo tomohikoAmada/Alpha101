@@ -1,7 +1,7 @@
 // Basierend auf Article/101 Formulaic Alphas.pdf und dem Python-Code in WorldQuant_alpha101_code,
 // einfache C++-Implementierung von Alpha101
 
-#include "alpha101.h"
+#include "Alpha101.h"
 
 // Alle Funktionsimplementierungen befinden sich in alpha101.h, hier nur main()
 

@@ -1,0 +1,42 @@
+CompileFlags:
+  # 告诉 clangd 在 build/ 目录中查找 compile_commands.json
+  # 需要使用 Ninja 生成器重新配置 CMake 才能生成此文件
+  CompilationDatabase: build
+
+  # 当 compile_commands.json 不存在时的兜底编译标志
+  Add:
+    - -std=c++20
+    - -xc++
+
+  # 移除 MSVC 特有的编译标志（clangd 基于 clang，无法识别这些标志）
+  Remove:
+    - /utf-8
+    - /EHsc
+    - /EHa
+    - /RTC*
+    - /MDd
+    - /MD
+    - /MTd
+    - /MT
+    - /Zi
+    - /ZI
+    - /W[0-9]
+    - /GR
+    - /GR-
+    - /TP
+    - /Od
+    - /O1
+    - /O2
+    - /Ob*
+    - /bigobj
+    - /wd*
+    - /FC
+    - /diagnostics*
+    - /sdl*
+    - /nologo
+    - /DWIN32
+    - /D_WINDOWS
+
+Diagnostics:
+  # 抑制对未使用头文件的警告（项目头文件包含实现代码属正常情况）
+  UnusedIncludes: None
