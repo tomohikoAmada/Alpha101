@@ -101,12 +101,9 @@ vector<float> rolling_stddev(vector<float> DataFrame, int window) {
             }
             float avg = sum / window;
             sum = 0;
-            vector<float> tmp_window;
             for (int j = 0; j < window; j++) {
-                tmp_window.push_back(pow((DataFrame[i - j] - avg), 2));
-            }
-            for (int j = 0; j < tmp_window.size(); j++) {
-                sum += tmp_window[j];
+                float diff = DataFrame[i - j] - avg;
+                sum += diff * diff;
             }
             float res = sqrt(sum / (window - 1));
             result.push_back(res);
@@ -418,7 +415,7 @@ vector<float> delay(vector<float> a, int period) {
     return result;
 }
 
-vector<float> alpha_rank(const vector<float>& a) {
+inline vector<float> alpha_rank(const vector<float>& a) {
     size_t n = a.size();
     vector<float> result(n, NAN);
 
@@ -432,8 +429,7 @@ vector<float> alpha_rank(const vector<float>& a) {
 
     // Nur gültige Indizes sortieren
     vector<size_t> sorted_idx = valid_idx;
-    sort(sorted_idx.begin(), sorted_idx.end(),
-         [&](size_t i, size_t j) { return a[i] < a[j]; });
+    sort(sorted_idx.begin(), sorted_idx.end(), [&](size_t i, size_t j) { return a[i] < a[j]; });
 
     // Perzentilrang mit Mittelwert bei Gleichstand zuweisen
     size_t i = 0;
@@ -442,8 +438,7 @@ vector<float> alpha_rank(const vector<float>& a) {
         while (j < m && a[sorted_idx[i]] == a[sorted_idx[j]]) j++;
         float avg_rank = (i + 1 + j) / 2.0f;
         float pct_rank = avg_rank / (float)m;
-        for (size_t k = i; k < j; ++k)
-            result[sorted_idx[k]] = pct_rank;
+        for (size_t k = i; k < j; ++k) result[sorted_idx[k]] = pct_rank;
         i = j;
     }
 
@@ -473,7 +468,10 @@ inline vector<float> ts_argmax(const vector<float>& a, int window = 10) {
         bool has_nan = false;
         int maxIdx = 0;
         for (int j = 0; j < window; ++j) {
-            if (isnan(a[i - window + 1 + j])) { has_nan = true; break; }
+            if (isnan(a[i - window + 1 + j])) {
+                has_nan = true;
+                break;
+            }
             if (a[i - window + 1 + j] > a[i - window + 1 + maxIdx]) maxIdx = j;
         }
         if (!has_nan) result[i] = (float)(maxIdx + 1);
@@ -490,7 +488,10 @@ inline vector<float> ts_argmin(const vector<float>& a, int window = 10) {
         bool has_nan = false;
         int minIdx = 0;
         for (int j = 0; j < window; ++j) {
-            if (isnan(a[i - window + 1 + j])) { has_nan = true; break; }
+            if (isnan(a[i - window + 1 + j])) {
+                has_nan = true;
+                break;
+            }
             if (a[i - window + 1 + j] < a[i - window + 1 + minIdx]) minIdx = j;
         }
         if (!has_nan) result[i] = (float)(minIdx + 1);

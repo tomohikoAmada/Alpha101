@@ -4,165 +4,103 @@
 
 #include "Alpha101.h"
 
-// ========== Alpha001 Tests ==========
-// Alpha#1: rank(Ts_ArgMax(SignedPower(((returns < 0) ? stddev(returns, 20) : close), 2.), 5)) - 0.5
-//
-// Warm-up: rolling_stddev benötigt window=20 → erste 19 Indizes NaN
-//          ts_argmax benötigt window=5  → weitere 4 Indizes NaN
-//          Erster gültiger Index: 23 (0-indexed)
+// ========== Alpha001 截面版测试 ==========
+// alpha001(vector<vector<float>>, vector<vector<float>>)
+// 数据布局: [股票][时间]，输出同样为 [股票][时间]
 
-class Alpha001Test : public ::testing::Test {
+class Alpha001CrossTest : public ::testing::Test {
    protected:
-    // Erzeugt einen Vektor mit n Elementen, alle gleich value
-    static vector<float> const_vec(size_t n, float value) { return vector<float>(n, value); }
+    // 生成常量矩阵：S只股票，T个时间点，全部等于value
+    static vector<vector<float>> const_mat(size_t S, size_t T, float value) {
+        return vector<vector<float>>(S, vector<float>(T, value));
+    }
 
-    // Erzeugt einen Vektor mit steigenden Werten: start, start+step, ...
-    static vector<float> linspace(size_t n, float start, float step) {
-        vector<float> v(n);
-        for (size_t i = 0; i < n; ++i) v[i] = start + i * step;
-        return v;
+    // 生成线性递增矩阵：每只股票的close从start开始以step递增
+    static vector<vector<float>> linspace_mat(size_t S, size_t T, float start, float step) {
+        vector<vector<float>> mat(S, vector<float>(T));
+        for (size_t s = 0; s < S; ++s)
+            for (size_t t = 0; t < T; ++t)
+                mat[s][t] = start + t * step + s * 10.0f;  // 不同股票价格错开
+        return mat;
     }
 };
 
-// ---------- Grundlegende Struktur ----------
+// ---------- 输出形状 ----------
 
-TEST_F(Alpha001Test, OutputSize) {
-    // Ausgabegröße muss der Eingabegröße entsprechen
-    size_t n = 50;
-    auto close = const_vec(n, 10.0f);
-    auto returns = const_vec(n, 0.01f);
-    auto result = alpha001(close, returns);
-    EXPECT_EQ(result.size(), n);
+TEST_F(Alpha001CrossTest, OutputShape) {
+    size_t S = 5, T = 50;
+    auto close   = const_mat(S, T, 100.0f);
+    auto returns = const_mat(S, T, 0.01f);
+    auto result  = alpha001(close, returns);
+
+    ASSERT_EQ(result.size(), S);
+    for (size_t s = 0; s < S; ++s)
+        EXPECT_EQ(result[s].size(), T);
 }
 
-TEST_F(Alpha001Test, WarmupPeriod) {
-    // Indizes 0..22 (erste 23 Elemente) müssen NaN sein
-    size_t n = 50;
-    auto close = linspace(n, 10.0f, 0.5f);
-    auto returns = const_vec(n, 0.01f);
-    auto result = alpha001(close, returns);
+// ---------- 热身期 ----------
 
-    for (size_t i = 0; i < 23; ++i) {
-        EXPECT_TRUE(isnan(result[i])) << "Index " << i << " sollte NaN sein";
-    }
-    // Ab Index 23 darf kein NaN mehr sein (sofern genug Eingabedaten)
-    for (size_t i = 23; i < n; ++i) {
-        EXPECT_FALSE(isnan(result[i])) << "Index " << i << " sollte kein NaN sein";
+TEST_F(Alpha001CrossTest, WarmupPeriod) {
+    // 前23个时间点（0..22）应全为NaN，23起应有有效值
+    size_t S = 3, T = 50;
+    auto close   = linspace_mat(S, T, 100.0f, 0.5f);
+    auto returns = const_mat(S, T, 0.01f);
+    auto result  = alpha001(close, returns);
+
+    for (size_t s = 0; s < S; ++s) {
+        for (size_t t = 0; t < 23; ++t)
+            EXPECT_TRUE(isnan(result[s][t])) << "s=" << s << " t=" << t << " 应为NaN";
+        for (size_t t = 23; t < T; ++t)
+            EXPECT_FALSE(isnan(result[s][t])) << "s=" << s << " t=" << t << " 不应为NaN";
     }
 }
 
-TEST_F(Alpha001Test, AllNanForShortInput) {
-    // Bei weniger als 24 Elementen ist die gesamte Ausgabe NaN
-    for (size_t n : {1u, 10u, 22u, 23u}) {
-        auto close = linspace(n, 10.0f, 1.0f);
-        auto returns = const_vec(n, 0.01f);
-        auto result = alpha001(close, returns);
-        for (size_t i = 0; i < n; ++i) {
-            EXPECT_TRUE(isnan(result[i])) << "n=" << n << ", Index " << i << " sollte NaN sein";
+// ---------- 输出范围 ----------
+
+TEST_F(Alpha001CrossTest, OutputRange) {
+    size_t S = 5, T = 60;
+    auto close   = linspace_mat(S, T, 50.0f, 1.0f);
+    auto returns = const_mat(S, T, 0.01f);
+    auto result  = alpha001(close, returns);
+
+    for (size_t s = 0; s < S; ++s)
+        for (size_t t = 23; t < T; ++t) {
+            EXPECT_GE(result[s][t], -0.5f) << "s=" << s << " t=" << t;
+            EXPECT_LE(result[s][t], 0.5f)  << "s=" << s << " t=" << t;
         }
+}
+
+// ---------- 截面性质：相同股票得到相同排名（Tie） ----------
+
+TEST_F(Alpha001CrossTest, IdenticalStocksGetSameRank) {
+    // 所有股票数据相同 → argmax相同 → 截面排名全部并列
+    size_t S = 4, T = 40;
+    auto close   = const_mat(S, T, 100.0f);
+    auto returns = const_mat(S, T, 0.01f);
+    auto result  = alpha001(close, returns);
+
+    for (size_t t = 23; t < T; ++t) {
+        float v0 = result[0][t];
+        for (size_t s = 1; s < S; ++s)
+            EXPECT_NEAR(result[s][t], v0, 1e-5f) << "t=" << t << " s=" << s;
     }
 }
 
-// ---------- Ausgabebereich ----------
+// ---------- 截面性质：不同股票排名之和固定 ----------
 
-TEST_F(Alpha001Test, OutputRangeValid) {
-    // Gültige Ausgabewerte liegen in (-0.5, 0.5]
-    size_t n = 60;
-    auto close = linspace(n, 100.0f, 1.0f);
-    auto returns = const_vec(n, 0.01f);
-    auto result = alpha001(close, returns);
+TEST_F(Alpha001CrossTest, CrossSectionalRankSumIsFixed) {
+    // S只股票的截面百分位排名均值 = (1+S)/(2*S)，减去0.5后均值 = (1-S)/(2*S)
+    // 等价地，所有股票排名之和 = S * (1+S)/(2*S) - S*0.5 = (S+1)/2 - S/2 = 0.5
+    size_t S = 5, T = 50;
+    auto close   = linspace_mat(S, T, 100.0f, 1.0f);
+    auto returns = const_mat(S, T, 0.01f);
+    auto result  = alpha001(close, returns);
 
-    for (size_t i = 23; i < n; ++i) {
-        EXPECT_GE(result[i], -0.5f) << "Index " << i;
-        EXPECT_LE(result[i], 0.5f) << "Index " << i;
-    }
-}
-
-// ---------- Einzelner gültiger Ausgabewert = -0.5 ----------
-
-TEST_F(Alpha001Test, SingleValidOutputEquals_Minus05) {
-    // Genau 24 Elemente → nur result[23] ist gültig
-    // alpha_rank eines einzelnen Elements = 1.0 → 1.0 - 0.5 = 0.5
-    size_t n = 24;
-    auto close = linspace(n, 10.0f, 1.0f);
-    auto returns = const_vec(n, 0.01f);
-    auto result = alpha001(close, returns);
-
-    EXPECT_FALSE(isnan(result[23]));
-    EXPECT_FLOAT_EQ(result[23], 0.5f);
-}
-
-// ---------- Bekannte Werte ----------
-
-TEST_F(Alpha001Test, KnownValues) {
-    size_t n = 25;
-    vector<float> close(n, 100.0f);
-    close[19] = 10.0f;
-    close[20] = 5.0f;
-    close[21] = 15.0f;
-    close[22] = 20.0f;
-    close[23] = 12.0f;
-    close[24] = 25.0f;
-    auto returns = const_vec(n, 0.01f);
-
-    auto result = alpha001(close, returns);
-
-    EXPECT_FALSE(isnan(result[23]));
-    EXPECT_FALSE(isnan(result[24]));
-    EXPECT_FLOAT_EQ(result[23], 0.0f);
-    EXPECT_FLOAT_EQ(result[24], 0.5f);
-}
-
-// ---------- Gleichstand (Ties) ----------
-
-TEST_F(Alpha001Test, TieHandling) {
-    size_t n = 30;
-    auto close = const_vec(n, 50.0f);
-    auto returns = const_vec(n, 0.01f);
-    auto result = alpha001(close, returns);
-
-    size_t m = n - 23;  // Anzahl gültiger Ausgabewerte
-    float expected = 1.0f / (2.0f * static_cast<float>(m));
-
-    for (size_t i = 23; i < n; ++i) {
-        EXPECT_FALSE(isnan(result[i])) << "Index " << i;
-        EXPECT_NEAR(result[i], expected, 1e-5f) << "Index " << i;
-    }
-}
-
-// ---------- Negative Renditen verwenden stddev ----------
-
-TEST_F(Alpha001Test, NegativeReturnUsesStddev) {
-    // Wenn returns < 0, wird stddev(returns, 20) statt close verwendet
-    // Bei konstanten Renditen ist stddev=0 → inner_sq=0
-    // ts_argmax([0,0,...,0]) → Position 1 (erster Treffer überall)
-    size_t n = 40;
-    auto close = linspace(n, 10.0f, 1.0f);
-    auto returns = const_vec(n, -0.01f);  // alle negativ
-    auto result = alpha001(close, returns);
-
-    // Ergebnis muss für alle gültigen Indizes definiert und im Bereich sein
-    for (size_t i = 23; i < n; ++i) {
-        EXPECT_FALSE(isnan(result[i])) << "Index " << i;
-        EXPECT_GE(result[i], -0.5f);
-        EXPECT_LE(result[i], 0.5f);
-    }
-}
-
-// ---------- Gemischte Renditen ----------
-
-TEST_F(Alpha001Test, MixedReturns) {
-    // Abwechselnd positive und negative Renditen
-    size_t n = 40;
-    auto close = linspace(n, 50.0f, 0.5f);
-    vector<float> returns(n);
-    for (size_t i = 0; i < n; ++i) returns[i] = (i % 2 == 0) ? 0.02f : -0.02f;
-    auto result = alpha001(close, returns);
-
-    for (size_t i = 23; i < n; ++i) {
-        EXPECT_FALSE(isnan(result[i])) << "Index " << i;
-        EXPECT_GE(result[i], -0.5f);
-        EXPECT_LE(result[i], 0.5f);
+    for (size_t t = 23; t < T; ++t) {
+        float sum = 0.0f;
+        for (size_t s = 0; s < S; ++s)
+            sum += result[s][t];
+        EXPECT_NEAR(sum, 0.5f, 1e-4f) << "t=" << t;
     }
 }
 

@@ -4,99 +4,55 @@
 
 #include "Alpha101.h"
 
-// Hilfsfunktionen zur Datenerzeugung
+// ========== Alpha001 截面版 Benchmarks ==========
+// 参数：S=股票数，T=时间长度
 
-static vector<float> gen_close(size_t n, int seed = 42) {
-    vector<float> data(n);
+static vector<vector<float>> gen_close_mat(size_t S, size_t T, int seed = 42) {
     std::mt19937 gen(seed);
     std::uniform_real_distribution<float> dis(10.0f, 200.0f);
-    for (auto& v : data) v = dis(gen);
-    return data;
+    vector<vector<float>> mat(S, vector<float>(T));
+    for (auto& row : mat)
+        for (auto& v : row) v = dis(gen);
+    return mat;
 }
 
-static vector<float> gen_returns(size_t n, float mean = 0.0f, int seed = 99) {
-    vector<float> data(n);
+static vector<vector<float>> gen_returns_mat(size_t S, size_t T, float mean = 0.0f, int seed = 99) {
     std::mt19937 gen(seed);
     std::normal_distribution<float> dis(mean, 0.02f);
-    for (auto& v : data) v = dis(gen);
-    return data;
+    vector<vector<float>> mat(S, vector<float>(T));
+    for (auto& row : mat)
+        for (auto& v : row) v = dis(gen);
+    return mat;
 }
 
-// ========== Alpha001 Benchmarks ==========
-
-static void BM_Alpha001_Small(benchmark::State& state) {
-    auto close   = gen_close(100);
-    auto returns = gen_returns(100);
+// 固定股票数(500只)，改变时间长度
+static void BM_Alpha001Cross_VaryingT(benchmark::State& state) {
+    size_t T = static_cast<size_t>(state.range(0));
+    size_t S = 500;
+    auto close   = gen_close_mat(S, T);
+    auto returns = gen_returns_mat(S, T);
 
     for (auto _ : state) {
         auto result = alpha001(close, returns);
         benchmark::DoNotOptimize(result);
     }
-    state.SetItemsProcessed(state.iterations() * close.size());
+    state.SetItemsProcessed(state.iterations() * S * T);
 }
-BENCHMARK(BM_Alpha001_Small);
+BENCHMARK(BM_Alpha001Cross_VaryingT)->Arg(100)->Arg(250)->Arg(500)->Arg(1000)->Arg(2000);
 
-static void BM_Alpha001_Medium(benchmark::State& state) {
-    auto close   = gen_close(1000);
-    auto returns = gen_returns(1000);
+// 固定时间长度(250天)，改变股票数
+static void BM_Alpha001Cross_VaryingS(benchmark::State& state) {
+    size_t S = static_cast<size_t>(state.range(0));
+    size_t T = 250;
+    auto close   = gen_close_mat(S, T);
+    auto returns = gen_returns_mat(S, T);
 
     for (auto _ : state) {
         auto result = alpha001(close, returns);
         benchmark::DoNotOptimize(result);
     }
-    state.SetItemsProcessed(state.iterations() * close.size());
+    state.SetItemsProcessed(state.iterations() * S * T);
 }
-BENCHMARK(BM_Alpha001_Medium);
-
-static void BM_Alpha001_Large(benchmark::State& state) {
-    auto close   = gen_close(10000);
-    auto returns = gen_returns(10000);
-
-    for (auto _ : state) {
-        auto result = alpha001(close, returns);
-        benchmark::DoNotOptimize(result);
-    }
-    state.SetItemsProcessed(state.iterations() * close.size());
-}
-BENCHMARK(BM_Alpha001_Large);
-
-static void BM_Alpha001_AllNegativeReturns(benchmark::State& state) {
-    // returns < 0: innerer Ausdruck verwendet stddev statt close
-    auto close   = gen_close(1000);
-    auto returns = gen_returns(1000, -0.05f);  // negativer Mittelwert
-
-    for (auto _ : state) {
-        auto result = alpha001(close, returns);
-        benchmark::DoNotOptimize(result);
-    }
-    state.SetItemsProcessed(state.iterations() * close.size());
-}
-BENCHMARK(BM_Alpha001_AllNegativeReturns);
-
-static void BM_Alpha001_AllPositiveReturns(benchmark::State& state) {
-    // returns >= 0: innerer Ausdruck verwendet close
-    auto close   = gen_close(1000);
-    auto returns = gen_returns(1000, 0.05f);  // positiver Mittelwert
-
-    for (auto _ : state) {
-        auto result = alpha001(close, returns);
-        benchmark::DoNotOptimize(result);
-    }
-    state.SetItemsProcessed(state.iterations() * close.size());
-}
-BENCHMARK(BM_Alpha001_AllPositiveReturns);
-
-static void BM_Alpha001_VaryingSize(benchmark::State& state) {
-    size_t n = static_cast<size_t>(state.range(0));
-    auto close   = gen_close(n);
-    auto returns = gen_returns(n);
-
-    for (auto _ : state) {
-        auto result = alpha001(close, returns);
-        benchmark::DoNotOptimize(result);
-    }
-    state.SetItemsProcessed(state.iterations() * n);
-}
-BENCHMARK(BM_Alpha001_VaryingSize)->Arg(100)->Arg(500)->Arg(1000)->Arg(5000)->Arg(10000);
+BENCHMARK(BM_Alpha001Cross_VaryingS)->Arg(50)->Arg(100)->Arg(300)->Arg(500)->Arg(1000);
 
 BENCHMARK_MAIN();
