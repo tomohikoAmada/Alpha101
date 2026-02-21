@@ -25,19 +25,20 @@ inline vector<vector<float>> alpha001(const vector<vector<float>>& close_mat,
     // Step 1: 每只股票独立计算 ts_argmax(inner_sq, 5)
     // 结果直接写入列主序平坦缓冲区 argmax_flat[t*S + s]，
     // 使 Step 2 的截面读取成为连续内存访问
+    // std_ret/inner_sq/argmax_s 在循环外预分配，S 次迭代全程复用，零内部堆分配
     vector<float> argmax_flat(T * S, NAN);
+    vector<float> std_ret(T), inner_sq(T), argmax_s(T);
     for (size_t s = 0; s < S; ++s) {
-        vector<float> std_ret = rolling_stddev(returns_mat[s], 20);
+        rolling_stddev(returns_mat[s], 20, std_ret);
 
-        vector<float> inner_sq(T, NAN);
+        fill(inner_sq.begin(), inner_sq.end(), NAN);
         for (size_t t = 0; t < T; ++t) {
             if (isnan(std_ret[t])) continue;
             float val = (returns_mat[s][t] < 0.0f) ? std_ret[t] : close_mat[s][t];
             inner_sq[t] = val * val;
         }
-        vector<float> argmax_s = ts_argmax(inner_sq, 5);
-        for (size_t t = 0; t < T; ++t)
-            argmax_flat[t * S + s] = argmax_s[t];
+        ts_argmax(inner_sq, 5, argmax_s);
+        for (size_t t = 0; t < T; ++t) argmax_flat[t * S + s] = argmax_s[t];
     }
 
     // Step 2: 对每个时间截面，跨股票做截面排名

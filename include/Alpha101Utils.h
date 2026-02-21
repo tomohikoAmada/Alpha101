@@ -89,7 +89,7 @@ vector<float> rolling_sma(vector<float> DataFrame, int window) {
     return result;
 }
 
-vector<float> rolling_stddev(const vector<float>& DataFrame, int window) {
+inline vector<float> rolling_stddev(const vector<float>& DataFrame, int window) {
     int n = (int)DataFrame.size();
     vector<float> result(n, NAN);
     if (window <= 1 || n < window) return result;
@@ -115,6 +115,31 @@ vector<float> rolling_stddev(const vector<float>& DataFrame, int window) {
         result[i] = std::sqrt(var > 0.0f ? var : 0.0f);
     }
     return result;
+}
+
+// in-place 重载：写入调用方提供的 out，容量足够时零堆分配
+inline void rolling_stddev(const vector<float>& DataFrame, int window, vector<float>& out) {
+    int n = (int)DataFrame.size();
+    out.assign(n, NAN);
+    if (window <= 1 || n < window) return;
+
+    float sum = 0.0f, sum_sq = 0.0f;
+    for (int i = 0; i < window; ++i) {
+        sum    += DataFrame[i];
+        sum_sq += DataFrame[i] * DataFrame[i];
+    }
+    {
+        float var = (sum_sq - sum * sum / window) / (window - 1);
+        out[window - 1] = std::sqrt(var > 0.0f ? var : 0.0f);
+    }
+    for (int i = window; i < n; ++i) {
+        float x_new = DataFrame[i];
+        float x_old = DataFrame[i - window];
+        sum    += x_new - x_old;
+        sum_sq += x_new * x_new - x_old * x_old;
+        float var = (sum_sq - sum * sum / window) / (window - 1);
+        out[i] = std::sqrt(var > 0.0f ? var : 0.0f);
+    }
 }
 
 float correlation(vector<float> a, vector<float> b, int window) {
@@ -570,6 +595,22 @@ inline vector<float> ts_argmax(const vector<float>& a, int window = 10) {
     }
 
     return result;
+}
+
+// in-place 重载：写入调用方提供的 out，容量足够时零堆分配
+inline void ts_argmax(const vector<float>& a, int window, vector<float>& out) {
+    size_t n = a.size();
+    out.assign(n, NAN);
+
+    for (size_t i = window - 1; i < n; ++i) {
+        bool has_nan = false;
+        int maxIdx = 0;
+        for (int j = 0; j < window; ++j) {
+            if (isnan(a[i - window + 1 + j])) { has_nan = true; break; }
+            if (a[i - window + 1 + j] > a[i - window + 1 + maxIdx]) maxIdx = j;
+        }
+        if (!has_nan) out[i] = (float)(maxIdx + 1);
+    }
 }
 
 inline vector<float> ts_argmin(const vector<float>& a, int window = 10) {
