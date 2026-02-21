@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="132" failures="0" disabled="0" errors="0" time="0.035" timestamp="2026-02-21T18:15:14.491" name="AllTests">
+  <testsuite name="RollingTsSumTest" tests="3" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-02-21T18:15:14.491">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="25" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.491" classname="RollingTsSumTest" />
+    <testcase name="LongerSequence" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="37" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.491" classname="RollingTsSumTest" />
+    <testcase name="WindowOne" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="52" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.491" classname="RollingTsSumTest" />
+  </testsuite>
+  <testsuite name="RollingProdTest" tests="9" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2026-02-21T18:15:14.491">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="64" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.491" classname="RollingProdTest" />
+    <testcase name="WithOne" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="73" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.492" classname="RollingProdTest" />
+    <testcase name="WithZero" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="82" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.492" classname="RollingProdTest" />
+    <testcase name="NegativeNumbers" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="91" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.492" classname="RollingProdTest" />
+    <testcase name="TwoNegatives" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="100" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.492" classname="RollingProdTest" />
+    <testcase name="SingleElement" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="109" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.492" classname="RollingProdTest" />
+    <testcase name="AllOnes" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="118" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.493" classname="RollingProdTest" />
+    <testcase name="DecimalNumbers" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="127" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.493" classname="RollingProdTest" />
+    <testcase name="LargerSequence" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="136" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.493" classname="RollingProdTest" />
+  </testsuite>
+  <testsuite name="ProductTest" tests="8" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2026-02-21T18:15:14.493">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="147" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.493" classname="ProductTest" />
+    <testcase name="WindowTwo" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="162" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.493" classname="ProductTest" />
+    <testcase name="WithZero" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="175" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.493" classname="ProductTest" />
+    <testcase name="WithNegatives" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="189" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.494" classname="ProductTest" />
+    <testcase name="WindowOne" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="202" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.494" classname="ProductTest" />
+    <testcase name="LargerWindow" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="214" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.494" classname="ProductTest" />
+    <testcase name="AllOnes" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="230" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.494" classname="ProductTest" />
+    <testcase name="DecimalNumbers" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="244" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.494" classname="ProductTest" />
+  </testsuite>
+  <testsuite name="TsMinTest" tests="9" failures="0" disabled="0" skipped="0" errors="0" time="0.002" timestamp="2026-02-21T18:15:14.495">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="259" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.495" classname="TsMinTest" />
+    <testcase name="MonotonicIncreasing" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="274" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.495" classname="TsMinTest" />
+    <testcase name="MonotonicDecreasing" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="289" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.495" classname="TsMinTest" />
+    <testcase name="WithNegatives" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="304" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.495" classname="TsMinTest" />
+    <testcase name="WindowOne" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="318" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.496" classname="TsMinTest" />
+    <testcase name="WindowTwo" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="330" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.496" classname="TsMinTest" />
+    <testcase name="AllSameValues" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="344" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.496" classname="TsMinTest" />
+    <testcase name="LargerWindow" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="357" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.496" classname="TsMinTest" />
+    <testcase name="DecimalNumbers" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="372" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.497" classname="TsMinTest" />
+  </testsuite>
+  <testsuite name="TsMaxTest" tests="10" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2026-02-21T18:15:14.497">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="387" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.497" classname="TsMaxTest" />
+    <testcase name="MonotonicIncreasing" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="402" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.497" classname="TsMaxTest" />
+    <testcase name="MonotonicDecreasing" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="417" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.497" classname="TsMaxTest" />
+    <testcase name="WithNegatives" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="432" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.498" classname="TsMaxTest" />
+    <testcase name="WindowOne" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="446" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.498" classname="TsMaxTest" />
+    <testcase name="WindowTwo" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="458" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.498" classname="TsMaxTest" />
+    <testcase name="AllSameValues" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="472" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.498" classname="TsMaxTest" />
+    <testcase name="LargerWindow" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="485" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.498" classname="TsMaxTest" />
+    <testcase name="DecimalNumbers" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="500" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.498" classname="TsMaxTest" />
+    <testcase name="ZigzagPattern" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="513" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.499" classname="TsMaxTest" />
+  </testsuite>
+  <testsuite name="DeltaTest" tests="9" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2026-02-21T18:15:14.499">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="529" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.499" classname="DeltaTest" />
+    <testcase name="PeriodTwo" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="544" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.499" classname="DeltaTest" />
+    <testcase name="LargerPeriod" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="560" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.499" classname="DeltaTest" />
+    <testcase name="WithNegatives" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="574" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.499" classname="DeltaTest" />
+    <testcase name="MonotonicIncreasing" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="588" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.500" classname="DeltaTest" />
+    <testcase name="MonotonicDecreasing" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="602" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.500" classname="DeltaTest" />
+    <testcase name="AllSameValues" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="616" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.500" classname="DeltaTest" />
+    <testcase name="DecimalNumbers" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="629" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.500" classname="DeltaTest" />
+    <testcase name="ZeroChange" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="642" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.501" classname="DeltaTest" />
+  </testsuite>
+  <testsuite name="DelayTest" tests="9" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2026-02-21T18:15:14.501">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="658" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.501" classname="DelayTest" />
+    <testcase name="PeriodTwo" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="673" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.501" classname="DelayTest" />
+    <testcase name="LargerPeriod" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="689" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.501" classname="DelayTest" />
+    <testcase name="WithNegatives" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="703" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.502" classname="DelayTest" />
+    <testcase name="MonotonicIncreasing" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="717" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.502" classname="DelayTest" />
+    <testcase name="AllSameValues" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="731" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.502" classname="DelayTest" />
+    <testcase name="DecimalNumbers" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="744" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.502" classname="DelayTest" />
+    <testcase name="ZeroValues" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="757" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.502" classname="DelayTest" />
+    <testcase name="LargePeriod" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="771" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.502" classname="DelayTest" />
+  </testsuite>
+  <testsuite name="RollingSmaTest" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-02-21T18:15:14.503">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="789" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.503" classname="RollingSmaTest" />
+    <testcase name="WindowTwo" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="801" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.503" classname="RollingSmaTest" />
+  </testsuite>
+  <testsuite name="RollingStddevTest" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-02-21T18:15:14.503">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="815" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.503" classname="RollingStddevTest" />
+  </testsuite>
+  <testsuite name="RollingCorrelationTest" tests="3" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-02-21T18:15:14.504">
+    <testcase name="PositiveCorrelation" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="829" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.504" classname="RollingCorrelationTest" />
+    <testcase name="NegativeCorrelation" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="843" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.504" classname="RollingCorrelationTest" />
+    <testcase name="ManualVerification" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="857" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.504" classname="RollingCorrelationTest" />
+  </testsuite>
+  <testsuite name="RollingCovarianceTest" tests="3" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-02-21T18:15:14.504">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="873" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.505" classname="RollingCovarianceTest" />
+    <testcase name="ManualVerification" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="886" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.505" classname="RollingCovarianceTest" />
+    <testcase name="NegativeCovariance" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="901" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.505" classname="RollingCovarianceTest" />
+  </testsuite>
+  <testsuite name="RollingRankTest" tests="9" failures="0" disabled="0" skipped="0" errors="0" time="0.002" timestamp="2026-02-21T18:15:14.505">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="916" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.506" classname="RollingRankTest" />
+    <testcase name="LowestValue" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="926" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.506" classname="RollingRankTest" />
+    <testcase name="HighestValue" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="934" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.506" classname="RollingRankTest" />
+    <testcase name="MiddleValue" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="942" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.506" classname="RollingRankTest" />
+    <testcase name="SingleElement" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="950" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.507" classname="RollingRankTest" />
+    <testcase name="DuplicateValues" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="958" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.507" classname="RollingRankTest" />
+    <testcase name="DuplicateLastValue" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="966" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.507" classname="RollingRankTest" />
+    <testcase name="AllSameValues" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="976" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.507" classname="RollingRankTest" />
+    <testcase name="TwoDuplicates" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="985" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.507" classname="RollingRankTest" />
+  </testsuite>
+  <testsuite name="TsRankTest" tests="5" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-02-21T18:15:14.508">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="997" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.508" classname="TsRankTest" />
+    <testcase name="MonotonicIncreasing" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1012" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.508" classname="TsRankTest" />
+    <testcase name="MonotonicDecreasing" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1027" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.508" classname="TsRankTest" />
+    <testcase name="PriceSequenceExample" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1042" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.508" classname="TsRankTest" />
+    <testcase name="WithDuplicates" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1056" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.508" classname="TsRankTest" />
+  </testsuite>
+  <testsuite name="TsRankOptimizedTest" tests="3" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-02-21T18:15:14.509">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1072" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.509" classname="TsRankOptimizedTest" />
+    <testcase name="LargeDataset" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1088" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.509" classname="TsRankOptimizedTest" />
+    <testcase name="WithDuplicates" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1108" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.509" classname="TsRankOptimizedTest" />
+  </testsuite>
+  <testsuite name="RankTest" tests="16" failures="0" disabled="0" skipped="0" errors="0" time="0.003" timestamp="2026-02-21T18:15:14.510">
+    <testcase name="BasicExample" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1126" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.510" classname="RankTest" />
+    <testcase name="TwoDuplicates" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1142" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.510" classname="RankTest" />
+    <testcase name="ThreeDuplicates" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1158" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.511" classname="RankTest" />
+    <testcase name="FourDuplicates" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1174" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.511" classname="RankTest" />
+    <testcase name="AllSameValues" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1190" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.511" classname="RankTest" />
+    <testcase name="SingleElement" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1205" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.511" classname="RankTest" />
+    <testcase name="EmptyArray" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1215" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.511" classname="RankTest" />
+    <testcase name="TwoElements" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1223" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.512" classname="RankTest" />
+    <testcase name="TwoElementsSame" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1234" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.512" classname="RankTest" />
+    <testcase name="NegativeNumbers" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1246" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.512" classname="RankTest" />
+    <testcase name="DecimalNumbers" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1262" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.512" classname="RankTest" />
+    <testcase name="MonotonicIncreasing" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1278" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.512" classname="RankTest" />
+    <testcase name="MonotonicDecreasing" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1292" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.513" classname="RankTest" />
+    <testcase name="StockReturnExample" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1306" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.513" classname="RankTest" />
+    <testcase name="LimitUpStocksExample" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1322" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.513" classname="RankTest" />
+    <testcase name="LargerDataset" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1340" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.513" classname="RankTest" />
+  </testsuite>
+  <testsuite name="TsRankUltraTest" tests="3" failures="0" disabled="0" skipped="0" errors="0" time="0.005" timestamp="2026-02-21T18:15:14.514">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1370" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.514" classname="TsRankUltraTest" />
+    <testcase name="LargeDataset" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1386" status="run" result="completed" time="0.004" timestamp="2026-02-21T18:15:14.514" classname="TsRankUltraTest" />
+    <testcase name="WithDuplicates" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1406" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.519" classname="TsRankUltraTest" />
+  </testsuite>
+  <testsuite name="ScaleTest" tests="11" failures="0" disabled="0" skipped="0" errors="0" time="0.002" timestamp="2026-02-21T18:15:14.519">
+    <testcase name="BasicExample" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1424" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.520" classname="ScaleTest" />
+    <testcase name="SumAbsEqualsK" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1438" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.520" classname="ScaleTest" />
+    <testcase name="WithKParameter" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1448" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.520" classname="ScaleTest" />
+    <testcase name="WithNegativeNumbers" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1464" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.520" classname="ScaleTest" />
+    <testcase name="AllNegativeNumbers" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1483" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.520" classname="ScaleTest" />
+    <testcase name="SingleElement" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1500" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.521" classname="ScaleTest" />
+    <testcase name="SingleElementWithK" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1510" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.521" classname="ScaleTest" />
+    <testcase name="AllSameValues" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1520" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.521" classname="ScaleTest" />
+    <testcase name="MixedSignSymmetric" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1532" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.521" classname="ScaleTest" />
+    <testcase name="DecimalInput" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1543" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.521" classname="ScaleTest" />
+    <testcase name="StockReturnsExample" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1556" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.521" classname="ScaleTest" />
+  </testsuite>
+  <testsuite name="TsArgmaxTest" tests="6" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2026-02-21T18:15:14.522">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1577" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.522" classname="TsArgmaxTest" />
+    <testcase name="MaxAtFirstPosition" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1592" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.522" classname="TsArgmaxTest" />
+    <testcase name="MaxAtLastPosition" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1603" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.522" classname="TsArgmaxTest" />
+    <testcase name="Window2" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1614" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.522" classname="TsArgmaxTest" />
+    <testcase name="ResultSize" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1631" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.523" classname="TsArgmaxTest" />
+    <testcase name="DefaultWindow" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1636" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.523" classname="TsArgmaxTest" />
+  </testsuite>
+  <testsuite name="TsArgminTest" tests="6" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2026-02-21T18:15:14.523">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1649" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.523" classname="TsArgminTest" />
+    <testcase name="MinAtFirstPosition" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1664" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.523" classname="TsArgminTest" />
+    <testcase name="MinAtLastPosition" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1675" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.524" classname="TsArgminTest" />
+    <testcase name="Window2" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1686" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.524" classname="TsArgminTest" />
+    <testcase name="ResultSize" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1703" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.524" classname="TsArgminTest" />
+    <testcase name="DefaultWindow" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1708" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.524" classname="TsArgminTest" />
+  </testsuite>
+  <testsuite name="DecayLinearTest" tests="7" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2026-02-21T18:15:14.524">
+    <testcase name="BasicTest" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1721" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.524" classname="DecayLinearTest" />
+    <testcase name="WindowOne" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1737" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.525" classname="DecayLinearTest" />
+    <testcase name="WindowTwo" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1749" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.525" classname="DecayLinearTest" />
+    <testcase name="NanPrefixLength" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1764" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.525" classname="DecayLinearTest" />
+    <testcase name="AllSameValues" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1779" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.525" classname="DecayLinearTest" />
+    <testcase name="RecentValuesWeightedHigher" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1791" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.526" classname="DecayLinearTest" />
+    <testcase name="ResultSize" file="C:\Projekt\Alpha101\tests\GTest_Alpha101Utils.cpp" line="1809" status="run" result="completed" time="0." timestamp="2026-02-21T18:15:14.526" classname="DecayLinearTest" />
+  </testsuite>
+</testsuites>

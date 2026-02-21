@@ -24,7 +24,7 @@ vector<float> rolling_ts_sum(vector<float> DataFrame, int window);
 vector<float> rolling_sma(vector<float> DataFrame, int window);
 
 // Rollende Standardabweichung
-vector<float> rolling_stddev(vector<float> DataFrame, int window);
+vector<float> rolling_stddev(const vector<float>& DataFrame, int window);
 
 // Korrelationskoeffizient für ein einzelnes Fenster
 float correlation(vector<float> a, vector<float> b, int window);
@@ -89,25 +89,30 @@ vector<float> rolling_sma(vector<float> DataFrame, int window) {
     return result;
 }
 
-vector<float> rolling_stddev(vector<float> DataFrame, int window) {
-    vector<float> result;
-    for (int i = 0; i < DataFrame.size(); i++) {
-        if (i + 1 < window) {
-            result.push_back(NAN);
-        } else {
-            float sum = 0;
-            for (int j = 0; j < window; j++) {
-                sum += DataFrame[i - j];
-            }
-            float avg = sum / window;
-            sum = 0;
-            for (int j = 0; j < window; j++) {
-                float diff = DataFrame[i - j] - avg;
-                sum += diff * diff;
-            }
-            float res = sqrt(sum / (window - 1));
-            result.push_back(res);
-        }
+vector<float> rolling_stddev(const vector<float>& DataFrame, int window) {
+    int n = (int)DataFrame.size();
+    vector<float> result(n, NAN);
+    if (window <= 1 || n < window) return result;
+
+    // 初始化第一个窗口的 sum 和 sum_sq
+    float sum = 0.0f, sum_sq = 0.0f;
+    for (int i = 0; i < window; ++i) {
+        sum    += DataFrame[i];
+        sum_sq += DataFrame[i] * DataFrame[i];
+    }
+    // 第一个有效输出
+    {
+        float var = (sum_sq - sum * sum / window) / (window - 1);
+        result[window - 1] = std::sqrt(var > 0.0f ? var : 0.0f);
+    }
+    // 滑动：每步 O(1)，仅加入新元素、移出旧元素
+    for (int i = window; i < n; ++i) {
+        float x_new = DataFrame[i];
+        float x_old = DataFrame[i - window];
+        sum    += x_new - x_old;
+        sum_sq += x_new * x_new - x_old * x_old;
+        float var = (sum_sq - sum * sum / window) / (window - 1);
+        result[i] = std::sqrt(var > 0.0f ? var : 0.0f);
     }
     return result;
 }
@@ -427,22 +432,109 @@ inline vector<float> alpha_rank(const vector<float>& a) {
     size_t m = valid_idx.size();
     if (m == 0) return result;
 
-    // Nur gültige Indizes sortieren
-    vector<size_t> sorted_idx = valid_idx;
-    sort(sorted_idx.begin(), sorted_idx.end(), [&](size_t i, size_t j) { return a[i] < a[j]; });
+    // valid_idx 原地排序，省去 sorted_idx 的额外拷贝和堆分配
+    sort(valid_idx.begin(), valid_idx.end(), [&](size_t i, size_t j) { return a[i] < a[j]; });
 
     // Perzentilrang mit Mittelwert bei Gleichstand zuweisen
     size_t i = 0;
     while (i < m) {
         size_t j = i;
-        while (j < m && a[sorted_idx[i]] == a[sorted_idx[j]]) j++;
+        while (j < m && a[valid_idx[i]] == a[valid_idx[j]]) j++;
         float avg_rank = (i + 1 + j) / 2.0f;
         float pct_rank = avg_rank / (float)m;
-        for (size_t k = i; k < j; ++k) result[sorted_idx[k]] = pct_rank;
+        for (size_t k = i; k < j; ++k) result[valid_idx[k]] = pct_rank;
         i = j;
     }
 
     return result;
+}
+
+/**
+ * @brief alpha_rank 的 span 重载，避免调用方额外拷贝
+ *
+ * 与 vector 版语义完全相同：对输入数据做百分位截面排名（NaN 保留）。
+ * 供截面因子函数直接传入连续内存视图，无需构造临时 vector。
+ *
+ * @param a      输入数据的只读视图（连续内存）
+ * @return       与 a 等长的排名结果，NaN 位置保持 NaN，有效值域 (0, 1]
+ */
+inline vector<float> alpha_rank(span<const float> a) {
+    size_t n = a.size();
+    vector<float> result(n, NAN);
+
+    vector<size_t> valid_idx;
+    for (size_t i = 0; i < n; ++i)
+        if (!isnan(a[i])) valid_idx.push_back(i);
+
+    size_t m = valid_idx.size();
+    if (m == 0) return result;
+
+    // valid_idx 原地排序，省去 sorted_idx 的额外拷贝和堆分配
+    sort(valid_idx.begin(), valid_idx.end(), [&](size_t i, size_t j) { return a[i] < a[j]; });
+
+    size_t i = 0;
+    while (i < m) {
+        size_t j = i;
+        while (j < m && a[valid_idx[i]] == a[valid_idx[j]]) j++;
+        float avg_rank = (i + 1 + j) / 2.0f;
+        float pct_rank = avg_rank / (float)m;
+        for (size_t k = i; k < j; ++k) result[valid_idx[k]] = pct_rank;
+        i = j;
+    }
+
+    return result;
+}
+
+/**
+ * @brief alpha_rank 高性能重载：零内部堆分配，含插入排序小规模快速路径
+ *
+ * 与其他重载语义完全相同，但所有临时存储由调用方提供，可在循环中复用。
+ * 适合在 T 次截面循环中调用：在循环外声明 out/idx_buf，循环内传入。
+ *
+ * @param a       输入数据的只读视图（连续内存）
+ * @param out     输出缓冲区（与 a 等长，函数负责完整写入，无需预初始化）
+ * @param idx_buf 调用方提供的临时索引缓冲区，循环内复用；建议循环外 reserve(n)
+ *
+ * 排序策略：
+ *   m <= 32  → 插入排序（O(m²) 但常数极小，分支预测友好）
+ *   m >  32  → std::sort（introsort，O(m log m)）
+ */
+inline void alpha_rank(span<const float> a, span<float> out, vector<size_t>& idx_buf) {
+    size_t n = a.size();
+    fill(out.begin(), out.end(), NAN);
+
+    idx_buf.clear();
+    for (size_t i = 0; i < n; ++i)
+        if (!isnan(a[i])) idx_buf.push_back(i);
+
+    size_t m = idx_buf.size();
+    if (m == 0) return;
+
+    if (m <= 32) {
+        // 插入排序：小规模时避免 introsort 的函数调用和递归开销
+        for (size_t i = 1; i < m; ++i) {
+            size_t key = idx_buf[i];
+            float key_val = a[key];
+            size_t j = i;
+            while (j > 0 && a[idx_buf[j - 1]] > key_val) {
+                idx_buf[j] = idx_buf[j - 1];
+                --j;
+            }
+            idx_buf[j] = key;
+        }
+    } else {
+        sort(idx_buf.begin(), idx_buf.end(), [&](size_t i, size_t j) { return a[i] < a[j]; });
+    }
+
+    size_t i = 0;
+    while (i < m) {
+        size_t j = i;
+        while (j < m && a[idx_buf[i]] == a[idx_buf[j]]) j++;
+        float avg_rank = (i + 1 + j) / 2.0f;
+        float pct_rank = avg_rank / (float)m;
+        for (size_t k = i; k < j; ++k) out[idx_buf[k]] = pct_rank;
+        i = j;
+    }
 }
 
 inline vector<float> scale(vector<float> a, float k = 1.0f) {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="5" failures="0" disabled="0" errors="0" time="0.001" timestamp="2026-02-21T18:05:48.059" name="AllTests">
+  <testsuite name="Alpha001CrossTest" tests="5" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-02-21T18:05:48.059">
+    <testcase name="OutputShape" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="30" status="run" result="completed" time="0." timestamp="2026-02-21T18:05:48.059" classname="Alpha001CrossTest" />
+    <testcase name="WarmupPeriod" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="43" status="run" result="completed" time="0." timestamp="2026-02-21T18:05:48.060" classname="Alpha001CrossTest" />
+    <testcase name="OutputRange" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="60" status="run" result="completed" time="0." timestamp="2026-02-21T18:05:48.060" classname="Alpha001CrossTest" />
+    <testcase name="IdenticalStocksGetSameRank" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="75" status="run" result="completed" time="0." timestamp="2026-02-21T18:05:48.060" classname="Alpha001CrossTest" />
+    <testcase name="CrossSectionalRankSumIsFixed" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="91" status="run" result="completed" time="0." timestamp="2026-02-21T18:05:48.060" classname="Alpha001CrossTest" />
+  </testsuite>
+</testsuites>

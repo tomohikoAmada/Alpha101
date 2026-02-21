@@ -23,7 +23,9 @@ inline vector<vector<float>> alpha001(const vector<vector<float>>& close_mat,
     size_t T = close_mat[0].size();
 
     // Step 1: 每只股票独立计算 ts_argmax(inner_sq, 5)
-    vector<vector<float>> argmax_mat(S, vector<float>(T, NAN));
+    // 结果直接写入列主序平坦缓冲区 argmax_flat[t*S + s]，
+    // 使 Step 2 的截面读取成为连续内存访问
+    vector<float> argmax_flat(T * S, NAN);
     for (size_t s = 0; s < S; ++s) {
         vector<float> std_ret = rolling_stddev(returns_mat[s], 20);
 
@@ -33,17 +35,20 @@ inline vector<vector<float>> alpha001(const vector<vector<float>>& close_mat,
             float val = (returns_mat[s][t] < 0.0f) ? std_ret[t] : close_mat[s][t];
             inner_sq[t] = val * val;
         }
-        argmax_mat[s] = ts_argmax(inner_sq, 5);
+        vector<float> argmax_s = ts_argmax(inner_sq, 5);
+        for (size_t t = 0; t < T; ++t)
+            argmax_flat[t * S + s] = argmax_s[t];
     }
 
     // Step 2: 对每个时间截面，跨股票做截面排名
+    // argmax_flat[t*S .. t*S+S) 为连续内存，直接以 span 传入，无需额外拷贝
+    // ranked/idx_buf 在循环外预分配，T 次迭代全程复用，零内部堆分配
     vector<vector<float>> result(S, vector<float>(T, NAN));
-    vector<float> cross(S);    // 预分配，循环内复用
-    vector<float> ranked(S);   // 预分配，循环内复用
+    vector<float> ranked(S);
+    vector<size_t> idx_buf;
+    idx_buf.reserve(S);
     for (size_t t = 0; t < T; ++t) {
-        for (size_t s = 0; s < S; ++s) cross[s] = argmax_mat[s][t];
-
-        ranked = alpha_rank(cross);  // 截面排名
+        alpha_rank(span<const float>(&argmax_flat[t * S], S), span<float>(ranked), idx_buf);
         for (size_t s = 0; s < S; ++s)
             if (!isnan(ranked[s])) result[s][t] = ranked[s] - 0.5f;
     }
