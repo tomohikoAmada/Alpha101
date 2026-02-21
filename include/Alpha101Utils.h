@@ -400,7 +400,7 @@ vector<float> delta(vector<float> a, int period) {
     return result;
 }
 
-vector<float> delay(vector<float> a, int period) {
+inline vector<float> delay(vector<float> a, int period) {
     vector<float> result;
 
     for (int i = 0; i < a.size(); ++i) {
@@ -445,7 +445,7 @@ inline vector<float> alpha_rank(const vector<float>& a) {
     return result;
 }
 
-vector<float> scale(vector<float> a, float k = 1.0f) {
+inline vector<float> scale(vector<float> a, float k = 1.0f) {
     float sum = 0;
     for (size_t i = 0; i < a.size(); i++) {
         sum += std::abs(a[i]);
