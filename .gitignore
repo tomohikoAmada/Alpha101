@@ -4,7 +4,6 @@ build/
 
 # IDE 配置
 .idea/
-.vscode/
 .claude/
 
 # macOS 文件
@@ -31,3 +30,8 @@ dist/
 *.log
 *.tmp
 *~
+
+# Testergebnisse (GTest XML / GBenchmark JSON)
+# tests/gtest/*.xml
+# tests/gtest/*.json
+# tests/benchmark/*.json

@@ -48,16 +48,54 @@ if(NOT benchmark_FOUND)
     FetchContent_MakeAvailable(googlebenchmark)
 endif()
 
-# 每个 .cpp 文件编译成独立的可执行程序
+# Alpha101-Header-Verzeichnis
+include_directories(include)
+
+# Hilfsprogramme (Wurzelverzeichnis)
 add_executable(eztest eztest.cpp)
 add_executable(useeigen useeigen.cpp)
 
 target_link_libraries(useeigen Eigen3::Eigen)
 
-# 测试可执行文件
-add_executable(run_tests GTest_Alpha101.cpp)
-target_link_libraries(run_tests GTest::gtest_main)
+# GTest (tests/)
+add_executable(GTest_Alpha101Utils tests/GTest_Alpha101Utils.cpp)
+target_link_libraries(GTest_Alpha101Utils GTest::gtest_main)
 
-# 性能测试可执行文件
-add_executable(run_benchmarks GBenchmark_Alpha101.cpp)
-target_link_libraries(run_benchmarks benchmark::benchmark)
+add_executable(GTest_Alpha101 tests/GTest_Alpha101.cpp)
+target_link_libraries(GTest_Alpha101 GTest::gtest_main)
+
+# CTest-Integration: Testfälle für VSCode und ctest sichtbar machen
+enable_testing()
+include(GoogleTest)
+gtest_discover_tests(GTest_Alpha101Utils)
+gtest_discover_tests(GTest_Alpha101)
+
+# GBenchmark (tests/)
+add_executable(GBenchmark_Alpha101Utils tests/GBenchmark_Alpha101Utils.cpp)
+target_link_libraries(GBenchmark_Alpha101Utils benchmark::benchmark)
+
+add_executable(GBenchmark_Alpha101 tests/GBenchmark_Alpha101.cpp)
+target_link_libraries(GBenchmark_Alpha101 benchmark::benchmark)
+
+# Benchmark-Ergebnisse persistieren (JSON nach results/benchmark/)
+set(BENCH_RESULTS_DIR ${CMAKE_SOURCE_DIR}/tests/benchmark)
+
+add_custom_target(bench_alpha101utils
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${BENCH_RESULTS_DIR}
+    COMMAND $<TARGET_FILE:GBenchmark_Alpha101Utils>
+            --benchmark_out=${BENCH_RESULTS_DIR}/alpha101utils.json
+            --benchmark_out_format=json
+    DEPENDS GBenchmark_Alpha101Utils
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "GBenchmark_Alpha101Utils ausfuehren und Ergebnisse speichern..."
+)
+
+add_custom_target(bench_alpha101
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${BENCH_RESULTS_DIR}
+    COMMAND $<TARGET_FILE:GBenchmark_Alpha101>
+            --benchmark_out=${BENCH_RESULTS_DIR}/alpha101.json
+            --benchmark_out_format=json
+    DEPENDS GBenchmark_Alpha101
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "GBenchmark_Alpha101 ausfuehren und Ergebnisse speichern..."
+)

@@ -1,0 +1,108 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Test: Alpha101Utils",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-Command",
+                "$ts = Get-Date -Format 'yyyyMMdd_HHmmss'; New-Item -ItemType Directory -Force -Path tests/gtest | Out-Null; .\\build\\GTest_Alpha101Utils.exe --gtest_output=\"xml:tests/gtest/alpha101utils_$ts.xml\""
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Test: Alpha101",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-Command",
+                "$ts = Get-Date -Format 'yyyyMMdd_HHmmss'; New-Item -ItemType Directory -Force -Path tests/gtest | Out-Null; .\\build\\GTest_Alpha101.exe --gtest_output=\"xml:tests/gtest/alpha101_$ts.xml\""
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Test: Alle",
+            "dependsOn": [
+                "Test: Alpha101Utils",
+                "Test: Alpha101"
+            ],
+            "dependsOrder": "sequence",
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Benchmark: Alpha101Utils",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-Command",
+                "$ts = Get-Date -Format 'yyyyMMdd_HHmmss'; New-Item -ItemType Directory -Force -Path tests/benchmark | Out-Null; .\\build\\GBenchmark_Alpha101Utils.exe --benchmark_out=\"tests/benchmark/alpha101utils_$ts.json\" --benchmark_out_format=json"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Benchmark: Alpha101",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-Command",
+                "$ts = Get-Date -Format 'yyyyMMdd_HHmmss'; New-Item -ItemType Directory -Force -Path tests/benchmark | Out-Null; .\\build\\GBenchmark_Alpha101.exe --benchmark_out=\"tests/benchmark/alpha101_$ts.json\" --benchmark_out_format=json"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Benchmark: Alle",
+            "dependsOn": [
+                "Benchmark: Alpha101Utils",
+                "Benchmark: Alpha101"
+            ],
+            "dependsOrder": "sequence",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}

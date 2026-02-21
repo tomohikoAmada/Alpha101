@@ -1,0 +1,40 @@
+{
+    "cmake.configureArgs": [
+        "-DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake"
+    ],
+    "cmake.generator": "Ninja",
+    "terminal.integrated.env.windows": {
+        "PYTHONUTF8": "1"
+    },
+    "editor.formatOnSave": true,
+    "editor.detectIndentation": false,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "[cpp]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.detectIndentation": false
+    },
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "C_Cpp.formatting": "disabled",
+    "clangd.arguments": [
+        "--background-index",
+        "--clang-tidy",
+        "--header-insertion=never",
+        "--completion-style=detailed",
+        "--log=error"
+    ],
+    // C++ TestMate: GTest-Erkennung und Ergebnispersistierung
+    "testMate.cpp.test.advancedExecutables": [
+        {
+            "pattern": "build/*GTest*.exe",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "GTEST_OUTPUT": "xml:${workspaceFolder}/tests/gtest/"
+            }
+        }
+    ],
+    // benchmark-vscode: Benchmark-Binärverzeichnis
+    "benchmark-vscode.binaryDirectory": "build"
+}

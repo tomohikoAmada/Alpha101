@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="9" failures="0" disabled="0" errors="0" time="0.001" timestamp="2026-02-21T15:33:13.115" name="AllTests">
+  <testsuite name="Alpha001Test" tests="9" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2026-02-21T15:33:13.115">
+    <testcase name="OutputSize" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="29" status="run" result="completed" time="0." timestamp="2026-02-21T15:33:13.115" classname="Alpha001Test" />
+    <testcase name="WarmupPeriod" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="38" status="run" result="completed" time="0." timestamp="2026-02-21T15:33:13.115" classname="Alpha001Test" />
+    <testcase name="AllNanForShortInput" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="54" status="run" result="completed" time="0." timestamp="2026-02-21T15:33:13.116" classname="Alpha001Test" />
+    <testcase name="OutputRangeValid" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="68" status="run" result="completed" time="0." timestamp="2026-02-21T15:33:13.116" classname="Alpha001Test" />
+    <testcase name="SingleValidOutputEquals_Minus05" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="83" status="run" result="completed" time="0." timestamp="2026-02-21T15:33:13.116" classname="Alpha001Test" />
+    <testcase name="KnownValues" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="97" status="run" result="completed" time="0." timestamp="2026-02-21T15:33:13.116" classname="Alpha001Test" />
+    <testcase name="TieHandling" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="118" status="run" result="completed" time="0." timestamp="2026-02-21T15:33:13.116" classname="Alpha001Test" />
+    <testcase name="NegativeReturnUsesStddev" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="135" status="run" result="completed" time="0." timestamp="2026-02-21T15:33:13.116" classname="Alpha001Test" />
+    <testcase name="MixedReturns" file="C:\Projekt\Alpha101\tests\GTest_Alpha101.cpp" line="154" status="run" result="completed" time="0." timestamp="2026-02-21T15:33:13.117" classname="Alpha001Test" />
+  </testsuite>
+</testsuites>
